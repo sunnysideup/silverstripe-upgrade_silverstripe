@@ -1,15 +1,43 @@
 <?php
 
+/**
+ *
+ *
+ * HEAVILY BASED ON WORK BY: phptek/ss-upgrade.sh (https://gist.github.com/phptek/3902357)
+ * AND OTHERS AS NOTED BELOW.
+ *
+ * ============= USAGE ===================
+ *
+ * 1. copy this file to the root folder of a project (not necessary, but easy)
+ * 2. change the main call (upgrade() to something that you need - examples below)
+ * 3. either open the fil in your web-browser OR from the command line.
+ *    from the command line, you type: php upgrade-silverstripe.php
+ *
+ *
+ * #TEST (FIND) IN CURRENT DIRECTORY (RECURSIVE) FROM 2.4 TO 3.1
+ * upgrade(".". "log.txt", "2.4", "3.0", false);
+ *
+ * #TEST (FIND) IN CURRENT DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
+ * upgrade(".". "log.txt", "3.0", "3.1", false);
+ *
+ * #TEST (FIND) IN code DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
+ * upgrade("code". "log.txt", "3.0", "3.1", false);
+ *
+ *
+ * #REPLACE IN CURRENT DIRECTORY (RECURSIVE) FROM 2.4 TO 3.1
+ * upgrade(".". "log.txt", "2.4", "3.0", true);
+ *
+ * #REPLACE IN CURRENT DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
+ * upgrade(".". "log.txt", "3.0", "3.1", true);
+ *
+ * #REPLACE IN code DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
+ * upgrade("code". "log.txt", "3.0", "3.1", true);
+ */
 
 
+upgrade();
 
-//examples
-// REPLACE IN CURRENT DIRECTORY (RECURSIVE) FROM 2.4 TO 3.1
-//upgrade(".". "log.txt", "2.4", "3.0", true);
-// REPLACE IN CURRENT DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
-//upgrade(".". "log.txt", "3.0", "3.1", true);
-// REPLACE IN code DIRECTORY (RECURSIVE) FROM 3.0 TO 3.1
-//upgrade(".". "log.txt", "2.4", "3.0", true);
+
 
 function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false) {
 	$array = getReplacementArrays("php", $from, $to);
@@ -93,7 +121,7 @@ function getReplacementArrays($fileExtension, $from, $to){
 		return $array[$fileExtension][$from][$to];
 	}
 	else {
-		die("no data is available for this upgrade");
+		user_error("no data is available for this upgrade");
 	}
 
 }
@@ -363,7 +391,7 @@ class TextSearch
 	 */
 	 function writeLogToFile($file)
 	 {
-			$fp = fopen($file, "a") OR die("Can not open file <b>$file</b>");
+			$fp = fopen($file, "a") OR user_error("Can not open file <b>$file</b>");
 			fwrite($fp, "\n\n================================================");
 			fwrite($fp, $this->logString);
 			fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found -----\n");
