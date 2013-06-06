@@ -87,7 +87,11 @@ function getReplacementArrays($fileExtension, $from, $to){
 		array('SAPPHIRE_ADMIN_PATH','FRAMEWORK_ADMIN_PATH'),
 		# This is dangerous because custom code might call the old statics from a non page/page-controller
 		array('Director::redirect(','$this->redirect('),
-		array('Director::redirectBack(','$this->redirectBack(')
+		array('Director::redirectBack(','$this->redirectBack('),
+		array('new ImageField(','new UploadField('),
+		//also needs attention
+		array('->map(','->map(##### NEEDS ATTENTION ####'),
+		array('->getComponentSet(','->getComponentSet(##### NEEDS ATTENTION ####'),
 	);
 
 	if(isset($array[$fileExtension][$from][$to])) {
