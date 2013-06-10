@@ -7,7 +7,8 @@ upgrade(
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$from = "2.4",
 	$to = "3.0",
-	$doReplacement = false
+	$doReplacement = false,
+	$ignoreFolderArray = array("framework", "cms")
 );
 ##############################################
 
