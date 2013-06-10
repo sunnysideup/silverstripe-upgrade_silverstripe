@@ -3,10 +3,10 @@
 
 ################### WHAT ARE WE UPGRADING ? ###########################
 upgrade(
-	$pathLocation = "code", 
-	$logFileLocation = "./ss_upgrade_log.txt", 
-	$from = "2.4", 
-	$to = "3.0", 
+	$pathLocation = "code",
+	$logFileLocation = "./ss_upgrade_log.txt",
+	$from = "2.4",
+	$to = "3.0",
 	$doReplacement = false
 );
 ##############################################
@@ -92,6 +92,12 @@ function getReplacementArrays($fileExtension, $from, $to){
 		//also needs attention
 		array('->map(','->map(##### NEEDS ATTENTION ####'),
 		array('->getComponentSet(','->getComponentSet(##### NEEDS ATTENTION ####'),
+	);
+
+	//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
+	$array["php"]["3.0"]["3.1"] = array(
+		array('public static $','private static $'),
+		array('protected static $','private static $'),
 	);
 
 	if(isset($array[$fileExtension][$from][$to])) {
@@ -203,7 +209,7 @@ class TextSearch
 	 function findDirFiles($path) {
 			$dir = opendir ($path);
 			while ($file = readdir ($dir)) {
-				 if (($file == ".") || ($file == "..") || (__FILE__ == $path/$file)) {
+				 if (($file == ".") || ($file == "..") || (__FILE__ == "$path/$file")) {
 						continue;
 				 }
 
