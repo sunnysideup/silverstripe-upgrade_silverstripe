@@ -3,7 +3,7 @@
 
 ################### WHAT ARE WE UPGRADING ? ###########################
 upgrade(
-	$pathLocation = "code",
+	$pathLocation = ".",
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$from = "2.4",
 	$to = "3.0",
@@ -12,10 +12,11 @@ upgrade(
 ##############################################
 
 
-function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false) {
+function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false, $ignoreFolderArray = array("framework", "cms")) {
 	$array = getReplacementArrays("php", $from, $to);
 	foreach($array as $replaceArray) {
 		$obj = new TextSearch();
+		$obj->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 		$obj->setExtensions(array('php')); //setting extensions to search files within
 		//$obj->addExtension('php');//adding an extension to search within
 		$obj->setSearchKey($replaceArray[0]);
@@ -124,6 +125,7 @@ function getReplacementArrays($fileExtension, $from, $to){
 
 class TextSearch
 {
+	 var $ignoreFolderArray  = array();
 	 var $extensions         = array();
 	 var $searchKey          = '';
 	 var $replacementKey     = '';
@@ -133,6 +135,16 @@ class TextSearch
 	 var $logString          = '';
 	 var $errorText          = '';
 	 var $totalFound         = 0; //total matches
+
+	 /**
+	 *   Sets folders to ignore
+	 *   @param Array ignoreFolderArray
+	 *   @return none
+	 */
+	 function setIgnoreFolderArray($ignoreFolderArray = array())
+	 {
+			$this->ignoreFolderArray = $ignoreFolderArray;
+	 }//End of Method
 
 	 /**
 	 *   Sets extensions to look
@@ -213,14 +225,19 @@ class TextSearch
 						continue;
 				 }
 
-				 if (filetype ("$path/$file") == "dir") {
-						$this->findDirFiles("$path/$file"); //recursive traversing here
-				 }
-				 elseif($this->matchedExtension($file)) { //checks extension if we need to search this file
-					 if(filesize("$path/$file")) {
-							 $this->searchFileData("$path/$file"); //search file data
-					 }
-				 }
+				if (filetype ("$path/$file") == "dir") {
+					if(in_array($file,$this->ignoreFolderArray)) {
+						continue;
+					}
+					$this->findDirFiles("$path/$file"); //recursive traversing here
+				}
+				elseif($this->matchedExtension($file)) { //checks extension if we need to search this file
+					if(filesize("$path/$file")) {
+						if($file != "upgrade-silverstripe.php") {
+							$this->searchFileData("$path/$file"); //search file data
+						}
+					}
+				}
 			} //End of while
 			closedir($dir);
 	 }//EO Method
