@@ -86,6 +86,9 @@ function getReplacementArrays($from, $to){
 		array('Director::redirectBack(','##### UPGRADE: is this in a controller class?  #### $this->redirectBack('),
 		array('Director::URLParam(','##### UPGRADE: is this in a controller class?  #### $this->getRequest()->param('),
 		array('Member::map(','DataList::("Member")->map(#### UPGRADE: check filter = "", sort = "", blank="" '),
+		array('new HasManyComplexTableField','new GridField(#### UPGRADE: check syntax'),
+		array('new ManyManyComplexTableField','new GridField(#### UPGRADE: check syntax'),
+		array('new ComplexTableField','new GridField(#### UPGRADE: check syntax'),
 		//also needs attention
 		array('->map(','->map(##### UPGRADE: map returns SS_Map and not an Array use ->map->toArray to get Array ####'),
 		array('->getComponentSet(','->getComponentSet(##### NEEDS ATTENTION ####'),
