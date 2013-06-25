@@ -8,12 +8,12 @@ upgrade(
 	$from = "2.4",
 	$to = "3.0",
 	$doReplacement = false,
-	$ignoreFolderArray = array("framework", "cms")
+	$ignoreFolderArray = array("sapphire", "framework", "cms")
 );
 ##############################################
 
 
-function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false, $ignoreFolderArray = array("framework", "cms")) {
+function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false, $ignoreFolderArray = array("sapphire", "framework", "cms")) {
 	$array = getReplacementArrays("php", $from, $to);
 	foreach($array as $replaceArray) {
 		$obj = new TextSearch();
@@ -58,7 +58,6 @@ function getReplacementArrays($fileExtension, $from, $to){
 		array('new FieldSet','new FieldList'),
 		array('DBField::create(','DBField::create_field('),
 		array('Director::URLParam(','Controller::curr()->getRequest()->param('),
-		array('Director::urlParam(','Controller::curr()->getRequest()->param('),
 		array('Database::alteration_message(','DB::alteration_message('),
 		array('Director::isSSL()',"(Director::protocol()===\'https:\/\/\')"),
 		array('extends SSReport','extends SS_Report'),
@@ -222,7 +221,7 @@ class TextSearch
 	 function findDirFiles($path) {
 			$dir = opendir ($path);
 			while ($file = readdir ($dir)) {
-				 if (($file == ".") || ($file == "..") || (__FILE__ == "$path/$file")) {
+				 if (($file == ".") || ($file == "..") || ( __FILE__ == "$path/$file" ) || ($path == "." && basename(__FILE__) == $file)) {
 						continue;
 				 }
 
@@ -234,9 +233,7 @@ class TextSearch
 				}
 				elseif($this->matchedExtension($file)) { //checks extension if we need to search this file
 					if(filesize("$path/$file")) {
-						if($file != "upgrade-silverstripe.php") {
-							$this->searchFileData("$path/$file"); //search file data
-						}
+						$this->searchFileData("$path/$file"); //search file data
 					}
 				}
 			} //End of while
@@ -301,7 +298,7 @@ class TextSearch
 
 			if($found)
 			{
-				 $foundStr = "Found in $found places";
+				 $foundStr = " x $found";
 				 $this->appendToLog($file, $foundStr);
 			}
 
@@ -355,16 +352,16 @@ class TextSearch
 	 {
 			if($this->logString == '')
 			{
-				 $this->logString = " --- Searching for '".$this->searchKey."' --- \n";
+				 $this->logString = "'".$this->searchKey."'\n";
 			}
 
 			if($replacementKey == null)
 			{
-				 $this->logString .= "Searching File $file : " . $matchStr."\n";
+				 $this->logString .= "------ ------ In $file : " . $matchStr." \n";
 			}
 			else
 			{
-				 $this->logString .= "Searching File $file : " . $matchStr.". Replaced by '$replacementKey'\n";
+				 $this->logString .= "------ ------ In $file : " . $matchStr.". ... '$replacementKey'\n";
 			}
 
 	 }//EO Method
@@ -376,12 +373,10 @@ class TextSearch
 	 */
 	 function showLog() {
 			if($this->totalFound) {
-				$this->dBug("------ Total ".$this->totalFound." Matches Found -----");
-				$this->dBug(nl2br($this->logString));
+				$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
 			}
 			if($this->errorText!='') {
-				 $this->dBug("------Error-----");
-				 $this->dBug(nl2br($this->errorText));
+				 $this->dBug(nl2br("------Error-----".$this->errorText));
 			}
 	 }//EO Method
 
