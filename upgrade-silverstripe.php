@@ -9,7 +9,7 @@ $obj->run(
 	$to = "3.0",
 	$doBasicReplacement = false,
 	$markStickingPoints = false,
-	$ignoreFolderArray = array("sapphire", "framework", "cms")
+	$ignoreFolderArray = array("sapphire", "framework", "cms", ".svn")
 );
 ###################################
 
@@ -56,22 +56,28 @@ class UpgradeSilverstripe {
 		foreach($array as $extension => $extensionArray) {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
-				$replaceArray["find"] = $replaceArray[0]; unset ($replaceArray[0]);
-				$replaceArray["replace"] = $replaceArray[1]; unset($replaceArray[1]);
+				$find = $replaceArray[0]; unset ($replaceArray[0]);
+				$replace = $replaceArray[1]; unset($replaceArray[1]);
+				if(!$find) {
+					user_error("no replace is specified, replace is: $replace");
+				}
+				if(!$replace) {
+					user_error("no replace is specified, find is: $find");
+				}
 				if($doBasicReplacement) {
 					if(!$markStickingPoints) {
-						if(strpos('#', $replaceArray["replace"]) !== false) {
+						if(strpos('#', $replace) !== false) {
 							continue;
 						}
 					}
-					$textSearchMachine->setSearchKey($replaceArray["find"]);
-					$textSearchMachine->setReplacementKey($replaceArray["replace"]);
+					$textSearchMachine->setSearchKey($find);
+					$textSearchMachine->setReplacementKey($replace);
 					$textSearchMachine->writeLogToFile($logFileLocation);
 					$textSearchMachine->showLog();
 				}
 				else {
-					$textSearchMachine->setSearchKey($replaceArray["find"]);
-					$textSearchMachine->setFutureReplacementKey($replaceArray["replace"]);
+					$textSearchMachine->setSearchKey($find);
+					$textSearchMachine->setFutureReplacementKey($replace);
 					$textSearchMachine->showLog();//showing log
 				}
 				$textSearchMachine->clearCache();
@@ -388,7 +394,7 @@ class TextSearch {
 		$this->totalFound +=$found;
 		if($found){
 			$foundStr = " x $found";
-			if($this->isReplacingEnabled
+			if($this->isReplacingEnabled) {
 				if($this->replacementKey){
 					$outputStr = preg_replace($pattern, $this->replacementKey, $subject);
 					$foundStr = "Replaced in $found places";
@@ -400,7 +406,7 @@ class TextSearch {
 					$this->appendToLog($file, "********** ERROR: Replacement Text is not defined", $this->replacementKey);
 				}
 			}
-			elseif(!$this->isReplacingEnabled){
+			else{
 				if($this->futureReplacementKey) {
 					$this->appendToLog($file, $foundStr, $this->futureReplacementKey);
 				}
