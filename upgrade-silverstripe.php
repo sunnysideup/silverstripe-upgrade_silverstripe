@@ -29,7 +29,7 @@ class UpgradeSilverstripe {
 		$pathLocation = "code",
 		$logFileLocation = "./ss_upgrade_log.txt",
 		$to = "3.0",
-		$doReplacement = false,
+		$doBasicReplacement = false,
 		$markStickingPoints = false,
 		$ignoreFolderArray = array()
 	) {
@@ -53,16 +53,16 @@ class UpgradeSilverstripe {
 		foreach($array as $extension => $extensionArray) {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
-				$replaceArray["find"] = $replaceArray[0]; unset ($replaceArray[0]);
-				$replaceArray["replace"] = $replaceArray[1]; unset($replaceArray[1]);
-				//$obj->addExtension('php');//adding an extension to search within
-				$textSearchMachine->setSearchKey($replaceArray["find"]);
-				if($doReplacement) {
+				if($doBasicReplacement) {
 					if(!$markStickingPoints) {
 						if(strpos('#', $replaceArray["replace"]) !== false) {
 							continue;
 						}
 					}
+					$replaceArray["find"] = $replaceArray[0]; unset ($replaceArray[0]);
+					$replaceArray["replace"] = $replaceArray[1]; unset($replaceArray[1]);
+					//$obj->addExtension('php');//adding an extension to search within
+					$textSearchMachine->setSearchKey($replaceArray["find"]);
 					$textSearchMachine->setReplacementKey($replaceArray["replace"]);//setting replacement text if you want to replace matches with that
 					$textSearchMachine->startSearching($pathLocation);//starting search
 					$textSearchMachine->writeLogToFile($logFileLocation); //writting result to log file
