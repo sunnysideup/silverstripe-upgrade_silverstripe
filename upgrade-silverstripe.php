@@ -1,114 +1,168 @@
 <?php
 
 
-################### WHAT ARE WE UPGRADING ? ###########################
-upgrade(
+############### WHAT ARE WE UPGRADING ? #####################
+$obj = new UpgradeSilverstripe();
+$obj->run(
 	$pathLocation = ".",
 	$logFileLocation = "./ss_upgrade_log.txt",
-	$from = "2.4",
 	$to = "3.0",
-	$doReplacement = false,
+	$doBasicReplacement = false,
+	$markStickingPoints = false,
 	$ignoreFolderArray = array("sapphire", "framework", "cms")
 );
-##############################################
+###################################
 
+class UpgradeSilverstripe {
 
-function upgrade($pathLocation = "code", $logFileLocation = "./ss_upgrade_log.txt", $from = "2.4", $to = "3.0", $doReplacement = false, $ignoreFolderArray = array("sapphire", "framework", "cms")) {
-	$array = getReplacementArrays($from, $to);
-	foreach($array as $extension => $extensionArray) {
-		foreach($extensionArray as $replaceArray) {
-			$obj = new TextSearch();
-			$obj->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
-			$obj->setExtensions(array($extension)); //setting extensions to search files within
-			//$obj->addExtension('php');//adding an extension to search within
-			$obj->setSearchKey($replaceArray[0]);
-			if($doReplacement) {
-				$obj->setReplacementKey($replaceArray[1]);//setting replacement text if you want to replace matches with that
-				$obj->startSearching($pathLocation);//starting search
-				$obj->writeLogToFile($logFileLocation); //writting result to log file
-				$obj->showLog();//showing log
-			}
-			else {
-				$obj->setFutureReplacementKey($replaceArray[1]);//setting replacement text if you want to replace matches with that
-				$obj->startSearching($pathLocation);//starting search
-				$obj->showLog();//showing log
+	/**
+	 *
+	 * @param String $pathLocation - enter dot for anything in current directory.
+	 * @param String $logFileLocation - where should the log file be saved. This file contains all the details about actual changes made.
+	 * @param String $to - if you set this to, for example 3.0 then the code will be upgraded from 2.4 to 3.0.
+	 * @param Boolean $doBasicReplacement - If set to false to show proposed changes on screen. If set to true, basic replacements (i.e. straight forward replace A with B scenarios will be made)
+	 * @param Boolean $markStickingPoints - If set to false nothing happens, if set to true and $doBasicReplacement is set to true as well, any code that need changing manually will be marked in the code itself.
+	 * @param Array $ignoreFolderArray - a list of folders that should not be searched (and replaced) - folders that are automatically ignore are: CMS, SAPPHIRE, FRAMEWORK (all in lowercase)
+	 *
+	 */
+	public function run(
+		$pathLocation = "code",
+		$logFileLocation = "./ss_upgrade_log.txt",
+		$to = "3.0",
+		$doReplacement = false,
+		$markStickingPoints = false,
+		$ignoreFolderArray = array()
+	) {
+		//basic checks
+		if(!$doBasicReplacement && $markStickingPoints) {
+			user_error("You have to set doBasicReplacement = TRUE before you can set markStickingPoints = TRUE");
+		}
+		if(!is_array($ignoreFolderArray)) {
+			user_error("the ignoreFolderArray param should be an array");
+		}
+		$ignoreFolderArray += array("cms", "sapphire", "framework", "upgrade_silverstripe");
+
+		$textSearchMachine = new TextSearch();
+
+		//get replacements
+		$array = $this->getReplacementArrays($to);
+
+		//set places to ignore.
+		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
+
+		foreach($array as $extension => $extensionArray) {
+			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
+			foreach($extensionArray as $replaceArray) {
+				$replaceArray["find"] = $replaceArray[0]; unset ($replaceArray[0]);
+				$replaceArray["replace"] = $replaceArray[1]; unset($replaceArray[1]);
+				//$obj->addExtension('php');//adding an extension to search within
+				$textSearchMachine->setSearchKey($replaceArray["find"]);
+				if($doReplacement) {
+					if(!$markStickingPoints) {
+						if(strpos('#', $replaceArray["replace"]) !== false) {
+							continue;
+						}
+					}
+					$textSearchMachine->setReplacementKey($replaceArray["replace"]);//setting replacement text if you want to replace matches with that
+					$textSearchMachine->startSearching($pathLocation);//starting search
+					$textSearchMachine->writeLogToFile($logFileLocation); //writting result to log file
+					$textSearchMachine->showLog();//showing log
+				}
+				else {
+					$textSearchMachine->setFutureReplacementKey($replaceArray["replace"]);//setting replacement text if you want to replace matches with that
+					$textSearchMachine->startSearching($pathLocation);//starting search
+					$textSearchMachine->showLog();//showing log
+				}
 			}
 		}
 	}
-}
 
-function getReplacementArrays($from, $to){
-	$array = array();
-	$array["2.4"]["3.0"]["yaml"] = array();
-	$array["2.4"]["3.0"]["yml"] = array();
-	$array["2.4"]["3.0"]["js"] = array();
-	$array["2.4"]["3.0"]["ss"] = array(
-		array('sapphire\/','framework\/'),
-		array('<% control ','<% loop|with ')
-	);
-	$array["2.4"]["3.0"]["php"] = array(
-		array('Director::currentPage(','Director::get_current_page('),
-		array('Member::currentMember(','Member::currentUser('),
-		array('new DataObjectSet','new ArrayList'),
-		array('new FieldSet','new FieldList'),
-		array('DBField::create(','DBField::create_field('),
-		array('Database::alteration_message(','DB::alteration_message('),
-		array('Director::isSSL()','(Director::protocol()===\'https://\')'),
-		array('extends SSReport','extends SS_Report'),
-		array('function getFrontEndFields()','function getFrontEndFields($params = null)'),
-		array('function updateCMSFields(&$fields)','function updateCMSFields($fields)'),
-		array('function Breadcrumbs()','function Breadcrumbs($maxDepth = 20, $unlinked = false, $stopAtPageType = false, $showHidden = false)'),
-		array('extends DataObjectDecorator','extends DataExtension'),
-		array('extends SiteTreeDecorator','extends SiteTreeExtension'),
-		array('function extraStatics()','function extraStatics($class = null, $extension = null)'),
-		array('function updateCMSFields($fields)','function updateCMSFields(FieldList $fields)'),
-		array('function updateCMSFields(&$fields)','function updateCMSFields(FieldList $fields)'),
-		array('function updateCMSFields(FieldSet &$fields)','function updateCMSFields(FieldList $fields)'),
-		array('function canEdit()','function canEdit($member = null)'),
-		array('function canView()','function canView($member = null)'),
-		array('function canCreate()','function canCreate($member = null)'),
-		array('function canDelete()','function canDelete($member = null)'),
-		array('function Field()','function Field($properties = array())'),
-		array('function sendPlain()','function sendPlain($messageID = null)'),
-		array('function send()','function send($messageID = null)'),
-		array('function apply(SQLQuery','function apply(DataQuery'),
-		array('function updateCMSFields(FieldSet','function updateCMSFields(FieldList'),
-		array('function extraStatics()','function extraStatics($class = null, $extension = null)'),
-		array('Form::disable_all_security_tokens','SecurityToken::disable'),
-		array('Root.Content.','Root.'),
-		array('SAPPHIRE_DIR','FRAMEWORK_DIR'),
-		array('SAPPHIRE_PATH','FRAMEWORK_PATH'),
-		array('SAPPHIRE_ADMIN_DIR','FRAMEWORK_ADMIN_DIR'),
-		array('SAPPHIRE_ADMIN_PATH','FRAMEWORK_ADMIN_PATH'),
-		array('new ImageField(','new UploadField('),
-		# This is dangerous because custom code might call the old statics from a non page/page-controller
-		array('Director::redirect(','##### UPGRADE: is this in a controller class?  #### $this->redirect('),
-		array('Director::redirectBack(','##### UPGRADE: is this in a controller class?  #### $this->redirectBack('),
-		array('Director::URLParam(','##### UPGRADE: is this in a controller class?  #### $this->getRequest()->param('),
-		array('Member::map(','DataList::("Member")->map(#### UPGRADE: check filter = "", sort = "", blank="" '),
-		array('new HasManyComplexTableField','new GridField(#### UPGRADE: check syntax'),
-		array('new ManyManyComplexTableField','new GridField(#### UPGRADE: check syntax'),
-		array('new ComplexTableField','new GridField(#### UPGRADE: check syntax'),
-		//also needs attention
-		array('->map(','->map(##### UPGRADE: map returns SS_Map and not an Array use ->map->toArray to get Array ####'),
-		array('->getComponentSet(','->getComponentSet(##### NEEDS ATTENTION ####'),
-	);
+	/**
+	 *
+	 * @param String $to - e.g. 3.0 or 3.1
+	 * @return array like this:
+	 * 	array(
+	 *	"	php" = array(
+	 *			"A" => "B"
+	 * 		)
+	 * 	)
+	 */
+	private function getReplacementArrays($to){
+		$array = array();
+		$array["3.0"]["yaml"] = array();
+		$array["3.0"]["yml"] = array();
+		$array["3.0"]["js"] = array();
+		$array["3.0"]["ss"] = array(
+			array('sapphire\/','framework\/'),
+			array('<% control ','<% loop|with ')
+		);
+		$array["3.0"]["php"] = array(
+			array('Director::currentPage(','Director::get_current_page('),
+			array('Member::currentMember(','Member::currentUser('),
+			array('new DataObjectSet','new ArrayList'),
+			array('new FieldSet','new FieldList'),
+			array('DBField::create(','DBField::create_field('),
+			array('Database::alteration_message(','DB::alteration_message('),
+			array('Director::isSSL()','(Director::protocol()===\'https://\')'),
+			array('extends SSReport','extends SS_Report'),
+			array('function getFrontEndFields()','function getFrontEndFields($params = null)'),
+			array('function updateCMSFields(&$fields)','function updateCMSFields($fields)'),
+			array('function Breadcrumbs()','function Breadcrumbs($maxDepth = 20, $unlinked = false, $stopAtPageType = false, $showHidden = false)'),
+			array('extends DataObjectDecorator','extends DataExtension'),
+			array('extends SiteTreeDecorator','extends SiteTreeExtension'),
+			array('function extraStatics()','function extraStatics($class = null, $extension = null)'),
+			array('function updateCMSFields($fields)','function updateCMSFields(FieldList $fields)'),
+			array('function updateCMSFields(&$fields)','function updateCMSFields(FieldList $fields)'),
+			array('function updateCMSFields(FieldSet &$fields)','function updateCMSFields(FieldList $fields)'),
+			array('function canEdit()','function canEdit($member = null)'),
+			array('function canView()','function canView($member = null)'),
+			array('function canCreate()','function canCreate($member = null)'),
+			array('function canDelete()','function canDelete($member = null)'),
+			array('function Field()','function Field($properties = array())'),
+			array('function sendPlain()','function sendPlain($messageID = null)'),
+			array('function send()','function send($messageID = null)'),
+			array('function apply(SQLQuery','function apply(DataQuery'),
+			array('function updateCMSFields(FieldSet','function updateCMSFields(FieldList'),
+			array('function extraStatics()','function extraStatics($class = null, $extension = null)'),
+			array('Form::disable_all_security_tokens','SecurityToken::disable'),
+			array('Root.Content.','Root.'),
+			array('SAPPHIRE_DIR','FRAMEWORK_DIR'),
+			array('SAPPHIRE_PATH','FRAMEWORK_PATH'),
+			array('SAPPHIRE_ADMIN_DIR','FRAMEWORK_ADMIN_DIR'),
+			array('SAPPHIRE_ADMIN_PATH','FRAMEWORK_ADMIN_PATH'),
+			array('new ImageField(','new UploadField('),
+			# This is dangerous because custom code might call the old statics from a non page/page-controller
+			array('Director::redirect(','$this->redirect(### UPGRADE: this should be a controller class, otherwise use Controller::curr()->redirect'),
+			array('Director::redirectBack(','$this->redirectBack(### UPGRADE: this should be a controller class? ###'),
+			array('Director::redirected_to(','$this->redirectBack(### UPGRADE: this should be a controller class? ###'),
+			array('Director::set_status_code(','$this->setStatusCode(### UPGRADE: this should be a controller class? ###'),
+			array('Director::URLParam(','$this->getRequest()->param(### UPGRADE: is this in a controller class?  ### '),
+			array('Director::URLParams(','$this->getRequest()->params(### UPGRADE: is this in a controller class?  ### '),
+			array('Member::map(','DataList::("Member")->map(### UPGRADE: check filter = "", sort = "", blank=""  ###'),
+			array('new HasManyComplexTableField','new GridField(### UPGRADE: check syntax  ###'),
+			array('new ManyManyComplexTableField','new GridField(### UPGRADE: check syntax ###'),
+			array('new ComplexTableField','new GridField(### UPGRADE: check syntax ###'),
+			//also needs attention
+			array('->map(','->map(### UPGRADE: map returns SS_Map and not an Array use ->map->toArray to get Array ###'),
+			array('->getComponentSet(','->getComponentSet(### NEEDS ATTENTION'),
+		);
 
-	//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
-	$array["3.0"]["3.1"]["php"] = array(
-		array('public static $','private static $'),
-		array('protected static $','private static $'),
-	);
+		//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
+		$array["3.1"]["php"] = array(
+			array('public static $','private static $'),
+			array('protected static $','private static $'),
+		);
 
-	if(isset($array[$from][$to])) {
-		return $array[$from][$to];
+		if(isset($array[$to])) {
+			return $array[$to];
+		}
+		else {
+			user_error("no data is available for this upgrade");
+		}
+
 	}
-	else {
-		user_error("no data is available for this upgrade");
-	}
 
 }
-
 
 /**
 * Class : TextSearch
@@ -122,18 +176,28 @@ function getReplacementArrays($from, $to){
 * Purpose  :  Searching and replacing text within files of specified path
 */
 
-class TextSearch
-{
+class TextSearch {
+
 	 var $ignoreFolderArray    = array();
+
 	 var $extensions           = array();
+
 	 var $searchKey            = '';
+
 	 var $replacementKey       = '';
+
 	 var $futureReplacementKey = '';
+
 	 var $caseSensitive        = 0; //by default case sensitivity is OFF
+
 	 var $findAllExts          = 1; //by default all extensions
+
 	 var $isReplacingEnabled   = 0;
+
 	 var $logString            = '';
+
 	 var $errorText            = '';
+
 	 var $totalFound           = 0; //total matches
 
 	 /**
