@@ -13,6 +13,7 @@ $obj->run(
 );
 ###################################
 
+
 class UpgradeSilverstripe {
 
 	/**
@@ -49,6 +50,7 @@ class UpgradeSilverstripe {
 
 		//set basics
 		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
+
 		$textSearchMachine->startSearching($pathLocation);//starting search
 
 		foreach($array as $extension => $extensionArray) {
@@ -62,18 +64,17 @@ class UpgradeSilverstripe {
 							continue;
 						}
 					}
-					//$obj->addExtension('php');//adding an extension to search within
 					$textSearchMachine->setSearchKey($replaceArray["find"]);
-					$textSearchMachine->setReplacementKey($replaceArray["replace"]);//setting replacement text if you want to replace matches with that
-					$textSearchMachine->writeLogToFile($logFileLocation); //writting result to log file
-					$textSearchMachine->showLog();//showing log
+					$textSearchMachine->setReplacementKey($replaceArray["replace"]);
+					$textSearchMachine->writeLogToFile($logFileLocation);
+					$textSearchMachine->showLog();
 				}
 				else {
 					$textSearchMachine->setSearchKey($replaceArray["find"]);
-					$textSearchMachine->setReplacementKey(null);//setting replacement text if you want to replace matches with that
-					$textSearchMachine->setFutureReplacementKey($replaceArray["replace"]);//setting replacement text if you want to replace matches with that
+					$textSearchMachine->setFutureReplacementKey($replaceArray["replace"]);
 					$textSearchMachine->showLog();//showing log
 				}
+				$textSearchMachine->clearCache();
 			}
 		}
 	}
@@ -179,147 +180,186 @@ class UpgradeSilverstripe {
 
 class TextSearch {
 
-	 var $ignoreFolderArray    = array();
+	var $ignoreFolderArray    = array();
 
-	 var $extensions           = array();
+	var $extensions           = array();
 
-	 var $searchKey            = '';
+	var $findAllExts          = 1; //by default all extensions
 
-	 var $replacementKey       = '';
+	var $searchKey            = '';
 
-	 var $futureReplacementKey = '';
+	var $replacementKey       = '';
 
-	 var $caseSensitive        = 0; //by default case sensitivity is OFF
+	var $futureReplacementKey = '';
 
-	 var $findAllExts          = 1; //by default all extensions
+	var $isReplacingEnabled   = 0;
 
-	 var $isReplacingEnabled   = 0;
+	var $caseSensitive        = 0; //by default case sensitivity is OFF
 
-	 var $logString            = '';
+	var $logString            = '';
 
-	 var $errorText            = '';
+	var $errorText            = '';
 
-	 var $totalFound           = 0; //total matches
+	var $totalFound           = 0; //total matches
 
-	 /**
+	/**
 	 *   Sets folders to ignore
 	 *   @param Array ignoreFolderArray
 	 *   @return none
 	 */
-	 function setIgnoreFolderArray($ignoreFolderArray = array()) {
-			$this->ignoreFolderArray = $ignoreFolderArray;
-	 }//End of Method
+	public function setIgnoreFolderArray($ignoreFolderArray = array()) {
+		$this->ignoreFolderArray = $ignoreFolderArray;
+	}
 
-	 /**
+	/**
 	 *   Sets extensions to look
 	 *   @param Array extensions
-	 *   @return none
 	 */
-	 function setExtensions($extensions = array()) {
-			$this->extensions = $extensions;
-			if(sizeof($this->extensions)){
-				 $this->findAllExts = 0; //not all extensions
-			}
-	 }//End of Method
+	public function setExtensions($extensions = array()) {
+		$this->extensions = $extensions;
+		if(sizeof($this->extensions)){
+			 $this->findAllExts = 0; //not all extensions
+		}
+	}
 
-	 /**
-	 * Adds a search extension
-	 * @param  file extension
-	 * @return none
-	 */
-	 function addExtension($extension) {
-
-			array_push($this->extensions, $extension);
-			$this->findAllExts = 0; //not all extensions
-
-	 }//End of function
-
-
-	 /**
+	/**
 	 * Sets search key and case sensitivity
-	 * @param search key, case sensitivity
-	 * @return none
+	 * @param String $searchKey,
+	 * @param Boolean $caseSensitivity
 	 */
-	 function setSearchKey($searchKey, $caseSensitive = 0) {
-			$this->searchKey = $searchKey;
+	public function setSearchKey($searchKey, $caseSensitive = 0) {
+		$this->searchKey = $searchKey;
+		$this->caseSensitive = ($caseSensitive ? 1 : 0);
+	}
 
-			if($caseSensitive)
-			{
-				 $this->caseSensitive	= 1; //yeah, case sensitive
-			}
-	 }//End of function
-
-	 /**
+	/**
 	 *   Sets key to replace searchKey with
-	 *   @param : replacement key
-	 *   @return none
+	 *   @param String $replacementKey
 	 */
-	 function setReplacementKey($replacementKey){
-			$this->replacementKey     = $replacementKey;
-			$this->isReplacingEnabled = 1;
-	 }
+	public function setReplacementKey($replacementKey){
+		$this->replacementKey     = $replacementKey;
+		$this->isReplacingEnabled = 1;
+	}
 
-	 /**
-	 *   Sets key to replace searchKey with
-	 *   @param : replacement key
-	 *   @return none
+	/**
+	 *   Sets key to replace searchKey with BUT only hypothetical
+	 * (no replacement takes place!)
+	 *   @param String $replacementKey
 	 */
-	 function setFutureReplacementKey($replacementKey){
-			$this->futureReplacementKey = $replacementKey;
-			$this->isReplacingEnabled   = 0;
-	 }//End of function
+	public function setFutureReplacementKey($replacementKey){
+		$this->futureReplacementKey = $replacementKey;
+		$this->isReplacingEnabled   = 0;
+	}
 
-	 /**
+	/**
 	 * Wrapper function around function findDirFiles()
 	 * @param $path to search
 	 * @return none
 	 */
-	 function startSearching($path){
-			$this->findDirFiles($path);
-	 }
+	public function startSearching($path){
+		$this->findDirFiles($path);
+	}
 
-	 /**
-	 * Recursively traverses files of a specified path
-	 * @param  path to execute
-	 * @return  none
+	/**
+	 * Shows Log
+	 * @return none
 	 */
-	 function findDirFiles($path) {
+	public function showLog() {
+		if($this->totalFound) {
+			$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
+		}
+		if($this->errorText!='') {
+			$this->dBug(nl2br("------Error-----".$this->errorText));
+		}
+	}
+
+	/**
+	 * Writes log to file
+	 * @param String log filename
+	 */
+	public function writeLogToFile($file) {
+		$fp = fopen($file, "a") OR user_error("Can not open file <b>$file</b>");
+		fwrite($fp, "\n\n================================================");
+		fwrite($fp, $this->logString);
+		fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found -----\n");
+		if($this->errorText){
+			fwrite($fp, "\n------Error-----------Error-----------Error-----------Error-----\n");
+			fwrite($fp, $this->errorText);
+			fwrite($fp, "\n------Error-----------Error-----------Error-----------Error-----\n");
+		}
+		fclose($fp);
+	}
+
+	/**
+	 *
+	 * clears cache data
+	 *
+	 */
+	public function clearCache() {
+		$this->logString = '';
+		$this->errorText = '';
+		$this->totalFound = 0;
+	}
+
+
+	private static $file_array = array();
+
+	/**
+	 * loads all the applicable files
+	 * @param String $path (e.g. "." or "/var/www/mysite.co.nz")
+	 * @param Boolean $innerLoop - is the method calling itself???
+	 */
+	private function getFileArray($path, $innerLoop = false){
+		if(!count(self::$file_array) || $innerLoop) {
 			$dir = opendir ($path);
 			while ($file = readdir ($dir)) {
-				 if (($file == ".") || ($file == "..") || ( __FILE__ == "$path/$file" ) || ($path == "." && basename(__FILE__) == $file)) {
-						continue;
-				 }
-
+				if (($file == ".") || ($file == "..") || ( __FILE__ == "$path/$file" ) || ($path == "." && basename(__FILE__) == $file)) {
+					continue;
+				}
 				if (filetype ("$path/$file") == "dir") {
 					if(in_array($file,$this->ignoreFolderArray) && $path == ".") {
 						continue;
 					}
-					$this->findDirFiles("$path/$file"); //recursive traversing here
+					$this->getFileArray("$path/$file", $innerLoop = true); //recursive traversing here
 				}
 				elseif($this->matchedExtension($file)) { //checks extension if we need to search this file
 					if(filesize("$path/$file")) {
-						$this->searchFileData("$path/$file"); //search file data
+						self::$file_array["$path/$file"] = "$path/$file"; //search file data
 					}
 				}
 			} //End of while
 			closedir($dir);
-	 }
+		}
+		return self::$file_array;
+	}
 
-	 /**
+	/**
+	 * Recursively traverses files of a specified path
+	 * @param  path to execute
+	 * @return  none
+	 */
+	private function findDirFiles($path) {
+		$array = $this->getFileArray($path);
+		foreach($array as $file) {
+			$this->searchFileData("$path/$file");
+		}
+	}
+
+	/**
 	 * Finds extension of a file
 	 * @param filename
 	 * @return file extension
 	 */
-	 function findExtension($file) {
-		 return array_pop(explode(".",$file));
-	 }//End of function
+	private function findExtension($file) {
+		return array_pop(explode(".",$file));
+	}//End of function
 
-	 /**
-	 * Checks if a file extension is one the extensions we are going to search
-	 * @param filename
-	 * @return true in success, false otherwise
+	/**
+	 * Checks if a file extension is one of the extensions we are going to search
+	 * @param String $filename
+	 * @return Boolean
 	 */
-	function matchedExtension($file){
+	private function matchedExtension($file){
 		if($this->findAllExts){
 			return true;
 		}
@@ -327,123 +367,91 @@ class TextSearch {
 			return true;
 		}
 		return false;
-
 	}
 
-	 /**
+	/**
+	 * THE KEY METHOD!
 	 * Searches data, replaces (if enabled) with given key, prepares log
-	 * @param $file
-	 * @return none
+	 * @param String $file - e.g. /var/www/mysite.co.nz/mysite/code/Page.php
 	 */
-	 function searchFileData($file) {
-			$searchKey  = preg_quote($this->searchKey, '/');
-			if($this->caseSensitive){
-				$pattern    = "/$searchKey/U";
+	private function searchFileData($file) {
+		$searchKey  = preg_quote($this->searchKey, '/');
+		if($this->caseSensitive){
+			$pattern    = "/$searchKey/U";
+		}
+		else{
+			$pattern    = "/$searchKey/Ui";
+		}
+		$subject = file_get_contents($file);
+		$found = 0;
+		$found = preg_match_all($pattern, $subject, $matches, PREG_PATTERN_ORDER);
+		$this->totalFound +=$found;
+		if($found){
+			$foundStr = " x $found";
+			if($this->isReplacingEnabled
+				if($this->replacementKey){
+					$outputStr = preg_replace($pattern, $this->replacementKey, $subject);
+					$foundStr = "Replaced in $found places";
+					$this->writeToFile($file, $outputStr);
+					$this->appendToLog($file, $foundStr, $this->replacementKey);
+				}
+				else {
+					$this->errorText .= "********** ERROR: Replacement Text is not defined\n";
+					$this->appendToLog($file, "********** ERROR: Replacement Text is not defined", $this->replacementKey);
+				}
 			}
-			else{
-				$pattern    = "/$searchKey/Ui";
+			elseif(!$this->isReplacingEnabled){
+				if($this->futureReplacementKey) {
+					$this->appendToLog($file, $foundStr, $this->futureReplacementKey);
+				}
+				else {
+					$this->errorText .= "********** ERROR: FUTURE Replacement Text is not defined\n";
+					$this->appendToLog($file, "********** ERROR: FUTURE Replacement Text is not defined");
+				}
 			}
-			$subject = file_get_contents($file);
-			$found = 0;
-			$found = preg_match_all($pattern, $subject, $matches, PREG_PATTERN_ORDER);
-			$this->totalFound +=$found;
-			if($found){
-				$foundStr = " x $found";
-				$this->appendToLog($file, $foundStr);
-			}
-			if($this->isReplacingEnabled && $this->replacementKey && $found){
-				$outputStr = preg_replace($pattern, $this->replacementKey, $subject);
-				$foundStr = "Replaced in $found places";
-				$this->writeToFile($file, $outputStr);
-				$this->appendToLog($file, $foundStr, $this->replacementKey);
+		}
+		else{
+			//$this->appendToLog($file, "No matching Found", $this->replacementKey);
+		}
+	}
 
-			}
-			elseif($this->isReplacingEnabled && $this->replacementKey == ''){
-				$this->errorText .= "********** ERROR: Replacement Text is not defined\n";
-				$this->appendToLog($file, "********** ERROR: Replacement Text is not defined", $this->replacementKey);
-			}
-			elseif(!$found){
-				//$this->appendToLog($file, "No matching Found", $this->replacementKey);
-			}
-
-	 }
-
-	 /**
+	/**
 	 * Writes new data (after the replacement) to file
 	 * @param $file, $data
 	 * @return none
 	 */
-	 function writeToFile($file, $data) {
-			if(is_writable($file)){
-				 $fp = fopen($file, "w");
-				 fwrite($fp, $data);
-				 fclose($fp);
-			}
-			else{
-				 $this->errorText .= "********** ERROR: Can not replace text. File $file is not writable. \nPlease make it writable\n";
-			}
+	private function writeToFile($file, $data) {
+		if(is_writable($file)){
+			 $fp = fopen($file, "w");
+			 fwrite($fp, $data);
+			 fclose($fp);
+		}
+		else{
+			 $this->errorText .= "********** ERROR: Can not replace text. File $file is not writable. \nPlease make it writable\n";
+		}
+	}
 
-	 }
+/**
+ * Appends log data to previous log data
+ * @param filename, match string, replacement key if any
+ * @return none
+ */
+ private function appendToLog($file, $matchStr, $replacementKey = null){
+		if($this->logString == ''){
+			 $this->logString = "'".$this->searchKey."'\n";
+		}
+		$this->logString .= "------ ------ $matchStr In $file ... '$replacementKey'\n";
+	}
 
-	 /**
-	 * Appends log data to previous log data
-	 * @param filename, match string, replacement key if any
-	 * @return none
-	 */
-	 function appendToLog($file, $matchStr, $replacementKey = null){
-			if($this->logString == ''){
-				 $this->logString = "'".$this->searchKey."'\n";
-			}
-			if($replacementKey == null){
-				 $this->logString .= "------ ------ $matchStr In $file ... '".$this->futureReplacementKey."'\n";
-			}
-			else{
-				 $this->logString .= "------ ------ $matchStr In $file ... '$replacementKey'\n";
-			}
-
-	 }
-
-	 /**
-	 * Shows Log
-	 * @return none
-	 */
-	 function showLog() {
-			if($this->totalFound) {
-				$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
-			}
-			if($this->errorText!='') {
-				 $this->dBug(nl2br("------Error-----".$this->errorText));
-			}
-	 }
-
-	 /**
-	 * Writes log to file
-	 * @param log filename
-	 * @return none
-	 */
-	 function writeLogToFile($file) {
-			$fp = fopen($file, "a") OR user_error("Can not open file <b>$file</b>");
-			fwrite($fp, "\n\n================================================");
-			fwrite($fp, $this->logString);
-			fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found -----\n");
-			if($this->errorText!='')
-			{
-				 fwrite($fp, "\n------Error-----\n");
-				 fwrite($fp, $this->errorText);
-			}
-
-			fclose($fp);
-	 }
-
-	 /**
+	/**
 	 * Dumps data
-	 * @param data to be dumped
+	 * @param String data to be dumped
 	 * @return none
 	 */
-	 function dBug($dump){
-			echo "<pre>";
-			print_r($dump);
-			echo "</pre>";
-	 }
+	private function dBug($dump){
+		echo "<pre>";
+		print_r($dump);
+		echo "</pre>";
+	}
 
 }
