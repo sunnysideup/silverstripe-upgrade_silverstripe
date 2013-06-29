@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * to do:
+ * create system to exclude folders with _manifest_exclude
+ *
+ *
+ */
 
 ############### WHAT ARE WE UPGRADING ? #####################
 $obj = new UpgradeSilverstripe();
@@ -9,13 +15,14 @@ $obj->run(
 	$to = "3.0",
 	$doBasicReplacement = false,
 	$markStickingPoints = false,
-	$ignoreFolderArray = array("sapphire", "framework", "cms", ".svn")
+	$ignoreFolderArray = array();
 );
 ###################################
 
 
 class UpgradeSilverstripe {
 
+	private $avoidByDefault = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 	/**
 	 *
 	 * @param String $pathLocation - enter dot for anything in current directory.
@@ -41,7 +48,7 @@ class UpgradeSilverstripe {
 		if(!is_array($ignoreFolderArray)) {
 			user_error("the ignoreFolderArray param should be an array");
 		}
-		$ignoreFolderArray += array("cms", "sapphire", "framework", "upgrade_silverstripe");
+		$ignoreFolderArray += $this->avoidByDefault;
 
 		$textSearchMachine = new TextSearch();
 
