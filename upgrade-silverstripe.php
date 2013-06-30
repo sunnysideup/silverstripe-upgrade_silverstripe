@@ -349,7 +349,6 @@ class TextSearch {
 		foreach($flatArray as $file) {
 			$this->dBug($file."\n\n");
 		}
-		die("bla");
 	}
 
 	/**
