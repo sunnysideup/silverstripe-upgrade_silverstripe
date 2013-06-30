@@ -634,7 +634,7 @@ class TextSearch {
 	 */
 	private function dBug($dump){
 		if(__FROM_COMMAND_LINE__) {
-			print_r(strip_tags($dump));
+			print_r(($dump));
 		}
 		else {
 			echo "<pre>";
