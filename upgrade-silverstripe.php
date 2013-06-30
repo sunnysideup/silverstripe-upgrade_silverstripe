@@ -5,6 +5,12 @@ $pathLocation = ".";
 if(isset($_GET["path"])) {
 	$argv[1] = $_GET["path"];
 }
+if(isset($argv[0])) {
+	define("__FROM_COMMAND_LINE__", true);
+}
+else {
+	define("__FROM_COMMAND_LINE__", false);
+}
 if(isset($argv[1])) {
 	if(!file_exists($argv[1])) {
 		echo ("\n\n");
@@ -627,9 +633,14 @@ class TextSearch {
 	 * @return none
 	 */
 	private function dBug($dump){
-		echo "<pre>";
-		print_r($dump);
-		echo "</pre>";
+		if(__FROM_COMMAND_LINE__) {
+			print_r(strip_tags($dump));
+		}
+		else {
+			echo "<pre>";
+			print_r($dump);
+			echo "</pre>";
+		}
 	}
 
 }
