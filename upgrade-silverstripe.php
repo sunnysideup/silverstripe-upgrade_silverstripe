@@ -10,7 +10,7 @@
 ############### WHAT ARE WE UPGRADING ? #####################
 $obj = new UpgradeSilverstripe();
 $obj->run(
-	$pathLocation = "..",
+	$pathLocation = ".",
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
 	$doBasicReplacement = false,
@@ -111,7 +111,7 @@ class UpgradeSilverstripe {
 		$array["3.0"]["js"] = array();
 		$array["3.0"]["ss"] = array(
 			array('sapphire\/','framework\/'),
-			array('<% control ','<% loop|with ')
+			array('<% control ','<% loop ### with ')
 		);
 		$array["3.0"]["php"] = array(
 			array('Director::currentPage(','Director::get_current_page('),
@@ -188,6 +188,8 @@ class UpgradeSilverstripe {
 *             Moderator, phpResource Group(http://groups.yahoo.com/group/phpresource/)
 *             URL: http://rupom.wordpress.com
 *
+* HEAVILY MODIFIED BY SUNNY SIDE UP
+*
 * @version :  1.0
 * Date     :  06/25/2006
 * Purpose  :  Searching and replacing text within files of specified path
@@ -199,9 +201,9 @@ class TextSearch {
 
 	private $ignoreFolderArray    = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
-	private $extensions           = array();
+	private $extensions           = array("php", "ss");
 
-	private $findAllExts          = 1; //by default all extensions
+	private $findAllExts          = 0; //by default all extensions
 
 	private $searchKey            = '';
 
