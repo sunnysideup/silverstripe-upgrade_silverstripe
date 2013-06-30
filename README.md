@@ -10,9 +10,12 @@ AMONG OTHERS
 USAGE
 =================================
 
-1. copy this file to the root folder of a project (although it can live anywhere)
+1. copy this file to the root folder of a project (although it can live anywhere).
+If you like to just update on module then place it in the root of the module.
 
-2. change the top bit of upgrade-silverstre.php as you see fit
+2. change the top bit of upgrade-silverstre.php as you see fit (e.g. path location).
+You can set the path, to "migrate to" e.g. 3.0, the folders to ignore and
+what action will run (see below)
 
 3. either open the file in your web-browser OR from the command line.
    from the command line, you type:
@@ -20,19 +23,38 @@ USAGE
 php upgrade-silverstripe.php /var/www/mywebsite.com/
 
 
-PECULIARITIES
+REPLACE OPTIONS
 =================================
 
 * there are basically three replacements modes:
-# view proposed changes only
-# make basic replacements (e.g. Root.Content becomes Root. )
-# make basic replacements and mark problem areas
+** view proposed changes only
+** make basic replacements (e.g. Root.Content becomes Root. )
+** make basic replacements and mark problem areas
 By default it is set to viewing proposed changes only.
 
-* you set the root path in the URL as path=mypath or from the command line as the first argument.
 
-* any folders including _manifest will be excluded
-as well as other obvious folders, such as: assets, sapphire, cms, .svn, etc...
+EXCLUDE / INCLUDE OPTIONS
+=================================
 
+* you set the root path in the URL as get variable path=mypath
+or from the command line as the first argument.
+* any folders with a folder
+
+_manifest_exclude
+
+will be excluded as well as other obvious ones, such as:
+assets,
+sapphire,
+cms,
+.svn,
+etc...
+
+In setting the exclusion folders,you can a
+a. set the name
+b. the full path
+
+for any folders with just the name set (e.g. mysite rather than /var/www/mysite/), it will only
+be ignored if it is in the base folder (e.g. /var/www/themes/css/mysite will not be skipped
+if the base folder is /var/www/). The base folder is set when you run the code.
 
 

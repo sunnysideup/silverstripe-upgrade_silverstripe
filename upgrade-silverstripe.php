@@ -30,8 +30,8 @@ $obj->run(
 	$pathLocation,
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
-	$doBasicReplacement = false,
-	$markStickingPoints = false,
+	$doBasicReplacement = true,
+	$markStickingPoints = true,
 	$ignoreFolderArray = array()
 );
 //***************************************************
@@ -51,7 +51,7 @@ class UpgradeSilverstripe {
 	 * @param String $logFileLocation - where should the log file be saved. This file contains all the details about actual changes made.
 	 * @param String $to - if you set this to, for example 3.0 then the code will be upgraded from 2.4 to 3.0.
 	 * @param Boolean $doBasicReplacement - If set to false to show proposed changes on screen. If set to true, basic replacements (i.e. straight forward replace A with B scenarios will be made)
-	 * @param Boolean $markStickingPoints - If set to false nothing happens, if set to true and $doBasicReplacement is set to true as well, any code that need changing manually will be marked in the code itself.
+	 * @param Boolean $markStickingPoints - If set to false nothing happens, if set to true  any code that need changing manually will be marked in the code itself.
 	 * @param Array $ignoreFolderArray - a list of folders that should not be searched (and replaced) - folders that are automatically ignore are: CMS, SAPPHIRE, FRAMEWORK (all in lowercase)
 	 * outputs to screen and/or to file
 	 */
