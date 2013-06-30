@@ -10,19 +10,18 @@
 ############### WHAT ARE WE UPGRADING ? #####################
 $obj = new UpgradeSilverstripe();
 $obj->run(
-	$pathLocation = ".",
+	$pathLocation = "..",
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
 	$doBasicReplacement = false,
 	$markStickingPoints = false,
-	$ignoreFolderArray = array();
+	$ignoreFolderArray = array()
 );
-###################################
+##############################################################
 
 
 class UpgradeSilverstripe {
 
-	private $avoidByDefault = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 	/**
 	 *
 	 * @param String $pathLocation - enter dot for anything in current directory.
@@ -31,7 +30,7 @@ class UpgradeSilverstripe {
 	 * @param Boolean $doBasicReplacement - If set to false to show proposed changes on screen. If set to true, basic replacements (i.e. straight forward replace A with B scenarios will be made)
 	 * @param Boolean $markStickingPoints - If set to false nothing happens, if set to true and $doBasicReplacement is set to true as well, any code that need changing manually will be marked in the code itself.
 	 * @param Array $ignoreFolderArray - a list of folders that should not be searched (and replaced) - folders that are automatically ignore are: CMS, SAPPHIRE, FRAMEWORK (all in lowercase)
-	 *
+	 * outputs to screen and/or to file
 	 */
 	public function run(
 		$pathLocation = "code",
@@ -48,7 +47,6 @@ class UpgradeSilverstripe {
 		if(!is_array($ignoreFolderArray)) {
 			user_error("the ignoreFolderArray param should be an array");
 		}
-		$ignoreFolderArray += $this->avoidByDefault;
 
 		$textSearchMachine = new TextSearch();
 
@@ -58,7 +56,8 @@ class UpgradeSilverstripe {
 		//set basics
 		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 
-		$textSearchMachine->startSearching($pathLocation);//starting search
+		$textSearchMachine->setBasePath($pathLocation);
+		$textSearchMachine->showFilesToSearch();
 
 		foreach($array as $extension => $extensionArray) {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
@@ -79,14 +78,17 @@ class UpgradeSilverstripe {
 					}
 					$textSearchMachine->setSearchKey($find);
 					$textSearchMachine->setReplacementKey($replace);
+					$textSearchMachine->startSearching();//starting search
+					//output - only write to log for real replacements!
 					$textSearchMachine->writeLogToFile($logFileLocation);
-					$textSearchMachine->showLog();
 				}
 				else {
 					$textSearchMachine->setSearchKey($find);
 					$textSearchMachine->setFutureReplacementKey($replace);
-					$textSearchMachine->showLog();//showing log
+					$textSearchMachine->startSearching();//starting search
+					//output - only write to log for real replacements!
 				}
+				$textSearchMachine->showLog();//showing log
 				$textSearchMachine->clearCache();
 			}
 		}
@@ -193,27 +195,36 @@ class UpgradeSilverstripe {
 
 class TextSearch {
 
-	var $ignoreFolderArray    = array();
+	private $basePath             = '.';
 
-	var $extensions           = array();
+	private $ignoreFolderArray    = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
-	var $findAllExts          = 1; //by default all extensions
+	private $extensions           = array();
 
-	var $searchKey            = '';
+	private $findAllExts          = 1; //by default all extensions
 
-	var $replacementKey       = '';
+	private $searchKey            = '';
 
-	var $futureReplacementKey = '';
+	private $replacementKey       = '';
 
-	var $isReplacingEnabled   = 0;
+	private $futureReplacementKey = '';
 
-	var $caseSensitive        = 0; //by default case sensitivity is OFF
+	private $isReplacingEnabled   = 0;
 
-	var $logString            = '';
+	private $caseSensitive        = 0; //by default case sensitivity is OFF
 
-	var $errorText            = '';
+	private $logString            = '';
 
-	var $totalFound           = 0; //total matches
+	private $errorText            = '';
+
+	private $totalFound           = 0; //total matches
+
+	private $avoidByDefault = array();
+
+	public function showFilesToSearch(){
+		$array = $this->getFileArray($this->basePath,false);
+		return $this->dBug($array);
+	}
 
 	/**
 	 *   Sets folders to ignore
@@ -222,6 +233,24 @@ class TextSearch {
 	 */
 	public function setIgnoreFolderArray($ignoreFolderArray = array()) {
 		$this->ignoreFolderArray = $ignoreFolderArray;
+	}
+
+	/**
+	 * remove a root folder that is avoided by default
+	 * @param String $nameOfFolder
+	 */
+	public function unsetIgnoreFolderArray($nameOfFolder) {
+		unset($this->ignoreFolderArray[$nameOfFolder]);
+	}
+
+
+	/**
+	 *   Sets folders to ignore
+	 *   @param Array ignoreFolderArray
+	 *   @return none
+	 */
+	public function setBasePath($pathLocation) {
+		$this->basePath = $pathLocation;
 	}
 
 	/**
@@ -269,8 +298,11 @@ class TextSearch {
 	 * @param $path to search
 	 * @return none
 	 */
-	public function startSearching($path){
-		$this->findDirFiles($path);
+	public function startSearching(){
+		$array = $this->getFileArray($this->basePath, false);
+		foreach($array as $location) {
+			$this->searchFileData("$location");
+		}
 	}
 
 	/**
@@ -314,7 +346,10 @@ class TextSearch {
 		$this->totalFound = 0;
 	}
 
-
+	/**
+	 * array of all the files we are searching
+	 * @var array
+	 */
 	private static $file_array = array();
 
 	/**
@@ -323,21 +358,32 @@ class TextSearch {
 	 * @param Boolean $innerLoop - is the method calling itself???
 	 */
 	private function getFileArray($path, $innerLoop = false){
-		if(!count(self::$file_array) || $innerLoop) {
+		if($innerLoop || !count(self::$file_array)) {
 			$dir = opendir ($path);
 			while ($file = readdir ($dir)) {
 				if (($file == ".") || ($file == "..") || ( __FILE__ == "$path/$file" ) || ($path == "." && basename(__FILE__) == $file)) {
 					continue;
 				}
+				//ignore hidden files and folders
+				if(substr($file, 0, 1) == ".") {
+					continue;
+				}
+				//ignore folders with _manifest_exclude in them!
+				if($file == "_manifest_exclude") {
+					$this->ignoreFolderArray[] = $path;
+					continue;
+				}
 				if (filetype ("$path/$file") == "dir") {
-					if(in_array($file,$this->ignoreFolderArray) && $path == ".") {
+					if(
+						(in_array($file,$this->ignoreFolderArray) && ($path == "."|| $path == $this->basePath)) ||
+						(in_array($path, $this->ignoreFolderArray))) {
 						continue;
 					}
 					$this->getFileArray("$path/$file", $innerLoop = true); //recursive traversing here
 				}
 				elseif($this->matchedExtension($file)) { //checks extension if we need to search this file
 					if(filesize("$path/$file")) {
-						self::$file_array["$path/$file"] = "$path/$file"; //search file data
+						self::$file_array[] = "$path/$file"; //search file data
 					}
 				}
 			} //End of while
@@ -346,17 +392,6 @@ class TextSearch {
 		return self::$file_array;
 	}
 
-	/**
-	 * Recursively traverses files of a specified path
-	 * @param  path to execute
-	 * @return  none
-	 */
-	private function findDirFiles($path) {
-		$array = $this->getFileArray($path);
-		foreach($array as $file) {
-			$this->searchFileData("$path/$file");
-		}
-	}
 
 	/**
 	 * Finds extension of a file
