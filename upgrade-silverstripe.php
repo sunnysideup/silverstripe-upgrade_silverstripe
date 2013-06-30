@@ -131,10 +131,10 @@ class UpgradeSilverstripe {
 			      'framework\/'),
 
 			array('<% control ',
-			      '<% '.$this->marker.' use loop OR with '.$this->endMarker)
+			      '<% '.$this->marker.' use loop OR with '.$this->endMarker),
 
 			array('<% end_control ',
-			      '<% '.$this->marker.' use end_loop OR end_with '.$this->endMarker)
+			      '<% '.$this->marker.' use end_loop OR end_with '.$this->endMarker),
 		);
 		$array["3.0"]["php"] = array(
 
@@ -343,8 +343,13 @@ class TextSearch {
 	private $avoidByDefault = array();
 
 	public function showFilesToSearch(){
-		$array = $this->getFileArray($this->basePath,false);
-		return $this->dBug($array);
+		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
+		//flatten it!
+		$flatArray = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
+		foreach($flatArray as $file) {
+			$this->dBug($file."\n\n");
+		}
+		die("bla");
 	}
 
 	/**
@@ -421,7 +426,10 @@ class TextSearch {
 	 */
 	public function startSearching(){
 		$array = $this->getFileArray($this->basePath, false);
-		foreach($array as $location) {
+		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
+		//flatten it!
+		$flatArray = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
+		foreach($flatArray as $location) {
 			$this->searchFileData("$location");
 		}
 	}
@@ -493,7 +501,7 @@ class TextSearch {
 				//ignore folders with _manifest_exclude in them!
 				if($file == "_manifest_exclude") {
 					$this->ignoreFolderArray[] = $path;
-					unset self::$file_array[$key];
+					unset (self::$file_array[$key]);
 					continue;
 				}
 				if (filetype ("$path/$file") == "dir") {
