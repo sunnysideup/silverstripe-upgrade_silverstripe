@@ -1,8 +1,6 @@
 <?php
 
 /**
- * to do:
- * create system to exclude folders with _manifest_exclude
  *
  *
  */
@@ -33,7 +31,7 @@ class UpgradeSilverstripe {
 	 * outputs to screen and/or to file
 	 */
 	public function run(
-		$pathLocation = "code",
+		$pathLocation = ".",
 		$logFileLocation = "./ss_upgrade_log.txt",
 		$to = "3.0",
 		$doBasicReplacement = false,
@@ -55,7 +53,16 @@ class UpgradeSilverstripe {
 
 		//set basics
 		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
-
+		print_r($argv[1]);
+		die("lllll");
+		if(isset($argv[1])) {
+			if(!file_exists($argv[1])) {
+				user_error("could not find specified path: ".$argv[1]);
+			}
+			die("hello");
+			$pathLocation = $argv[1];
+		}
+		die("boo");
 		$textSearchMachine->setBasePath($pathLocation);
 		$textSearchMachine->showFilesToSearch();
 
