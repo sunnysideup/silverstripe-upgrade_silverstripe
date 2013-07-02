@@ -85,7 +85,8 @@ class UpgradeSilverstripe {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0]; unset ($replaceArray[0]);
-				$replace = $replaceArray[1]; unset($replaceArray[1]);
+				//$replace = $replaceArray[1]; unset($replaceArray[1]);
+				$replace = (isset($replacearray[2]) ? "/* ".$replacearray[2]." */\n" : "").$replaceArray[1]; unset($replaceArray[1]); unset($replaceArray[2]);
 				if(!$find) {
 					user_error("no replace is specified, replace is: $replace");
 				}
@@ -183,9 +184,6 @@ class UpgradeSilverstripe {
 			array('extends SiteTreeDecorator',
 			      'extends SiteTreeExtension'),
 
-			array('function extraStatics()',
-			      'function extraStatics($class = null, $extension = null)'),
-
 			array('function updateCMSFields($fields)',
 			      'function updateCMSFields(FieldList $fields)'),
 
@@ -252,7 +250,7 @@ class UpgradeSilverstripe {
 			      '$this->redirect('.$this->marker.' : this should be a controller class, otherwise use Controller::curr()->redirect '.$this->endMarker),
 
 			array('Director::redirectBack(',
-			      '$this->redirectBack('.$this->marker.' this should be a controller class? '.$this->endMarker),
+			      '$this->redirectBack('.$this->marker.' this should be a controller class, otherwise use Controller::curr()->redirectBack '.$this->endMarker),
 
 			array('Director::redirected_to(',
 			      '$this->redirectBack('.$this->marker.' this should be a controller class? '.$this->endMarker),
@@ -278,11 +276,86 @@ class UpgradeSilverstripe {
 			array('new ComplexTableField',
 			      'new GridField('.$this->marker.' check syntax '.$this->endMarker),
 
+			array('new TableListField',
+			      'new GridField('.$this->marker.' - check syntax  '.$this->endMarker),
+
 			array('->map(',
 			      '->map('.$this->marker.' map returns SS_Map and not an Array use ->map->toArray to get Array '.$this->endMarker),
 
 			array('->getComponentSet(',
 			      '->getComponentSet('.$this->marker.' - check new syntax '.$this->endMarker),
+
+			array('DataObject::get(',
+			      'DataObject::get('.$this->marker.' - replace with ClassName::get( '.$this->endMarker),
+
+			array('DataObject::get_one(',
+			      'DataObject::get('.$this->marker.' - replace with ClassName::get()->First() '.$this->endMarker),
+
+			array('DataObject::get_by_id(',
+			      'DataObject::get('.$this->marker.' - replace with ClassName::get()->byID($id) '.$this->endMarker),
+
+			array('DB::query("SELECT COUNT(*)',
+			      $this->marker.'DB::query("SELECT COUNT(*)'.$this->marker. ' replace with MyClass::get()->count() '.$this->endMarker),
+
+			array('sapphire',
+			      'FRAMEWORK_DIR'.$this->marker.' - changed from sapphire/ to framework/ - using constant preferred.  '.$this->endMarker),
+
+
+			array('::set_static(',
+			      'Config::inst()->update('.$this->marker.' `Object::set_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead.  '.$this->endMarker),
+
+
+			array('::addStaticVars(',
+			      'Config::inst()->update('.$this->marker.' Object::addStaticVars(\'MyClass\', array(\'myvar\' => \myval\'))` should be replaced with individual calls to `Config::inst()->update()` instead.  '.$this->endMarker),
+
+
+			array('::add_static_var(',
+			      'Config::inst()->update('.$this->marker.' Object::add_static_var(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` '.$this->endMarker),
+
+
+			array('::set_uninherited(',
+			      'Config::inst()->update('.$this->marker.' * `Object::set_uninherited(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead. '.$this->endMarker),
+
+
+			array('::get_static(',
+			      'Config::inst()->get('.$this->marker.' `Object::get_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::FIRST_SET)` '.$this->endMarker),
+
+
+			array('::uninherited_static(',
+			      'Config::inst()->get('.$this->marker.' Object::uninherited_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::UNINHERITED)` '.$this->endMarker),
+
+
+			array('::combined_static(',
+			      'Config::inst()->get('.$this->marker.' `Object::combined_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\')` (no option as third argument) '.$this->endMarker),
+
+
+			array('function extraStatics()',
+			      'function extraStatics($class = null, $extension = null)'),
+
+
+			array('function extraStatics()',
+			      'function extraStatics()'.$this->marker.' Remove me: simply define static vars on extension directly, or use add_to_class()  '.$this->endMarker),
+
+
+			array('extendedSQL(',
+			      'extendedSQL('.$this->marker.' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '.$this->endMarker),
+
+			array('buildSQL(',
+			      'buildSQL('.$this->marker.' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '.$this->endMarker),
+
+			array('new SQLQuery(',
+			      'new SQLQuery('.$this->marker.' Internal properties: ($from, $select, $where, $orderby, $groupby, $having, $limit, $distinct, $delete, $connective) now use getters, setters and adders. e.g. getFrom(), setFrom(), addFrom(), getLimit(), setLimit().\n innerJoin() has been renamed to addInnerJoin(), leftJoin() renamed to addLeftJoin() '.$this->endMarker),
+
+
+			array('From',
+			      'To('.$this->marker.' - comments here  '.$this->endMarker),
+
+
+			array('From',
+			      'To('.$this->marker.' - comments here  '.$this->endMarker),
+
+
+
 		);
 
 		//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
