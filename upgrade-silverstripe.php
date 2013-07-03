@@ -30,8 +30,8 @@ $obj->run(
 	$pathLocation,
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
-	$doBasicReplacement = true,
-	$markStickingPoints = true,
+	$doBasicReplacement = false,
+	$markStickingPoints = false,
 	$ignoreFolderArray = array()
 );
 //***************************************************
@@ -138,10 +138,12 @@ class UpgradeSilverstripe {
 			      'framework\/'),
 
 			array('<% control ',
-			      '<% '.$this->marker.' use loop OR with '.$this->endMarker),
+			      '<% '.$this->marker,
+			      ' use loop OR with '),
 
 			array('<% end_control ',
-			      '<% '.$this->marker.' use end_loop OR end_with '.$this->endMarker),
+			      '<% '.$this->marker,
+			      ' use end_loop OR end_with '),
 		);
 		$array["3.0"]["php"] = array(
 
@@ -247,86 +249,111 @@ class UpgradeSilverstripe {
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
 			array('Director::redirect(',
-			      '$this->redirect('.$this->marker.' : this should be a controller class, otherwise use Controller::curr()->redirect '.$this->endMarker),
+			      '$this->redirect('.$this->marker,
+			      'this should be a controller class, otherwise use Controller::curr()->redirect'),
 
 			array('Director::redirectBack(',
-			      '$this->redirectBack('.$this->marker.' this should be a controller class, otherwise use Controller::curr()->redirectBack '.$this->endMarker),
+			      '$this->redirectBack('.$this->marker,
+			      ' this should be a controller class, otherwise use Controller::curr()->redirectBack '),
 
 			array('Director::redirected_to(',
-			      '$this->redirectBack('.$this->marker.' this should be a controller class? '.$this->endMarker),
+			      '$this->redirectBack('.$this->marker,
+			      ' this should be a controller class? '),
 
 			array('Director::set_status_code(',
-			      '$this->setStatusCode('.$this->marker.' this should be a controller class? '.$this->endMarker),
+			      '$this->setStatusCode('.$this->marker,
+			      ' this should be a controller class? '),
 
 			array('Director::URLParam(',
-			      '$this->getRequest()->param('.$this->marker.' is this in a controller class?'.$this->endMarker),
+			      '$this->getRequest()->param('.$this->marker,
+			      ' is this in a controller class?'),
 
 			array('Director::URLParams(',
-			      '$this->getRequest()->params('.$this->marker.' is this in a controller class?'.$this->endMarker),
+			      '$this->getRequest()->params('.$this->marker,
+			      ' is this in a controller class?'),
 
 			array('Member::map(',
-			      'DataList::("Member")->map('.$this->marker.' check filter = "", sort = "", blank=""  '.$this->endMarker),
+			      'DataList::("Member")->map('.$this->marker,
+			      ' check filter = "", sort = "", blank=""  '),
 
 			array('new HasManyComplexTableField',
-			      'new GridField('.$this->marker.' check syntax  '.$this->endMarker),
+			      'new GridField('.$this->marker,
+			      ' check syntax  '),
 
 			array('new ManyManyComplexTableField',
-			      'new GridField('.$this->marker.' check syntax '.$this->endMarker),
+			      'new GridField('.$this->marker,
+			      ' check syntax '),
 
 			array('new ComplexTableField',
-			      'new GridField('.$this->marker.' check syntax '.$this->endMarker),
+			      'new GridField('.$this->marker,
+			      ' check syntax '),
 
 			array('new TableListField',
-			      'new GridField('.$this->marker.' - check syntax  '.$this->endMarker),
+			      'new GridField('.$this->marker,
+			      ' check syntax  '),
 
 			array('->map(',
-			      '->map('.$this->marker.' map returns SS_Map and not an Array use ->map->toArray to get Array '.$this->endMarker),
+			      '->map('.$this->marker,
+			      ' map returns SS_Map and not an Array use ->map->toArray to get Array '),
 
 			array('->getComponentSet(',
-			      '->getComponentSet('.$this->marker.' - check new syntax '.$this->endMarker),
+			      '->getComponentSet('.$this->marker,
+			      ' - check new syntax '),
 
 			array('DataObject::get(',
-			      'DataObject::get('.$this->marker.' - replace with ClassName::get( '.$this->endMarker),
+			      'DataObject::get('.$this->marker,
+			      ' - replace with ClassName::get( '),
 
 			array('DataObject::get_one(',
-			      'DataObject::get('.$this->marker.' - replace with ClassName::get()->First() '.$this->endMarker),
+			      'DataObject::get('.$this->marker,
+			      ' - replace with ClassName::get()->First() '),
 
 			array('DataObject::get_by_id(',
-			      'DataObject::get('.$this->marker.' - replace with ClassName::get()->byID($id) '.$this->endMarker),
+			      'DataObject::get('.$this->marker,
+			      ' - replace with ClassName::get()->byID($id) '),
 
 			array('DB::query("SELECT COUNT(*)',
-			      $this->marker.'DB::query("SELECT COUNT(*)'.$this->marker. ' replace with MyClass::get()->count() '.$this->endMarker),
+			      $this->marker.'DB::query("SELECT COUNT(*)'.$this->marker,
+			      ' replace with MyClass::get()->count() '),
 
 			array('sapphire',
-			      'FRAMEWORK_DIR'.$this->marker.' - changed from sapphire/ to framework/ - using constant preferred.  '.$this->endMarker),
+			      'FRAMEWORK_DIR'.$this->marker,
+			      ' - changed from sapphire/ to framework/ - using constant preferred.  '),
 
 
 			array('::set_static(',
-			      'Config::inst()->update('.$this->marker.' `Object::set_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead.  '.$this->endMarker),
+			      'Config::inst()->update('.$this->marker,
+			      ' `Object::set_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead.  '),
 
 
 			array('::addStaticVars(',
-			      'Config::inst()->update('.$this->marker.' Object::addStaticVars(\'MyClass\', array(\'myvar\' => \myval\'))` should be replaced with individual calls to `Config::inst()->update()` instead.  '.$this->endMarker),
+			      'Config::inst()->update('.$this->marker,
+			      ' Object::addStaticVars(\'MyClass\', array(\'myvar\' => \myval\'))` should be replaced with individual calls to `Config::inst()->update()` instead.  '),
 
 
 			array('::add_static_var(',
-			      'Config::inst()->update('.$this->marker.' Object::add_static_var(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` '.$this->endMarker),
+			      'Config::inst()->update('.$this->marker,
+			      ' Object::add_static_var(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` '),
 
 
 			array('::set_uninherited(',
-			      'Config::inst()->update('.$this->marker.' * `Object::set_uninherited(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead. '.$this->endMarker),
+			      'Config::inst()->update('.$this->marker,
+			      ' * `Object::set_uninherited(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead. '),
 
 
 			array('::get_static(',
-			      'Config::inst()->get('.$this->marker.' `Object::get_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::FIRST_SET)` '.$this->endMarker),
+			      'Config::inst()->get('.$this->marker,
+			      ' `Object::get_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::FIRST_SET)` '),
 
 
 			array('::uninherited_static(',
-			      'Config::inst()->get('.$this->marker.' Object::uninherited_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::UNINHERITED)` '.$this->endMarker),
+			      'Config::inst()->get('.$this->marker,
+			      ' Object::uninherited_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::UNINHERITED)` '),
 
 
 			array('::combined_static(',
-			      'Config::inst()->get('.$this->marker.' `Object::combined_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\')` (no option as third argument) '.$this->endMarker),
+			      'Config::inst()->get('.$this->marker,
+			      ' `Object::combined_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\')` (no option as third argument) '),
 
 
 			array('function extraStatics()',
@@ -334,25 +361,31 @@ class UpgradeSilverstripe {
 
 
 			array('function extraStatics()',
-			      'function extraStatics()'.$this->marker.' Remove me: simply define static vars on extension directly, or use add_to_class()  '.$this->endMarker),
+			      'function extraStatics()'.$this->marker,
+			      ' Remove me: simply define static vars on extension directly, or use add_to_class()  '),
 
 
 			array('extendedSQL(',
-			      'extendedSQL('.$this->marker.' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '.$this->endMarker),
+			      'extendedSQL('.$this->marker,
+			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
 
 			array('buildSQL(',
-			      'buildSQL('.$this->marker.' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '.$this->endMarker),
+			      'buildSQL('.$this->marker,
+			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
 
 			array('new SQLQuery(',
-			      'new SQLQuery('.$this->marker.' Internal properties: ($from, $select, $where, $orderby, $groupby, $having, $limit, $distinct, $delete, $connective) now use getters, setters and adders. e.g. getFrom(), setFrom(), addFrom(), getLimit(), setLimit().\n innerJoin() has been renamed to addInnerJoin(), leftJoin() renamed to addLeftJoin() '.$this->endMarker),
+			      'new SQLQuery('.$this->marker,
+			      ' Internal properties: ($from, $select, $where, $orderby, $groupby, $having, $limit, $distinct, $delete, $connective) now use getters, setters and adders. e.g. getFrom(), setFrom(), addFrom(), getLimit(), setLimit().\n innerJoin() has been renamed to addInnerJoin(), leftJoin() renamed to addLeftJoin() '),
 
 
 			array('From',
-			      'To('.$this->marker.' - comments here  '.$this->endMarker),
+			      'To('.$this->marker,
+			      ' - comments here  '),
 
 
 			array('From',
-			      'To('.$this->marker.' - comments here  '.$this->endMarker),
+			      'To('.$this->marker,
+			      ' - comments here  '),
 
 
 
