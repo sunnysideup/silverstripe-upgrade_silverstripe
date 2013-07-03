@@ -1,5 +1,14 @@
 <?php
 
+require_once('ReplacementData.php');
+/*
+	TODO: 
+
+		Add colouring:
+		http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
+
+*/
+
 
 $pathLocation = ".";
 if(isset($_GET["path"])) {
@@ -30,8 +39,8 @@ $obj->run(
 	$pathLocation,
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
-	$doBasicReplacement = false,
-	$markStickingPoints = false,
+	$doBasicReplacement = true,
+	$markStickingPoints = true,
 	$ignoreFolderArray = array()
 );
 //***************************************************
@@ -74,7 +83,8 @@ class UpgradeSilverstripe {
 		$textSearchMachine = new TextSearch();
 
 		//get replacements
-		$array = $this->getReplacementArrays($to);
+		$replacementData = new ReplacementData();
+		$array = $replacementData->getReplacementArrays($to);
 
 		//set basics
 		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
@@ -84,30 +94,43 @@ class UpgradeSilverstripe {
 		foreach($array as $extension => $extensionArray) {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
-				$find = $replaceArray[0]; unset ($replaceArray[0]);
+				$find = $replaceArray[0];
 				//$replace = $replaceArray[1]; unset($replaceArray[1]);
-				$replace = (isset($replacearray[2]) ? "/* ".$replacearray[2]." */\n" : "").$replaceArray[1]; unset($replaceArray[1]); unset($replaceArray[2]);
+				//$fullReplacement = (isset($replaceArray[2]) ? "/* ".$replaceArray[2]." */\n" : "").$replaceArray[1]; 
+				$fullReplacement = "";
+				$isStraightReplace = true;
+				if(isset($replaceArray[2])) {// Has comment
+					$isStraightReplace = false;
+					$fullReplacement = $this->marker."\n/* Replaced ".$replaceArray[0]."\nComment: ".$replaceArray[2]." \n".$this->endMarker."*/".$replaceArray[1];
+				}
+				else { // Straight replace
+					$fullReplacement = $replaceArray[1];
+				}
+				
+
+				$comment = isset($replaceArray[2]) ? $replaceArray[2] : "";
+				$codeReplacement = $replaceArray[1];
 				if(!$find) {
 					user_error("no replace is specified, replace is: $replace");
 				}
-				if(!$replace) {
+				if(!$fullReplacement) {
 					user_error("no replace is specified, find is: $find");
 				}
 				if($doBasicReplacement) {
 					if(!$markStickingPoints) {
-						if(strpos($this->marker, $replace) !== false) {
+						if(strpos($this->marker, $fullReplacement) !== false) {
 							continue;
 						}
 					}
 					$textSearchMachine->setSearchKey($find);
-					$textSearchMachine->setReplacementKey($replace);
+					$textSearchMachine->setReplacementKey($fullReplacement);
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
 					$textSearchMachine->writeLogToFile($logFileLocation);
 				}
 				else {
 					$textSearchMachine->setSearchKey($find);
-					$textSearchMachine->setFutureReplacementKey($replace);
+					$textSearchMachine->setFutureReplacementKey($codeReplacement);
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
 				}
@@ -117,298 +140,7 @@ class UpgradeSilverstripe {
 		}
 	}
 
-	/**
-	 *
-	 * @param String $to - e.g. 3.0 or 3.1
-	 * @return array like this:
-	 * 	array(
-	 *	"	php" = array(
-	 *			"A" => "B"
-	 * 		)
-	 * 	)
-	 */
-	private function getReplacementArrays($to){
-		$array = array();
-		$array["3.0"]["yaml"] = array();
-		$array["3.0"]["yml"] = array();
-		$array["3.0"]["js"] = array();
-		$array["3.0"]["ss"] = array(
-
-			array('sapphire\/',
-			      'framework\/'),
-
-			array('<% control ',
-			      '<% '.$this->marker,
-			      ' use loop OR with '),
-
-			array('<% end_control ',
-			      '<% '.$this->marker,
-			      ' use end_loop OR end_with '),
-		);
-		$array["3.0"]["php"] = array(
-
-			array('Director::currentPage(',
-			      'Director::get_current_page('),
-
-			array('Member::currentMember(',
-			      'Member::currentUser('),
-
-			array('new DataObjectSet',
-			      'new ArrayList'),
-
-			array('new FieldSet',
-			      'new FieldList'),
-
-			array('DBField::create(',
-			      'DBField::create_field('),
-
-			array('Database::alteration_message(',
-			      'DB::alteration_message('),
-
-			array('Director::isSSL()',
-			      '(Director::protocol()===\'https://\')'),
-
-			array('extends SSReport',
-			      'extends SS_Report'),
-
-			array('function getFrontEndFields()',
-			      'function getFrontEndFields($params = null)'),
-
-			array('function updateCMSFields(&$fields)',
-			      'function updateCMSFields($fields)'),
-
-			array('function Breadcrumbs()',
-			      'function Breadcrumbs($maxDepth = 20, $unlinked = false, $stopAtPageType = false, $showHidden = false)'),
-
-			array('extends DataObjectDecorator',
-			      'extends DataExtension'),
-
-			array('extends SiteTreeDecorator',
-			      'extends SiteTreeExtension'),
-
-			array('function updateCMSFields($fields)',
-			      'function updateCMSFields(FieldList $fields)'),
-
-			array('function updateCMSFields(&$fields)',
-			      'function updateCMSFields(FieldList $fields)'),
-
-			array('function updateCMSFields(FieldSet &$fields)',
-			      'function updateCMSFields(FieldList $fields)'),
-
-			array('function canEdit()',
-			      'function canEdit($member = null)'),
-
-			array('function canView()',
-			      'function canView($member = null)'),
-
-			array('function canCreate()',
-			      'function canCreate($member = null)'),
-
-			array('function canDelete()',
-			      'function canDelete($member = null)'),
-
-			array('function Field()',
-			      'function Field($properties = array())'),
-
-			array('function sendPlain()',
-			      'function sendPlain($messageID = null)'),
-
-			array('function send()',
-			      'function send($messageID = null)'),
-
-			array('function apply(SQLQuery',
-			      'function apply(DataQuery'),
-
-			array('function updateCMSFields(FieldSet',
-			      'function updateCMSFields(FieldList'),
-
-			array('function extraStatics()',
-			      'function extraStatics($class = null, $extension = null)'),
-
-			array('Form::disable_all_security_tokens',
-			      'SecurityToken::disable'),
-
-			array('Root.Content.',
-			      'Root.'),
-
-			array('SAPPHIRE_DIR',
-			      'FRAMEWORK_DIR'),
-
-			array('SAPPHIRE_PATH',
-			      'FRAMEWORK_PATH'),
-
-			array('SAPPHIRE_ADMIN_DIR',
-			      'FRAMEWORK_ADMIN_DIR'),
-
-			array('SAPPHIRE_ADMIN_PATH',
-			      'FRAMEWORK_ADMIN_PATH'),
-
-			array('new ImageField(',
-			      'new UploadField('),
-
-			# This is dangerous because custom code might call the old statics from a non page/page-controller
-
-			array('Director::redirect(',
-			      '$this->redirect('.$this->marker,
-			      'this should be a controller class, otherwise use Controller::curr()->redirect'),
-
-			array('Director::redirectBack(',
-			      '$this->redirectBack('.$this->marker,
-			      ' this should be a controller class, otherwise use Controller::curr()->redirectBack '),
-
-			array('Director::redirected_to(',
-			      '$this->redirectBack('.$this->marker,
-			      ' this should be a controller class? '),
-
-			array('Director::set_status_code(',
-			      '$this->setStatusCode('.$this->marker,
-			      ' this should be a controller class? '),
-
-			array('Director::URLParam(',
-			      '$this->getRequest()->param('.$this->marker,
-			      ' is this in a controller class?'),
-
-			array('Director::URLParams(',
-			      '$this->getRequest()->params('.$this->marker,
-			      ' is this in a controller class?'),
-
-			array('Member::map(',
-			      'DataList::("Member")->map('.$this->marker,
-			      ' check filter = "", sort = "", blank=""  '),
-
-			array('new HasManyComplexTableField',
-			      'new GridField('.$this->marker,
-			      ' check syntax  '),
-
-			array('new ManyManyComplexTableField',
-			      'new GridField('.$this->marker,
-			      ' check syntax '),
-
-			array('new ComplexTableField',
-			      'new GridField('.$this->marker,
-			      ' check syntax '),
-
-			array('new TableListField',
-			      'new GridField('.$this->marker,
-			      ' check syntax  '),
-
-			array('->map(',
-			      '->map('.$this->marker,
-			      ' map returns SS_Map and not an Array use ->map->toArray to get Array '),
-
-			array('->getComponentSet(',
-			      '->getComponentSet('.$this->marker,
-			      ' - check new syntax '),
-
-			array('DataObject::get(',
-			      'DataObject::get('.$this->marker,
-			      ' - replace with ClassName::get( '),
-
-			array('DataObject::get_one(',
-			      'DataObject::get('.$this->marker,
-			      ' - replace with ClassName::get()->First() '),
-
-			array('DataObject::get_by_id(',
-			      'DataObject::get('.$this->marker,
-			      ' - replace with ClassName::get()->byID($id) '),
-
-			array('DB::query("SELECT COUNT(*)',
-			      $this->marker.'DB::query("SELECT COUNT(*)'.$this->marker,
-			      ' replace with MyClass::get()->count() '),
-
-			array('sapphire',
-			      'FRAMEWORK_DIR'.$this->marker,
-			      ' - changed from sapphire/ to framework/ - using constant preferred.  '),
-
-
-			array('::set_static(',
-			      'Config::inst()->update('.$this->marker,
-			      ' `Object::set_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead.  '),
-
-
-			array('::addStaticVars(',
-			      'Config::inst()->update('.$this->marker,
-			      ' Object::addStaticVars(\'MyClass\', array(\'myvar\' => \myval\'))` should be replaced with individual calls to `Config::inst()->update()` instead.  '),
-
-
-			array('::add_static_var(',
-			      'Config::inst()->update('.$this->marker,
-			      ' Object::add_static_var(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` '),
-
-
-			array('::set_uninherited(',
-			      'Config::inst()->update('.$this->marker,
-			      ' * `Object::set_uninherited(\'MyClass\', \'myvar\', \'myval\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead. '),
-
-
-			array('::get_static(',
-			      'Config::inst()->get('.$this->marker,
-			      ' `Object::get_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::FIRST_SET)` '),
-
-
-			array('::uninherited_static(',
-			      'Config::inst()->get('.$this->marker,
-			      ' Object::uninherited_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\', Config::UNINHERITED)` '),
-
-
-			array('::combined_static(',
-			      'Config::inst()->get('.$this->marker,
-			      ' `Object::combined_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->get(\'MyClass\', \'myvar\')` (no option as third argument) '),
-
-
-			array('function extraStatics()',
-			      'function extraStatics($class = null, $extension = null)'),
-
-
-			array('function extraStatics()',
-			      'function extraStatics()'.$this->marker,
-			      ' Remove me: simply define static vars on extension directly, or use add_to_class()  '),
-
-
-			array('extendedSQL(',
-			      'extendedSQL('.$this->marker,
-			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
-
-			array('buildSQL(',
-			      'buildSQL('.$this->marker,
-			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
-
-			array('new SQLQuery(',
-			      'new SQLQuery('.$this->marker,
-			      ' Internal properties: ($from, $select, $where, $orderby, $groupby, $having, $limit, $distinct, $delete, $connective) now use getters, setters and adders. e.g. getFrom(), setFrom(), addFrom(), getLimit(), setLimit().\n innerJoin() has been renamed to addInnerJoin(), leftJoin() renamed to addLeftJoin() '),
-
-
-			array('From',
-			      'To('.$this->marker,
-			      ' - comments here  '),
-
-
-			array('From',
-			      'To('.$this->marker,
-			      ' - comments here  '),
-
-
-
-		);
-
-		//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
-		$array["3.1"]["php"] = array(
-
-			array('public static $',
-			      'private static $'),
-
-			array('protected static $',
-			      'private static $'),
-		);
-
-		if(isset($array[$to])) {
-			return $array[$to];
-		}
-		else {
-			user_error("no data is available for this upgrade");
-		}
-
-	}
+	
 
 }
 
@@ -453,6 +185,7 @@ class TextSearch {
 	private $totalFound           = 0; //total matches
 
 	private $avoidByDefault = array();
+
 
 	public function showFilesToSearch(){
 		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
@@ -550,11 +283,21 @@ class TextSearch {
 	 * @return none
 	 */
 	public function showLog() {
-		if($this->totalFound) {
-			$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
+		if(__FROM_COMMAND_LINE__) {
+			if($this->totalFound) {
+				$this->dBug("------ ".$this->totalFound." matches for: ".$this->logString);
+			}
+			if($this->errorText!='') {
+				$this->dBug("------Error-----".$this->errorText);
+			}
 		}
-		if($this->errorText!='') {
-			$this->dBug(nl2br("------Error-----".$this->errorText));
+		else {
+			if($this->totalFound) {
+				$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
+			}
+			if($this->errorText!='') {
+				$this->dBug(nl2br("------Error-----".$this->errorText));
+			}
 		}
 	}
 
@@ -566,7 +309,7 @@ class TextSearch {
 		$fp = fopen($file, "a") OR user_error("Can not open file <b>$file</b>");
 		fwrite($fp, "\n\n================================================");
 		fwrite($fp, $this->logString);
-		fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found -----\n");
+		fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found `".$this->searchKey."` -----\n");
 		if($this->errorText){
 			fwrite($fp, "\n------Error-----------Error-----------Error-----------Error-----\n");
 			fwrite($fp, $this->errorText);
@@ -641,7 +384,8 @@ class TextSearch {
 	 * @return file extension
 	 */
 	private function findExtension($file) {
-		return array_pop(explode(".",$file));
+		$fileArray = explode(".", $file);
+		return array_pop($fileArray);
 	}//End of function
 
 	/**
