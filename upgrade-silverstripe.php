@@ -7,6 +7,16 @@ require_once('ReplacementData.php');
 		Add colouring:
 		http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
 
+		Add separate sections for automatic replacements and manual replacements in summary.
+
+		Count number of replacements per folder
+
+		**Test output on browser
+
+		** make function that converts to html output to command line output (or create html and open)
+
+
+
 */
 
 
@@ -133,10 +143,12 @@ class UpgradeSilverstripe {
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
 				}
+
 				$textSearchMachine->showLog();//showing log
 				$textSearchMachine->clearCache();
 			}
 		}
+		$textSearchMachine->getSearchTotalsFormatted();
 	}
 
 	
@@ -159,33 +171,35 @@ class UpgradeSilverstripe {
 
 class TextSearch {
 
-	private $basePath             = '.';
+	private $basePath                = '.';
 
-	private $defIgnoreFolderArray = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
+	private $defIgnoreFolderArray    = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
-	private $ignoreFolderArray    = array();
+	private $ignoreFolderArray       = array();
 
-	private $extensions           = array("php", "ss", "yml", "yaml", "json");
+	private $extensions              = array("php", "ss", "yml", "yaml", "json");
 
-	private $findAllExts          = 0; //by default all extensions
+	private $findAllExts             = 0; //by default all extensions
 
-	private $searchKey            = '';
+	private $searchKey               = '';
 
-	private $replacementKey       = '';
+	private $replacementKey          = '';
 
-	private $futureReplacementKey = '';
+	private $futureReplacementKey    = '';
 
-	private $isReplacingEnabled   = 0;
+	private $isReplacingEnabled      = 0;
 
-	private $caseSensitive        = 0; //by default case sensitivity is OFF
+	private $caseSensitive           = 0; //by default case sensitivity is OFF
 
-	private $logString            = '';
+	private $logString               = '';
 
-	private $errorText            = '';
+	private $errorText               = '';
 
-	private $totalFound           = 0; //total matches
+	private $totalFound              = 0; //total matches
+   
+	private $avoidByDefault		     = array();
 
-	private $avoidByDefault = array();
+	private static $searchKeyTotals  = array();
 
 
 	public function __construct() {
@@ -345,6 +359,27 @@ class TextSearch {
 		$this->totalFound = 0;
 	}
 
+	public function getSearchTotals() {
+		return self::$searchKeyTotals;
+	}
+
+	public function getSearchTotalsFormatted() {
+		printf("------------------------------------\nSummary: by search key\n------------------------------------\n");
+		arsort(self::$searchKeyTotals);
+		foreach($this->getSearchTotals() as $searchKey => $total) {
+			printf("%d:\t %s\n", $total, $searchKey);
+		}
+		printf("------------------------------------\nTotal replacements: %d\n------------------------------------\n", $this->totalSearches());
+	}
+
+	public function totalSearches() {
+		$completeTotal = 0;
+		foreach($this->getSearchTotals() as $searchKey => $total) {
+			$completeTotal += $total;
+		}
+		return $completeTotal;
+	}
+
 	/**
 	 * array of all the files we are searching
 	 * @var array
@@ -374,7 +409,7 @@ class TextSearch {
 				if($file == "_manifest_exclude") {
 					$this->ignoreFolderArray[] = $path;
 					unset (self::$file_array[$key]);
-					continue;
+					break;
 				}
 				if (filetype ("$path/$file") == "dir") {
 					if(
@@ -389,7 +424,6 @@ class TextSearch {
 						self::$file_array[$key][] = "$path/$file"; //search file data
 					}
 				}
-				printf("\n");
 			} //End of while
 			closedir($dir);
 		}
@@ -446,6 +480,12 @@ class TextSearch {
 					$foundStr = "Replaced in $found places";
 					$this->writeToFile($file, $outputStr);
 					$this->appendToLog($file, $foundStr, $this->replacementKey);
+
+					if(!isset(self::$searchKeyTotals[$this->searchKey])) {
+						self::$searchKeyTotals[$this->searchKey] = 0;
+					}
+					self::$searchKeyTotals[$this->searchKey] += $found;
+
 				}
 				else {
 					$this->errorText .= "********** ERROR: Replacement Text is not defined\n";
