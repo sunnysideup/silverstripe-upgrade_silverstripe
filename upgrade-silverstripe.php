@@ -40,8 +40,7 @@ $obj->run(
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
 	$doBasicReplacement = true,
-	$markStickingPoints = true,
-	$ignoreFolderArray = array()
+	$markStickingPoints = true
 );
 //***************************************************
 // END --- ADJUST AS NEEDED
@@ -87,7 +86,7 @@ class UpgradeSilverstripe {
 		$array = $replacementData->getReplacementArrays($to);
 
 		//set basics
-		$textSearchMachine->setIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
+		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 		$textSearchMachine->setBasePath($pathLocation);
 		$textSearchMachine->showFilesToSearch();
 
@@ -162,7 +161,9 @@ class TextSearch {
 
 	private $basePath             = '.';
 
-	private $ignoreFolderArray    = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
+	private $defIgnoreFolderArray = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
+
+	private $ignoreFolderArray    = array();
 
 	private $extensions           = array("php", "ss", "yml", "yaml", "json");
 
@@ -187,6 +188,11 @@ class TextSearch {
 	private $avoidByDefault = array();
 
 
+	public function __construct() {
+		$this->ignoreFolderArray += $this->defIgnoreFolderArray;
+	}
+
+
 	public function showFilesToSearch(){
 		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
 		//flatten it!
@@ -203,6 +209,16 @@ class TextSearch {
 	 */
 	public function setIgnoreFolderArray($ignoreFolderArray = array()) {
 		$this->ignoreFolderArray = $ignoreFolderArray;
+	}
+
+	/**
+	 *   Sets folders to ignore
+	 *   @param Array ignoreFolderArray
+	 *   @return none
+	 */
+	public function addIgnoreFolderArray($ignoreFolderArray = array()) {
+		$this->ignoreFolderArray = $ignoreFolderArray;
+		$this->ignoreFolderArray += $this->defIgnoreFolderArray;
 	}
 
 	/**
@@ -339,6 +355,8 @@ class TextSearch {
 	 * loads all the applicable files
 	 * @param String $path (e.g. "." or "/var/www/mysite.co.nz")
 	 * @param Boolean $innerLoop - is the method calling itself???
+	 *
+	 *  
 	 */
 	private function getFileArray($path, $innerLoop = false){
 		$key = str_replace(array("/"), "__", $path);
@@ -371,12 +389,12 @@ class TextSearch {
 						self::$file_array[$key][] = "$path/$file"; //search file data
 					}
 				}
+				printf("\n");
 			} //End of while
 			closedir($dir);
 		}
 		return self::$file_array;
 	}
-
 
 	/**
 	 * Finds extension of a file
@@ -492,5 +510,7 @@ class TextSearch {
 			echo "</pre>";
 		}
 	}
+
+
 
 }

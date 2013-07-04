@@ -248,11 +248,11 @@ class ReplacementData {
 			      ' - replace with ClassName::get( '),
 
 			array('DataObject::get_one(',
-			      'DataObject::get(',
+			      'DataObject::get_one(',
 			      ' - replace with ClassName::get()->First() '),
 
 			array('DataObject::get_by_id(',
-			      'DataObject::get(',
+			      'DataObject::get_by_id(',
 			      ' - replace with ClassName::get()->byID($id) '),
 
 			array('DB::query("SELECT COUNT(*)',
@@ -707,82 +707,6 @@ class ReplacementData {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
 
 		$array["3.1"]["ss"] = array(
@@ -1168,10 +1092,370 @@ class ReplacementData {
 
 			array('->Aggregate(',
 			      '->Aggregate(',
-			      'Use custom javascript with a ReadonlyField.'),
+			      'Call aggregate methods on a DataList directly instead.  To replace your deprecated aggregate calls
+			       in PHP code, you should query with something like `Member::get()->max(\'LastEdited\')`'),
 
+			array('->RelationshipAggregate(',
+			      '->RelationshipAggregate(',
+			      'Call aggregate methods on a DataList directly instead.  To replace your deprecated aggregate calls
+			       in PHP code, you should query with something like `Member::get()->max(\'LastEdited\')`'),
+
+			array('MySQLDatabase::set_connection_charset(',
+			      'MySQLDatabase::set_connection_charset(',
+			      'Use "MySQLDatabase.connection_charset" config setting instead'),
+
+			array('new ExactMatchMultiFilter',
+			      'new ExactMatchFilter',
+			      'Use ExactMatchFilter instead.'),
+
+			array('extends ExactMatchMultiFilter',
+			      'extends ExactMatchFilter',
+			      'Use ExactMatchFilter instead.'),
+
+			array('new NegationFilter',
+			      'new ExactMatchFilter',
+			      'Use ExactMatchFilter:not instead. Check syntax'),
+
+			array('extends NegationFilter',
+			      'extends ExactMatchFilter',
+			      'Use ExactMatchFilter:not instead. Check syntax'),
+
+			array('new StartsWithMultiFilter',
+			      'new StartsWithFilter',
+			      'Use StartsWithFilter instead. Check syntax'),
+
+			array('extends StartsWithMultiFilter',
+			      'extends ExactMatchFilter',
+			      'Use StartsWithFilter instead. Check syntax'),
+
+			array('Permission::add_to_hidden_permissions(',
+			      'Permission::add_to_hidden_permissions(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('Permission::remove_from_hidden_permissions(',
+			      'Permission::remove_from_hidden_permissions(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('->generateHash(',
+			      '->randomToken(',
+			      'generateHash is deprecated as it only returns a random string.'),
 		);
 
+		$array["3.2"]["php"] = array(
+
+			array('RestfulService::set_default_curl_option(',
+				  'RestfulService::set_default_curl_option(',
+				  'Use the "RestfulService.default_curl_options" config setting instead'),
+
+			array('RestfulService::set_default_curl_options(',
+				  'RestfulService::set_default_curl_options(',
+				  'Use the "RestfulService.default_curl_options" config setting instead'),
+
+			array('RestfulService::set_default_proxy(',
+				  'RestfulService::set_default_proxy(',
+				  'Use the "RestfulService.default_curl_options" config setting instead with direct reference to the CURL_* options'),
+
+			array('ContentNegotiator::set_encoding(',
+				  'ContentNegotiator::set_encoding(',
+				  'Use the "ContentNegotiator.encoding" config setting instead'),
+
+			array('ContentNegotiator::get_encoding(',
+				  'ContentNegotiator::get_encoding(',
+				  'Use the "ContentNegotiator.encoding" config setting instead'),
+
+			array('ContentNegotiator::enable(',
+				  'ContentNegotiator::enable(',
+				  'Use the "ContentNegotiator.enabled" config setting instead'),
+
+			array('ContentNegotiator::disable(',
+				  'ContentNegotiator::disable(',
+				  'Use the "ContentNegotiator.enabled" config setting instead'),
+
+			array('Cookie::set_report_errors(',
+				  'Cookie::set_report_errors(',
+				  'Use the "Cookie.report_errors" config setting instead'),
+
+			array('Cookie::report_errors(',
+				  'Cookie::report_errors(',
+				  'Use the "Cookie.report_errors" config setting instead'),
+
+			array('->inst_set_report_errors(',
+				  'Cookie::inst_set_report_errors(',
+				  'Use the "Cookie.report_errors" config setting instead'),
+
+			array('->inst_report_errors(',
+				  '->inst_report_errors(',
+				  'Use the "Cookie.report_errors" config setting instead'),
+
+			array('Director::addRules(',
+				  'Director::addRules(',
+				  'Use the "Director.rules" config setting instead'),
+
+			array('Director::setBaseURL(',
+				  'Director::setBaseURL(',
+				  'Use the "Director.alternate_base_url" config setting instead'),
+
+			array('Director::setBaseFolder(',
+				  'Director::setBaseFolder(',
+				  'Use the "Director.alternate_base_folder" config setting instead'),
+
+			array('Director::set_environment_type(',
+				  'Director::set_environment_type(',
+				  'Use the "Director.environment_type" config setting instead'),
+
+			array('Session::set_cookie_domain(',
+				  'Session::set_cookie_domain(',
+				  'Use the "Session.cookie_domain" config setting instead'),
+
+			array('Session::get_cookie_domain(',
+				  'Session::get_cookie_domain(',
+				  'Use the "Session.cookie_domain" config setting instead'),
+
+			array('Session::set_cookie_path(',
+				  'Session::set_cookie_path(',
+				  'Use the "Session.cookie_path" config setting instead'),
+
+			array('Session::get_cookie_path(',
+				  'Session::get_cookie_path(',
+				  'Use the "Session.cookie_path" config setting instead'),
+
+			array('Session::set_cookie_secure(',
+				  'Session::set_cookie_secure(',
+				  'Use the "Session.cookie_secure" config setting instead'),
+
+			array('Session::get_cookie_secure(',
+				  'Session::get_cookie_secure(',
+				  'Use the "Session.cookie_secure" config setting instead'),
+
+			array('Session::set_session_store_path(',
+				  'Session::set_session_store_path(',
+				  'Use the "Session.session_store_path" config setting instead'),
+
+			array('Session::get_session_store_path(',
+				  'Session::get_session_store_path(',
+				  'Use the "Session.session_store_path" config setting instead'),
+
+			array('Session::set_timeout_ips(',
+				  'Session::set_timeout_ips(',
+				  'Use the "Session.timeout_ips" config setting instead'),
+
+			array('Session::set_timeout(',
+				  'Session::set_timeout(',
+				  'Use the "Session.timeout" config setting instead'),
+
+			array('Session::get_timeout(',
+				  'Session::get_timeout(',
+				  'Use the "Session.timeout" config setting instead'),
+
+			array('LogEmailWriter::set_send_from(',
+				  'LogEmailWriter::set_send_from(',
+				  'Use the "SS_LogEmailWriter.send_from" config setting instead'),
+
+			array('LogEmailWriter::get_send_from(',
+				  'LogEmailWriter::get_send_from(',
+				  'Use the "SS_LogEmailWriter.send_from" config setting instead'),
+
+			array('Email::setAdminEmail(',
+				  'Email::setAdminEmail(',
+				  'Use the "Email.admin_email" config setting instead'),
+
+			array('Email::getAdminEmail(',
+				  'Email::getAdminEmail(',
+				  'Use the "Email.admin_email" config setting instead'),
+
+			array('Email::send_all_emails_to(',
+				  'Email::send_all_emails_to(',
+				  'Use the "Email.send_all_emails_to" config setting instead'),
+
+			array('Email::cc_all_emails_to(',
+				  'Email::cc_all_emails_to(',
+				  'Use the "Email.cc_all_emails_to" config setting instead'),
+
+			array('Email::bcc_all_emails_to(',
+				  'Email::bcc_all_emails_to(',
+				  'Use the "Email.bcc_all_emails_to" config setting instead'),
+
+			array('GDBackend::set_default_quality(',
+				  'GDBackend::set_default_quality(',
+				  'Use the "GDBackend.default_quality" config setting instead'),
+
+			array('GD::set_default_quality(',
+				  'GD::set_default_quality(',
+				  'Use the "GDBackend.default_quality" config setting instead'),
+
+			array('ImagickBackend::set_default_quality(',
+				  'ImagickBackend::set_default_quality(',
+				  'Use the "IMagickBackend.default_quality" config setting instead'),
+
+			array('DateField::set_default_config(',
+				  'DateField::set_default_config(',
+				  'Use the "DateField.default_config" config setting instead'),
+
+			array('->createTag(',
+				  '->createTag(',
+				  '(FormField) Use FormField::create_tag() instead.'),
+
+			array('i18n::set_js_i18n(',
+				  'i18n::set_js_i18n(',
+				  'Use the "i18n.js_i18n" config setting instead'),
+
+			array('i18n::get_js_i18n(',
+				  'i18n::get_js_i18n(',
+				  'Use the "i18n.js_i18n" config setting instead'),
+
+			array('i18n::set_date_format(',
+				  'i18n::set_date_format(',
+				  'Use the "i18n.date_format" config setting instead'),
+
+			array('i18n::get_date_format(',
+				  'i18n::get_date_format(',
+				  'Use the "i18n.date_format" config setting instead'),
+
+			array('i18n::set_time_format(',
+				  'i18n::set_time_format(',
+				  'Use the "i18n.time_format" config setting instead'),
+
+			array('i18n::get_time_format(',
+				  'i18n::get_time_format(',
+				  'Use the "i18n.time_format" config setting instead'),
+
+			array('DataObject::get_validation_enabled(',
+				  'DataObject::get_validation_enabled(',
+				  'Use the "DataObject.validation_enabled" config setting instead'),
+
+			array('DataObject::set_validation_enabled(',
+				  'DataObject::set_validation_enabled(',
+				  'Use the "DataObject.validation_enabled" config setting instead'),
+
+			array('->loadUploadedImage(',
+				  '->loadUploadedImage(',
+				  'Use Upload::loadIntoFile()'),
+
+			array('Currency::setCurrencySymbol(',
+				  'Currency::setCurrencySymbol(',
+				  'Use the "Currency.currency_symbol" config setting instead'),
+
+			array('BBCodeParser::smilies_location(',
+				  'BBCodeParser::smilies_location(',
+				  'Use the "BBCodeParser.smilies_location" config setting instead'),
+
+			array('BBCodeParser::set_icon_folder(',
+				  'BBCodeParser::set_icon_folder(',
+				  'Use the "BBCodeParser.smilies_location" config setting instead'),
+
+			array('BBCodeParser::autolinkUrls(',
+				  'BBCodeParser::autolinkUrls(',
+				  'Use the "BBCodeParser.autolink_urls" config setting instead'),
+
+			array('BBCodeParser::disable_autolink_urls(',
+				  'BBCodeParser::disable_autolink_urls(',
+				  'Use the "BBCodeParser.autolink_urls" config setting instead'),
+
+			array('BBCodeParser::smiliesAllowed(',
+				  'BBCodeParser::smiliesAllowed(',
+				  'Use the "BBCodeParser.allow_smilies" config setting instead'),
+
+			array('BBCodeParser::enable_smilies(',
+				  'BBCodeParser::enable_smilies(',
+				  'Use the "BBCodeParser.allow_smilies" config setting instead'),
+
+			array('Member::set_session_regenerate_id(',
+				  'Member::set_session_regenerate_id(',
+				  'Use the "Member.session_regenerate_id" config setting instead'),
+
+			array('Member::set_login_marker_cookie(',
+				  'Member::set_login_marker_cookie(',
+				  'Use the "Member.login_marker_cookie" config setting instead'),
+
+			array('Member::get_unique_identifier_field(',
+				  'Member::get_unique_identifier_field(',
+				  'Use the "Member.unique_identifier_field" config setting instead'),
+
+			array('Member::set_unique_identifier_field(',
+				  'Member::set_unique_identifier_field(',
+				  'Use the "Member.unique_identifier_field" config setting instead'),
+
+			array('Member::set_password_expiry(',
+				  'Member::set_password_expiry(',
+				  'Use the "Member.password_expiry_days" config setting instead'),
+
+			array('Member::lock_out_after_incorrect_logins(',
+				  'Member::lock_out_after_incorrect_logins(',
+				  'Use the "Member.lock_out_after_incorrect_logins" config setting instead'),
+
+			array('Permission::declare_permissions(',
+				  'Permission::declare_permissions(',
+				  'Use the "Permission.declared_permissions" config setting instead'),
+
+			array('Security::get_word_list(',
+				  'Security::get_word_list(',
+				  'Use the "Security.word_list" config setting instead'),
+
+			array('Security::set_word_list(',
+				  'Security::set_word_list(',
+				  'Use the "Security.word_list" config setting instead'),
+
+			array('Security::set_default_message_set(',
+				  'Security::set_default_message_set(',
+				  'Use the "Security.default_message_set" config setting instead'),
+
+			array('Security::setStrictPathChecking(',
+				  'Security::setStrictPathChecking(',
+				  'Use the "Security.strict_path_checking" config setting instead'),
+
+			array('Security::getStrictPathChecking(',
+				  'Security::getStrictPathChecking(',
+				  'Use the "Security.strict_path_checking" config setting instead'),
+
+			array('Security::set_password_encryption_algorithm(',
+				  'Security::set_password_encryption_algorithm(',
+				  'Use the "Security.password_encryption_algorithm" config setting instead'),
+
+			array('Security::get_password_encryption_algorithm(',
+				  'Security::get_password_encryption_algorithm(',
+				  'Use the "Security.password_encryption_algorithm" config setting instead'),
+
+			array('Security::set_login_recording(',
+				  'Security::set_login_recording(',
+				  'Use the "Security.login_recording" config setting instead'),
+
+			array('Security::login_recording(',
+				  'Security::login_recording(',
+				  'Use the "Security.login_recording" config setting instead'),
+
+			array('Security::set_default_login_dest(',
+				  'Security::set_default_login_dest(',
+				  'Use the "Security.default_login_dest" config setting instead'),
+
+			array('Security::default_login_dest(',
+				  'Security::default_login_dest(',
+				  'Use the "Security.default_login_dest" config setting instead'),
+
+			array('SSViewer::set_source_file_comments(',
+				  'SSViewer::set_source_file_comments(',
+				  'Use the "SSViewer.source_file_comments" config setting instead'),
+
+			array('SSViewer::get_source_file_comments(',
+				  'SSViewer::get_source_file_comments(',
+				  'Use the "SSViewer.source_file_comments" config setting instead'),
+
+			array('SSViewer::set_theme(',
+				  'SSViewer::set_theme(',
+				  'Use the "SSViewer.theme" config setting instead'),
+
+			array('SSViewer::current_theme(',
+				  'SSViewer::current_theme(',
+				  'Use the "SSViewer.theme" config setting instead'),
+
+			array('SSViewer::setOption(',
+				  'SSViewer::setOption(',
+				  'Use the "SSViewer.rewrite_hash_links" or "SSViewer.<optionName>" config setting instead'),
+
+			array('SSViewer::getOption(',
+				  'SSViewer::getOption(',
+				  'Use the "SSViewer.rewrite_hash_links" or "SSViewer.<optionName>" config setting instead'),
+
+		);
 		if(isset($array[$to])) {
 			return $array[$to];
 		}
