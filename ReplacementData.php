@@ -162,8 +162,26 @@ class ReplacementData {
 			array('MySQLFulltextSearchable',
 			      'FulltextSearchable'),
 
+			array('new LeftAndMainDecorator',
+			      'new LeftAndMainExtension'),
+
+			array('ClassInfo::is_subclass_of(',
+			      'is_cublass_of('),
+
+			array('getClassFile(',
+			      'SS_ClassManifest::getItemPath('),
+
+			array('->TreeTitle(',
+			      '->getTreeTitle('),
+
+			array('new SubstringFilter',
+			      'new PartialMatchFilter'),
 
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
+
+			array('->FieldSet(',
+			      '->FieldList(',
+			      'For CompositeField only.'),
 
 			array('Director::redirect(',
 			      '$this->redirect(',
@@ -290,8 +308,8 @@ class ReplacementData {
 			      'extendedSQL(',
 			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
 
-			array('buildSQL(',
-			      'buildSQL(',
+			array('->buildSQL(',
+			      '->buildSQL(',
 			      ' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
 
 			array('new SQLQuery(',
@@ -301,6 +319,17 @@ class ReplacementData {
 
 			array('DataObject::Aggregate(',
 			      'DataObject::Aggregate(',
+			      '`DataObject::Aggregate()` and `DataObject::RelationshipAggregate()` are now deprecated. To replace your deprecated aggregate calls
+			        in PHP code, you should query with something like `Member::get()->max(\'LastEdited\')`, that is, calling the aggregate on the `DataList` directly.
+			        The same concept applies for replacing `RelationshipAggregate()`, just call the aggregate method on the relationship instead,
+			        so something like `Member::get()->Groups()->max(\'LastEdited\')`.
+
+			        For partial caching in templates, the syntax `<% cached Aggregate(Page).Max(LastEdited) %>` has been deprecated. The new syntax is similar,
+			        except you use `List()` instead of `Aggregate()`, and the aggregate call `Max()` is now lowercase, as in `max()`.
+			        An example of the new syntax is `<% cached List(Page).max(LastEdited) %>`. Check `DataList` class for more aggregate methods to use.'),
+
+			array('DataObject::RelationshipAggregate(',
+			      'DataObject::RelationshipAggregate(',
 			      '`DataObject::Aggregate()` and `DataObject::RelationshipAggregate()` are now deprecated. To replace your deprecated aggregate calls
 			        in PHP code, you should query with something like `Member::get()->max(\'LastEdited\')`, that is, calling the aggregate on the `DataList` directly.
 			        The same concept applies for replacing `RelationshipAggregate()`, just call the aggregate method on the relationship instead,
@@ -332,7 +361,7 @@ class ReplacementData {
 			      ' Replace with Director::absoluteBaseURL() '),
 
 			array('->IsAjax',
-			      '->IsAjax(',
+			      '->IsAjax',
 			      ' Replace with Director::is_ajax() '),
 
 			array('->i18nLocale(',
@@ -560,9 +589,216 @@ class ReplacementData {
 			array('new XML',
 			      'new XML',
 			      ' Removed: Use PHP\'s built-in SimpleXML instead '),
+
+			array('Director::set_dev_servers(',
+			      'Director::set_dev_servers(',
+			      'Use Director::set_environment_type() or an _ss_environment.php instead.'),
+
+			array('Director::set_test_servers(',
+			      'Director::set_test_servers(',
+			      'Use Director::set_environment_type() or an _ss_environment.php instead.'),
+
+			array('->getPageLimits(',
+			      '->getPageLimits(',
+			      'Use getPageStart, getPageLength, or getTotalItems instead.'),
+
+			array('->dataFieldByName(',
+			      '->dataFieldByName(',
+			      'Use Fields() and FieldList API instead.'),
+
+			array('->unsetDataFieldByName(',
+			      '->unsetDataFieldByName(',
+			      'Use Fields() and FieldList API instead.'),
+
+			array('->unsetFieldFromTab(',
+			      '->unsetFieldFromTab(',
+			      'Use Fields() and FieldList API instead.'),
+
+			array('->resetField(',
+			      '->resetField(',
+			      'Use Fields() and FieldList API instead.'),
+
+			array('->unsetActionByName(',
+			      '->unsetActionByName(',
+			      'Use Actions() and FieldList API instead.'),
+
+			array('->FormEncType(',
+			      '->FormEncType(',
+			      'Please use Form->getEncType() instead.'),
+
+			array('->Name(',
+			      '->getName(',
+			      'Use getName() for FormField '),
+
+			array('->setTabIndex(',
+			      '->setAttribute(',
+			      'Use setAttribute("tabindex") instead'),
+
+			array('->getTabIndex(',
+			      '->getAttribute(',
+			      'Use getAttribute("tabindex") instead'),
+
+			array('->createTag(',
+			      '->createTag(',
+			      '(FormField) Please define your own FormField template using setFieldTemplate() '),
+			
+			array('->describe(',
+			      '->setDescription(',
+			      '(FormField) Use setDescription()'),
+
+			array('new ImageFormAction',
+			      'new ImageFormAction',
+			      'Use FormAction wtih setAttribute("src", "myimage.png") and custom JavaScript to achieve hover effect'),
+
+			array('extends ImageFormAction',
+			      'extends ImageFormAction',
+			      'Use FormAction wtih setAttribute("src", "myimage.png") and custom JavaScript to achieve hover effect'),
+
+			array('->startClosed(',
+			      '->setStartClosed(',
+			      '(ToggleCompositeField)'),
+
+			array('->join(',
+			      '->join(',
+			      '(DataList/DataQuery) use innerJoin() or leftJoin() instead'),
+
+			array('->setComponent(',
+			      '->setComponent(',
+			      '(DataObject) No longer in use (no replacement)'),
+
+			array('->instance_get(',
+			      '->instance_get(',
+			      '(DataObject) Use DataList::create and DataList to do your querying instead.'),
+
+			array('->instance_get_one(',
+			      '->instance_get_one(',
+			      '(DataObject) Use DataList::create($this->class)->where($filter)->sort($orderby)->First() instead.'),
+
+			array('->buildDataObjectSet(',
+			      '->buildDataObjectSet(',
+			      '(DataObject) Use DataList to do your querying instead.'),
+
+			array('->databaseFields(',
+			      '->databaseFields(',
+			      '(DataObject) Use DataObject::database_fields() instead.'),
+
+			array('->customDatabaseFields(',
+			      '->customDatabaseFields(',
+			      '(DataObject) Use DataObject::custom_database_fields() instead.'),
+
+			array('->Lower(',
+			      '->LowerCase(',
+			      '(StringField)'),
+
+			array('->Upper(',
+			      '->UpperCase(',
+			      '(StringField)'),
+
+			array('->EscapeXML(',
+			      '->EscapeXML(',
+			      '(Text) Use DBField->XML() instead.'),
+
+			array('->getArray(',
+			      '->getArray(',
+			      '(ArrayData) Use ArrayData::toMap() instead.'),
+
+
 		);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//http://doc.silverstripe.org/framework/en/3.1/changelogs/3.1.0
+
+		$array["3.1"]["ss"] = array(
+		
+			array('MetaKeywords',
+			      'MetaKeywords',
+			      'Has been removed, as is irrelevant in terms of SEO.'),
+		
+			array('MetaTitle',
+			      'Title',
+			      'MetaTitle field has been replaced by simply \'Title\''),
+
+		);
+
+
+
 		$array["3.1"]["php"] = array(
 
 			array('public static $',
@@ -570,6 +806,370 @@ class ReplacementData {
 
 			array('protected static $',
 			      'private static $'),
+
+			array('->setContainerFieldSet(',
+			      '->setContainerFieldList('),
+			
+			array('->rootFieldSet(',
+			      '->rootFieldList('),
+			
+			array('SQLMap::mapInGroups(',
+			      'Member::map_in_groups('),
+
+			array('Group::map(',
+			      'DataList::("Group")->map(',
+			      'Double check'),
+			
+			array('SQLMap::map(',
+			      'DataList::("Member")->map(',
+			      'Double check'),
+			
+			array('static $allowed_actions = array(\'*',
+			      'static $allowed_actions = array(\'*',
+			      'Wildcard rules no longer allowed. Need to specify all allowed actions.'),
+			
+			array('static $allowed_actions = array("*',
+			      'static $allowed_actions = array("*',
+			      'Wildcard rules no longer allowed. Need to specify all allowed actions.'),
+						
+			array('static $allowed_actions = array()',
+			      'static $allowed_actions = array()',
+			      'Empty allowed_actions will result in no access being allowed to this URL/controller'),
+			
+			array('function getCMSActions(',
+			      'function getCMSActions(',
+			      'The CMS buttons are now grouped, in order to hide minor actions by default and declutter the interface.
+			       This required changing the form field structure from a simple `FieldList`
+			       to a `FieldList` which contains a `CompositeField` for all "major actions",
+			       and a `TabSet` with a single tab for all "minor actions".
+			       If you have previously added, removed or altered built-in CMS actions in any way,
+			       you\'ll need to adjust your code.'),
+
+			array('new GridFieldDetailForm',
+			      'new GridFieldDetailForm',
+			      'This gridfield form now checks for canEdit() and canDelete() permissions. By default, it requires the admin permissions.'),
+
+			array('new GridFieldAddNewButton',
+			      'new GridFieldAddNewButton',
+			      'This gridfield form now checks for canCreate() permissions. By default, it requires the admin permissions.'),
+
+			array('new TableField',
+			      'new TableField',
+			      'To continue using this, you will need to install the silverstripe-labs/legacytablefields module.'),
+
+			array('new HasOneComplexTableField',
+			      'new HasOneComplexTableField',
+			      'To continue using this, you will need to install the silverstripe-labs/legacytablefields module.'),
+
+			array('prototype.js',
+			      'prototype.js',
+			      'To continue using this, you will need to include ensure you\'ve included the file yourself as it has been removed from core.'),
+
+			array('behaviour.js',
+			      'behaviour.js',
+			      'To continue using this, you will need to include ensure you\'ve included the file yourself as it has been removed from core.'),
+
+			array('new TableField',
+			      'new TableField',
+			      'To continue using this, you will need to install the silverstripe-labs/legacytablefields module.'),
+			
+			array('MetaKeywords',
+			      'MetaKeywords',
+			      'Has been removed, as is irrelevant in terms of SEO.'),
+
+			array('MetaTitle',
+			      'Title',
+			      'MetaTitle field has been replaced by simply \'Title\''),
+
+			array('new Profiler',
+			      'new Profiler',
+			      'Deprecated; use third-party solution like xhprof'),
+
+			array('extends Profiler',
+			      'extends Profiler',
+			      'Deprecated; use third-party solution like xhprof'),
+
+			array('debug_profile',
+			      'debug_profile',
+			      '$_GET["debug_profile"] removed.'),
+
+			array('debug_memory',
+			      'debug_memory',
+			      '$_GET["debug_memory"] removed.'),
+
+			array('profile_trace',
+			      'profile_trace',
+			      '$_GET["profile_trace"] removed.'),
+
+			array('debug_javascript',
+			      'debug_javascript',
+			      '$_GET["debug_javascript"] removed.'),
+
+			array('debug_behaviour',
+			      'debug_behaviour',
+			      '$_GET["debug_behaviour"] removed.'),
+
+			array('new Member_ProfileForm',
+			      'new CMSProfileController',
+			      'check syntax'),
+
+			array('extends Member_ProfileForm',
+			      'extends CMSProfileController',
+			      'check new class'),
+
+			array('new Email_BounceHandler',
+			      'new Email_BounceHandler',
+			      'To continue using this class, please install the silverstripe-labs/silverstripe-emailbouncehandler module'),
+
+			array('new Email_BounceRecord',
+			      'new Email_BounceRecord',
+			      'To continue using this class, please install the silverstripe-labs/silverstripe-emailbouncehandler module'),
+
+			array('->Bounced',
+			      '->Bounced',
+			      'To continue using email bouncing handler/records, please install the silverstripe-labs/silverstripe-emailbouncehandler module'),
+
+			array('htmlEmail(',
+			      'htmlEmail(',
+			      'Deprecated; use the Email or Mailer API (including all global email helper methods)'),
+
+			array('plaintextEmail(',
+			      'plaintextEmail(',
+			      'Deprecated; use the Email or Mailer API (including all global email helper methods)'),
+
+			array('encodeMultipart(',
+			      'encodeMultipart(',
+			      'Deprecated; use the Email or Mailer API (including all global email helper methods)'),
+
+			array('$inlineImages',
+			      '$inlineImages',
+			      'Removed.'),
+
+			array('->setDescription(',
+			      '->setDescription(',
+			      'Note: Now renders as a span, rather than a title attribute'),
+
+			array('->generateAutologinHash(',
+			      '->generateAutologinHash(',
+			      'Use Member::generateAutologinTokenAndHash instead'),
+
+			array('->sendInfo',
+			      '->sendInfo',
+			      'In instance of Member, use Member_ChangePasswordEmail or Member_ForgotPasswordEmail directly'),
+
+			array('PasswordEncryptor::register(',
+			      'PasswordEncryptor::register(',
+			      'Use config system instead'),
+
+			array('PasswordEncryptor::unregister(',
+			      'PasswordEncryptor::unregister(',
+			      'Use config system instead'),
+
+			array('->reverse(',
+			      '->reverse(',
+			      'ArrayList and DataList reverse method no longer modifies current list; only returns a new version.'),
+
+			array('->sort(',
+			      '->sort(',
+			      'ArrayList and DataList sort method no longer modifies current list; only returns a new version.'),
+
+			array('->filter(',
+			      '->filter(',
+			      'ArrayList filter method no longer modifies current list; only returns a new version.'),
+
+			array('->exclude(',
+			      '->exclude(',
+			      'ArrayList exclude method no longer modifies current list; only returns a new version.'),
+
+			array('->where(',
+			      '->where(',
+			      'DataList where method no longer modifies current list; only returns a new version.'),
+
+			array('->limit(',
+			      '->limit(',
+			      'DataList limit method no longer modifies current list; only returns a new version.'),
+
+			array('->addFilter(',
+			      '->addFilter(',
+			      'DataList addFilter method no longer modifies current list; only returns a new version.'),
+
+			array('->applyFilterContext(',
+			      '->applyFilterContext(',
+			      'DataList applyFilterContext method no longer modifies current list; only returns a new version.'),
+
+			array('->innerJoin(',
+			      '->innerJoin(',
+			      'DataList innerJoin method no longer modifies current list; only returns a new version.'),
+
+			array('->leftJoin(',
+			      '->leftJoin(',
+			      'DataList leftJoin method no longer modifies current list; only returns a new version.'),
+
+			array('->find(',
+			      '->find(',
+			      'DataList find method no longer modifies current list; only returns a new version.'),
+
+			array('->byIDs(',
+			      '->byIDs(',
+			      'DataList byIDs method no longer modifies current list; only returns a new version.'),
+
+			array('->dataQuery(',
+			      '->dataQuery(',
+			      'DataList byIDs method returns clone of the query; can no longer be used to modify query directly. Use alterDataQuery for that instead'),
+
+			array('extends ScheduledTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends QuarterHourlyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends HourlyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends DailyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends MonthlyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends WeeklyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('extends YearlyTask',
+			      'extends BuildTask',
+			      'Scheduled/periodic tasks are deprecated and must now extend from BuildTask or CliController, and require that you make your own cron jobs'),
+
+			array('i18n::$common_locales',
+			      'i18n::$common_locales',
+			      'now accessed via the Config API, and contain associative rather than indexed arrays.'),
+
+			array('i18n::$common_languages',
+			      'i18n::$common_languages',
+			      'now accessed via the Config API, and contain associative rather than indexed arrays.'),
+
+			array('SSViewer::set_theme(',
+			      'SSViewer::set_theme(',
+			      'Deprecated, use config api'),
+
+			array('SSViewer::current_custom_theme(',
+			      'SSViewer::current_custom_theme(',
+			      'Please use Config API with SSViewer.theme_enabled'),
+
+			array('new DateField',
+			      'new DateField',
+			      'instances automatically include
+			       formatting hints as placeholders and description text below the field itself.
+			       If you change the date/time format of those fields, you need to adjust the hints.
+			       To remove the hints, use setDescription(null) and setAttribute(\'placeholder\', null).'),
+
+			array('new TimeField',
+			      'new TimeField',
+			      'instances automatically include
+			       formatting hints as placeholders and description text below the field itself.
+			       If you change the date/time format of those fields, you need to adjust the hints.
+			       To remove the hints, use setDescription(null) and setAttribute(\'placeholder\', null).'),
+
+			array('new DatetimeField',
+			      'new DatetimeField',
+			      'instances automatically include
+			       formatting hints as placeholders and description text below the field itself.
+			       If you change the date/time format of those fields, you need to adjust the hints.
+			       To remove the hints, use setDescription(null) and setAttribute(\'placeholder\', null).'),
+
+			array('ModelAdmin::set_page_length(',
+			      'ModelAdmin::set_page_length(',
+			      'Use ModelAdmin.page_length config setting'),
+
+			array('ModelAdmin::get_page_length(',
+			      'ModelAdmin::get_page_length(',
+			      'Use ModelAdmin.page_length config setting'),
+
+			array('SecurityAdmin::add_hidden_permission(',
+			      'SecurityAdmin::add_hidden_permission(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('SecurityAdmin::remove_hidden_permission(',
+			      'SecurityAdmin::remove_hidden_permission(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('SecurityAdmin::get_hidden_permissions(',
+			      'SecurityAdmin::get_hidden_permissions(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('SecurityAdmin::clear_hidden_permissions(',
+			      'SecurityAdmin::clear_hidden_permissions(',
+			      'Use "Permission.hidden_permissions" config setting instead'),
+
+			array('extends YamlFixture',
+			      'extends YamlFixture',
+			      '(YamlFixture) deprecated; use writeInto() and FixtureFactory accessors instead.'),
+
+			array('->idFromFixture(',
+			      '->idFromFixture(',
+			      '(YamlFixture) deprecated; use writeInto() and FixtureFactory accessors instead.'),
+
+			array('->allFixtureIDs(',
+			      '->allFixtureIDs(',
+			      '(YamlFixture) deprecated; use writeInto() and FixtureFactory accessors instead.'),
+
+			array('->objFromFixture(',
+			      '->objFromFixture(',
+			      '(YamlFixture) deprecated; use writeInto() and FixtureFactory accessors instead.'),
+
+			array('->saveIntoDatabase(',
+			      '->saveIntoDatabase(',
+			      '(YamlFixture) deprecated; use writeInto() and FixtureFactory accessors instead.'),
+
+			array('->htmlEmail(',
+			      '->htmlEmail(',
+			      '(Mailer) Use Email->sendHTML() instead'),
+
+			array('->plaintextEmail(',
+			      '->plaintextEmail(',
+			      '(Mailer) Use Email->sendPlain() instead'),
+
+			array('->encodeMultipart(',
+			      '->encodeMultipart(',
+			      '(Mailer) Use Email->$this->encodeMultipart() instead'),
+
+			array('->wrapImagesInline(',
+			      '->wrapImagesInline(',
+			      '(Mailer) Functionality removed'),
+
+			array('->wrapImagesInline_rewriter(',
+			      '->wrapImagesInline_rewriter(',
+			      '(Mailer) Functionality removed'),
+
+			array('->processHeaders(',
+			      '->processHeaders(',
+			      '(Mailer) Use Email->addCustomHeader() instead'),
+
+			array('->encodeFileForEmail(',
+			      '->encodeFileForEmail(',
+			      '(Mailer) Use Email->attachFile() instead'),
+
+			array('->QuotedPrintable_encode(',
+			      '->QuotedPrintable_encode(',
+			      '(Mailer) No longer available, handled internally'),
+
+			array('->validEmailAddr(',
+			      '->validEmailAddr(',
+			      '(Mailer) Use Email->validEmailAddr() instead'),
+
+			array('new ToggleField',
+			      'new ReadonlyField',
+			      'Use custom javascript with a ReadonlyField.'),
+
+			array('->Aggregate(',
+			      '->Aggregate(',
+			      'Use custom javascript with a ReadonlyField.'),
+
 		);
 
 		if(isset($array[$to])) {
