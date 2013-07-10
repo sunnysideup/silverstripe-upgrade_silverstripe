@@ -24,6 +24,13 @@ $pathLocation = ".";
 if(isset($_GET["path"])) {
 	$argv[1] = $_GET["path"];
 }
+
+if(isset($_GET["reallyReplace"])) 
+	$argv[2] = $_GET["reallyReplace"];
+	
+if(isset($_GET["stickPoints"]))
+	$argv[3] = $_GET["stickPoints"];
+
 if(isset($argv[0])) {
 	define("__FROM_COMMAND_LINE__", true);
 }
@@ -49,8 +56,8 @@ $obj->run(
 	$pathLocation,
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.0",
-	$doBasicReplacement = true,
-	$markStickingPoints = true
+	$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
+	$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false
 );
 //***************************************************
 // END --- ADJUST AS NEEDED
@@ -200,6 +207,8 @@ class TextSearch {
 	private $avoidByDefault		     = array();
 
 	private static $searchKeyTotals  = array();
+
+	private static $folderTotals	 = array();
 
 
 	public function __construct() {
@@ -364,12 +373,34 @@ class TextSearch {
 	}
 
 	public function getSearchTotalsFormatted() {
+
+		$folderSimpleTotals = array();
+		$realBase = realpath($this->basePath);
+
 		printf("------------------------------------\nSummary: by search key\n------------------------------------\n");
 		arsort(self::$searchKeyTotals);
 		foreach($this->getSearchTotals() as $searchKey => $total) {
 			printf("%d:\t %s\n", $total, $searchKey);
 		}
-		printf("------------------------------------\nTotal replacements: %d\n------------------------------------\n", $this->totalSearches());
+		printf("------------------------------------\nTotal replacements: %d\n------------------------------------\n\n", $this->totalSearches());
+
+		printf("------------------------------------\nSummary: by directory\n------------------------------------\n");
+		arsort(self::$folderTotals);
+		foreach(self::$folderTotals as $folder => $total) {
+			$path = str_replace($realBase, "", realpath($folder));
+			$pathArr = explode("/", $path);
+			$folderName = $pathArr[1]."/";
+			if(!isset($folderSimpleTotals[$folderName])) {
+				$folderSimpleTotals[$folderName] = 0;
+			}
+			$folderSimpleTotals[$folderName] += $total;
+			printf("%d:\t %s\n", $total, $folder);
+		}
+		printf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $realBase);
+		arsort($folderSimpleTotals);
+		foreach($folderSimpleTotals as $folder => $total) {
+			printf("%d:\t %s\n", $total, $folder);
+		}
 	}
 
 	public function totalSearches() {
@@ -480,12 +511,6 @@ class TextSearch {
 					$foundStr = "Replaced in $found places";
 					$this->writeToFile($file, $outputStr);
 					$this->appendToLog($file, $foundStr, $this->replacementKey);
-
-					if(!isset(self::$searchKeyTotals[$this->searchKey])) {
-						self::$searchKeyTotals[$this->searchKey] = 0;
-					}
-					self::$searchKeyTotals[$this->searchKey] += $found;
-
 				}
 				else {
 					$this->errorText .= "********** ERROR: Replacement Text is not defined\n";
@@ -501,6 +526,16 @@ class TextSearch {
 					$this->appendToLog($file, "********** ERROR: FUTURE Replacement Text is not defined");
 				}
 			}
+			if(!isset(self::$searchKeyTotals[$this->searchKey])) {
+				self::$searchKeyTotals[$this->searchKey] = 0;
+			}
+			self::$searchKeyTotals[$this->searchKey] += $found;
+
+			if(!isset(self::$folderTotals[dirname($file)])) {
+						self::$folderTotals[dirname($file)] = 0;
+					}
+					self::$folderTotals[dirname($file)] += $found;
+
 		}
 		else{
 			//$this->appendToLog($file, "No matching Found", $this->replacementKey);
