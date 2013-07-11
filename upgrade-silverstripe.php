@@ -55,7 +55,7 @@ $obj = new UpgradeSilverstripe();
 $obj->run(
 	$pathLocation,
 	$logFileLocation = "./ss_upgrade_log.txt",
-	$to = "3.0",
+	$to = "3.1",
 	$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
 	$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false
 );

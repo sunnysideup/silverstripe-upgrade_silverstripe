@@ -14,13 +14,18 @@ USAGE
 If you like to just update on module then place it in the root of the module.
 
 2. change the top bit of upgrade-silverstre.php as you see fit (e.g. path location).
-You can set the path, to "migrate to" e.g. 3.0, the folders to ignore and
-what action will run (see below)
+You can set the path, to "migrate to" e.g. 3.0 and the folders to ignore
 
 3. either open the file in your web-browser OR from the command line.
    from the command line, you type:
 
-php upgrade-silverstripe.php /var/www/mywebsite.com/
+`php upgrade-silverstripe.php /var/www/mywebsite.com/`
+
+This will run an analysis and give you a summary of changes that will be made.
+
+Next, to make the replacements in file (including replacements that'll have to be manually fixed):
+
+`php upgrade-silverstripe.php /var/www/mywebsite.com/ yes yes`
 
 
 REPLACE OPTIONS
