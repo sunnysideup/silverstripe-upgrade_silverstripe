@@ -57,7 +57,9 @@ $obj->run(
 	$logFileLocation = "./ss_upgrade_log.txt",
 	$to = "3.1",
 	$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
-	$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false
+	$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false,
+	//Adds blog and userforms as additional folders to ignore.
+	$ignoreFolderArray = array("blog", "userforms")
 );
 //***************************************************
 // END --- ADJUST AS NEEDED
@@ -212,7 +214,7 @@ class TextSearch {
 
 
 	public function __construct() {
-		$this->ignoreFolderArray += $this->defIgnoreFolderArray;
+		$this->ignoreFolderArray = $this->defIgnoreFolderArray;
 	}
 
 
@@ -241,7 +243,7 @@ class TextSearch {
 	 */
 	public function addIgnoreFolderArray($ignoreFolderArray = array()) {
 		$this->ignoreFolderArray = $ignoreFolderArray;
-		$this->ignoreFolderArray += $this->defIgnoreFolderArray;
+		$this->ignoreFolderArray = array_unique(array_merge($this->ignoreFolderArray, $this->defIgnoreFolderArray));
 	}
 
 	/**
