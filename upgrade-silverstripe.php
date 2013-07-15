@@ -2,7 +2,7 @@
 
 require_once('ReplacementData.php');
 /*
-	TODO: 
+	TODO:
 
 		Add colouring:
 		http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
@@ -114,7 +114,7 @@ class UpgradeSilverstripe {
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0];
 				//$replace = $replaceArray[1]; unset($replaceArray[1]);
-				//$fullReplacement = (isset($replaceArray[2]) ? "/* ".$replaceArray[2]." */\n" : "").$replaceArray[1]; 
+				//$fullReplacement = (isset($replaceArray[2]) ? "/* ".$replaceArray[2]." */\n" : "").$replaceArray[1];
 				$fullReplacement = "";
 				$isStraightReplace = true;
 				if(isset($replaceArray[2])) {// Has comment
@@ -124,7 +124,7 @@ class UpgradeSilverstripe {
 				else { // Straight replace
 					$fullReplacement = $replaceArray[1];
 				}
-				
+
 
 				$comment = isset($replaceArray[2]) ? $replaceArray[2] : "";
 				$codeReplacement = $replaceArray[1];
@@ -160,7 +160,7 @@ class UpgradeSilverstripe {
 		$textSearchMachine->getSearchTotalsFormatted();
 	}
 
-	
+
 
 }
 
