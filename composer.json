@@ -1,0 +1,20 @@
+{
+	"name": "sunnysideup/upgrade_silverstripe",
+	"type": "silverstripe-module",
+	"description": "some rough-and-ready tools to help you upgrade to the next version of Silverstripe",
+	"homepage": "http://www.silverstripe-webdevelopment.com",
+	"keywords": ["upgrade", "silverstripe", "upgrading"],
+	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+	"authors":[
+		{
+			"name": "Nicolaas Francken",
+			"homepage": "https://github.com/sunnysideup",
+			"email" : "modules@sunnysideup.co.nz",
+			"role" : "lead developer"
+		}
+	],
+	"require":{
+		"php": ">=5.3.2",
+		"silverstripe/framework": "*"
+	}
+}
