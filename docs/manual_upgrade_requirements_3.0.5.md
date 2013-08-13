@@ -5,7 +5,7 @@
  * Add new modules if using specific core features like Widget, RestfulServer, PageComment or Translatable ([more](/changelogs/3.0.0#moved-widget-api-into-new-widgets-module-widgets))
 
 ### Object static functions replaced with new Config class {#new-config}
- 
+
 Any arrays you pass as values to `update()` will be automatically merged. To replace the variable, call `remove()` first, then call `update()`.
 
 
@@ -24,14 +24,14 @@ This was previously known as `Object::combined_static()`.
 ### New ORM: More flexible and expressive querying via `DataList` {#new-orm-datalist}
 
 The new "fluent" syntax to retrieve ORM records allows for a more
-expressive notation (instead of unnamed arguments). 
+expressive notation (instead of unnamed arguments).
 
 	:::php
 	// before
 	DataObject::get('Member', '"FirstName" = \'Sam'\', '"Surname" ASC");
 	// after
 	Member::get()->filter(array('FirstName' => 'Sam'))->sort('Surname');
-	
+
 The underlying record retrieval and management is rewritten from scratch, and features
 lazy loading which fetches only the records it needs, as late as possible.
 In order to retrieve all ORM records manually (as the previous ORM would've done),
@@ -53,7 +53,7 @@ now return a `DataList`.
 	// after
 	Member::get()->byID(5);
 
-Note that they will return a `DataList` even if they're empty, so if you want to check 
+Note that they will return a `DataList` even if they're empty, so if you want to check
 for the presence of records, please call the count() method on the `DataList`:
 
 	:::php
@@ -94,12 +94,12 @@ and some features have been deprecated. See the [template upgrading guide](/refe
 
 
 Most aspects of the interface have been redesigned, which necessitated a substantial
-redevelopment of the underlying logic and presentation. 
+redevelopment of the underlying logic and presentation.
 If you have customized the admin interface in any way, please review
 the detailed changelog for this release. Many interface components have changed completely,
 unfortunately there is no clear upgrade path for every interface detail.
 As a starting point, have a look at the new templates in `cms/templates`
-and `framework/admin/templates`, as well as the new [jQuery.entwine](https://github.com/hafriedlander/jquery.entwine) 
+and `framework/admin/templates`, as well as the new [jQuery.entwine](https://github.com/hafriedlander/jquery.entwine)
 based JavaScript logic. Have a look at the new ["Extending the CMS" guide](../howto/extend-cms-interface),
 ["CSS" guide](../topics/css), ["JavaScript" guide](../topics/javascript) and
 ["CMS Architecture" guide](/reference/cms-architecture) to get you started.
@@ -131,7 +131,7 @@ CSS files in the `cms` and `framework/admin` modules are now generated through
 the ["compass" SilverStripe module](http://silverstripe.org/compass-module), which uses
 the ["Compass" framework](http://compass-style.org/) and the ["SCSS" language](http://sass-lang.com/).
 This allows us to build more flexible and expressive stylesheets as a foundation for any
-extensions to the CMS interface. 
+extensions to the CMS interface.
 
 The "compass" module is only required if core stylesheets are modified,
 not when simply using the CMS or developing other CMS functionality.
@@ -157,9 +157,9 @@ form validation in the browser. If you want to change this back to "text", use `
 ### Restructured files and folders [file-restructure]###
 
 In order to make the SilverStripe framework useable without the `cms` module,
-we've moved some files around. 
-CMS base functionality which is not directly related to content pages (`SiteTree`) 
-has been moved from the `cms` module into a new "sub-module" located in `framework/admin`. 
+we've moved some files around.
+CMS base functionality which is not directly related to content pages (`SiteTree`)
+has been moved from the `cms` module into a new "sub-module" located in `framework/admin`.
 This includes generic management interfaces like "Files & Images" (`AssetAdmin`),
 "Security" (`SecurityAdmin`) and the `ModelAdmin` class.
 On the other hand, `SiteTree` related features were moved from `framework` to the `cms` module.

@@ -57,21 +57,21 @@ Here's an example on how to rewrite a common `_config.php` configuration:
 	<?php
 	global $project;
 	$project = 'mysite';
-	
+
 	global $database;
 	$database = 'SS_mydb';
-	
+
 	require_once('conf/ConfigureFromEnv.php');
 	SSViewer::set_theme('simple');
-	
+
 	if(class_exists('SiteTree')) SiteTree::enable_nested_urls();
-	
+
 	if(Director::isLive()) Email::setAdminEmail('support@mydomain.com');
-	
+
 	if(is_defined('MY_REDIRECT_EMAILS')) Email::send_all_emails_to('developer@mydomain.com');
-	
+
 	SS_Log::add_writer(new SS_LogFileWriter(BASE_PATH . '/mylog.log'), SS_Log::WARN);
-	
+
 	if(strpos('Internet Explorer', $_SERVER['HTTP_USER_AGENT']) !== false) {
 		SSViewer::set_theme('basic');
 	}
@@ -84,16 +84,16 @@ The upgraded `_config.php`:
 	<?php
 	global $project;
 	$project = 'mysite';
-	
+
 	global $database;
 	$database = 'SS_mydb';
-	
+
 	require_once('conf/ConfigureFromEnv.php');
-	
+
 	// Removed SiteTree::enable_nested_urls() since its configured by default
-	
+
 	// Requires PHP objects, keep in PHP config
-	SS_Log::add_writer(new SS_LogFileWriter(BASE_PATH . '/mylog.log'), SS_Log::WARN);	
+	SS_Log::add_writer(new SS_LogFileWriter(BASE_PATH . '/mylog.log'), SS_Log::WARN);
 	// Non-trivial conditional, keep in PHP config
 	if(strpos('Internet Explorer', $_SERVER['HTTP_USER_AGENT']) !== false) {
 		// Overwrites any earlier YAML config
@@ -129,7 +129,7 @@ Some examples of changed notations (not exhaustive, there's over a hundred in to
 
 <div class="warning" markdown='1'>
 Please remember to upgrade the installer project as well, particularly
-your `.htaccess` or `web.config` files. Web access to these sensitive YAML configuration files 
+your `.htaccess` or `web.config` files. Web access to these sensitive YAML configuration files
 needs to be explicitly denied through these configuration files (see the [3.0.5 security release](/changelogs/3.0.4))
 for details.
 </div>
@@ -250,8 +250,8 @@ the following configuration: `RestfulService::set_default_curl_option(CURLOPT_SS
 
 
  * Changed the way FreeStrings in `SSTemplateParser` are recognized, they will now also break on inequality
-   operators (`<`, `>`). If you use inequality operators in free strings in comparisions like 
- 
+   operators (`<`, `>`). If you use inequality operators in free strings in comparisions like
+
    `<% if Some<String == Some>Other>String %>...<% end_if %>`
 
    you have to replace them with explicitly markes strings like
@@ -274,10 +274,10 @@ the following configuration: `RestfulService::set_default_curl_option(CURLOPT_SS
   `DataObject` also has `beforeUpdateCMSFields` to insert fields between automatic scaffolding and extension
   by `updateCMSFields`. See the [DataExtension Reference](/reference/dataextension) for more information.
  * Magic quotes is now deprecated. Will trigger user_error on live sites, as well as an error on new installs
- 
 
 
- 
+
+
 
  * Forms created in the CMS should now be instances of a new `CMSForm` class,
    and have the CMS controller's response negotiator passed into them.

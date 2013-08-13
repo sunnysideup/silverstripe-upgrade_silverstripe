@@ -18,49 +18,6 @@ require_once('ReplacementData.php');
 */
 
 
-$pathLocation = ".";
-if(isset($_GET["path"])) {
-	$argv[1] = $_GET["path"];
-}
-
-if(isset($_GET["reallyreplace"])) {
-	$argv[2] = $_GET["reallyreplace"];
-}
-
-if(isset($_GET["stickpoints"])) {
-	$argv[3] = $_GET["stickpoints"];
-}
-
-if(isset($argv[1])) {
-	$pathLocation = $argv[1];
-}
-
-
-if(isset($argv[0])) {
-	define("__FROM_COMMAND_LINE__", true);
-	$obj = new UpgradeSilverstripe();
-
-	//***************************************************
-	// START --- ADJUST AS NEEDED
-	//***************************************************
-	$obj->run(
-		$pathLocation,
-		$logFileLocation = "./ss_upgrade_log.txt",
-		$to = "3.1",
-		$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
-		$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false,
-		//Adds blog and userforms as additional folders to ignore.
-		$ignoreFolderArray = array("blog", "userforms")
-	);
-	//***************************************************
-	// END --- ADJUST AS NEEDED
-	//***************************************************
-
-}
-else {
-	define("__FROM_COMMAND_LINE__", false);
-}
-
 class UpgradeSilverstripe {
 
 	private $marker = " ### UPGRADE_REQUIRED  ";
