@@ -15,8 +15,6 @@ require_once('ReplacementData.php');
 
 		** make function that converts to html output to command line output (or create html and open)
 
-
-
 */
 
 
@@ -25,11 +23,14 @@ if(isset($_GET["path"])) {
 	$argv[1] = $_GET["path"];
 }
 
-if(isset($_GET["reallyReplace"])) 
-	$argv[2] = $_GET["reallyReplace"];
-	
-if(isset($_GET["stickPoints"]))
-	$argv[3] = $_GET["stickPoints"];
+if(isset($_GET["reallyreplace"])) {
+	$argv[2] = $_GET["reallyreplace"];
+}
+
+if(isset($_GET["stickpoints"])) {
+	$argv[3] = $_GET["stickpoints"];
+}
+
 
 if(isset($argv[0])) {
 	define("__FROM_COMMAND_LINE__", true);
@@ -38,12 +39,6 @@ else {
 	define("__FROM_COMMAND_LINE__", false);
 }
 if(isset($argv[1])) {
-	if(!file_exists($argv[1])) {
-		echo ("\n\n");
-		user_error("could not find specified path: ".$argv[1]);
-		echo ("\n\n");
-		die("");
-	}
 	$pathLocation = $argv[1];
 }
 $obj = new UpgradeSilverstripe();
@@ -72,6 +67,10 @@ class UpgradeSilverstripe {
 
 	private $endMarker = "###";
 
+	private $checkReplacementIssues = false;
+		function setCheckReplacementIssues($b) {$this->checkReplacementIssues = $b;}
+
+
 	/**
 	 *
 	 * @param String $pathLocation - enter dot for anything in current directory.
@@ -90,6 +89,19 @@ class UpgradeSilverstripe {
 		$markStickingPoints = false,
 		$ignoreFolderArray = array()
 	) {
+		if(!file_exists($pathLocation)) {
+			echo ("\n\n");
+			user_error("ERROR: could not find specified path: ".$pathLocation);
+			echo ("\n\n");
+			die("");
+		}
+		if( ! __FROM_COMMAND_LINE__) {
+			echo "<pre>";
+		}
+		if($this->checkReplacementIssues) {
+			$this->checkReplacementIssues();
+			die("---END ---\n</pre>");
+		}
 		//basic checks
 		if(!$doBasicReplacement && $markStickingPoints) {
 			user_error("You have to set doBasicReplacement = TRUE before you can set markStickingPoints = TRUE");
@@ -100,15 +112,48 @@ class UpgradeSilverstripe {
 
 		$textSearchMachine = new TextSearch();
 
-		//get replacements
-		$replacementData = new ReplacementData();
-		$array = $replacementData->getReplacementArrays($to);
-
 		//set basics
 		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 		$textSearchMachine->setBasePath($pathLocation);
 		$textSearchMachine->showFilesToSearch();
 
+		//get replacements
+		$replacementData = new ReplacementData();
+
+
+		$previousTos = $replacementData->getTos();
+		$previousMigrationsDone = true;
+		$migrationChecksDone = false;
+		foreach($previousTos as $previousTo) {
+			if($to == $previousTo) {
+				$migrationChecksDone = true;
+				if(!$previousMigrationsDone) {
+					die("\nError: Your code is not ready to migrate to $to (see above)</pre>");
+				}
+			}
+			$numberOfStraightReplacements = $this->numberOfStraightReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			if($numberOfStraightReplacements == 0) {
+				echo "\nCheck: basic $previousTo migration is done (we could not find any straight replacements)";
+				$numberOfAllReplacements = $this->numberOfStraightReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
+				if($numberOfStraightReplacements == 0) {
+					echo "\nCheck: migration to $previousTo completed succesfully.";
+				}
+				else {
+					echo "\nCheck: there are still a few items in migrating to $previousTo (non straight-replacements).";
+					$previousMigrationsDone = false;
+				}
+			}
+			else {
+				echo "\nCheck: you still need to migrate to $previousTo.";
+				$previousMigrationsDone = false;
+			}
+			if($migrationChecksDone) {
+				break;
+			}
+			echo "\n\n";
+		}
+
+		$array = $replacementData->getReplacementArrays($to);
 		foreach($array as $extension => $extensionArray) {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
@@ -124,8 +169,6 @@ class UpgradeSilverstripe {
 				else { // Straight replace
 					$fullReplacement = $replaceArray[1];
 				}
-
-
 				$comment = isset($replaceArray[2]) ? $replaceArray[2] : "";
 				$codeReplacement = $replaceArray[1];
 				if(!$find) {
@@ -158,10 +201,115 @@ class UpgradeSilverstripe {
 			}
 		}
 		$textSearchMachine->getSearchTotalsFormatted();
+		echo "</pre>";
 	}
 
+	/**
+	 *
+	 * @var Int
+	 */
+	private function numberOfStraightReplacements(
+		$pathLocation = ".",
+		$to = "3.0",
+		$ignoreFolderArray = array(),
+		$fullSearch = false
+	) {
+		//basic checks
+		$textSearchMachine = new TextSearch();
 
+		//get replacements
+		$replacementData = new ReplacementData();
+		$array = $replacementData->getReplacementArrays($to);
 
+		//set basics
+		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
+		$textSearchMachine->setBasePath($pathLocation);
+		foreach($array as $extension => $extensionArray) {
+			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
+			foreach($extensionArray as $replaceArray) {
+				$find = $replaceArray[0];
+				if(isset($replaceArray[2]) && !$fullSearch) {// Has comment
+					continue;
+				}
+				else
+				if(!$find) {
+					user_error("no replace is specified, replace is: $replace");
+				}
+				$textSearchMachine->setSearchKey($find);
+				$textSearchMachine->setFutureReplacementKey("TEST ONLY");
+				$textSearchMachine->startSearching();//starting search
+				$textSearchMachine->showLog();//showing log
+				$textSearchMachine->clearCache();
+			}
+		}
+		return $textSearchMachine->totalSearches();
+	}
+
+	/**
+	 * 1. check that one find is not used twice:
+	 * find can be found 2x
+	 *
+	 */
+	private function checkReplacementIssues(){
+		$r = new ReplacementData();
+		$arr = $r->getReplacementArrays(null);
+		$arrTos = array();
+		$arrLanguages = $r->getLanguages();
+		$fullFindArray = $r->getFlatFindArray();
+		$fullReplaceArray = $r->getFlatReplacedArray();
+
+		//1, check that one find may not stop another replacement.
+		foreach($arrLanguages as $language) {
+			if(!isset($fullFindArray[$language])) {
+				continue;
+			}
+			unset($keyOuterDoneSoFar);
+			$keyOuterDoneSoFar = array();
+			foreach($fullFindArray[$language] as $keyOuter => $findStringOuter) {
+				$keyOuterDoneSoFar[$keyOuter] = true;
+				foreach($fullFindArray[$language] as $keyInner => $findStringInner) {
+					if(!isset($keyOuterDoneSoFar[$keyInner])) {
+						if($keyOuter != $keyInner) {
+							$findStringOuterReplaced = str_replace($findStringInner, "...", $findStringOuter);
+							if($findStringOuter == $findStringInner || $findStringOuterReplaced != $findStringOuter) {
+								echo "
+ERROR in $language: \t\t we are trying to find the same thing twice (A and B)
+---- A: ($keyOuter): \t\t $findStringOuter
+---- B: ($keyInner): \t\t $findStringInner";
+							}
+						}
+					}
+				}
+			}
+		}
+		echo "\n";
+
+		//2. check that a replacement is not mentioned before the it is being replaced
+		foreach($arrLanguages as $language) {
+			if(!isset($fullReplaceArray[$language])) {
+				continue;
+			}
+			unset($keyOuterDoneSoFar);
+			$keyOuterDoneSoFar = array();
+			foreach($fullReplaceArray[$language] as $keyOuter => $findStringOuter) {
+				$keyOuterDoneSoFar[$keyOuter] = true;
+				foreach($fullFindArray[$language] as $keyInner => $findStringInner) {
+					if(isset($keyOuterDoneSoFar[$keyInner])) {
+						if($keyOuter != $keyInner) {
+							$findStringOuterReplaced = str_replace($findStringInner, "...", $findStringOuter);
+							if($findStringOuter == $findStringInner || $findStringOuterReplaced != $findStringOuter) {
+								echo "
+ERROR in $language: \t\t there is a replacement (A) that was earlier tried to be found (B).
+---- A: ($keyOuter): \t\t $findStringOuter
+---- B: ($keyInner): \t\t $findStringInner";
+							}
+						}
+					}
+				}
+			}
+		}
+		echo "\n";
+	}
 }
 
 /**
@@ -186,7 +334,7 @@ class TextSearch {
 
 	private $ignoreFolderArray       = array();
 
-	private $extensions              = array("php", "ss", "yml", "yaml", "json");
+	private $extensions              = array("php", "ss", "yml", "yaml", "json", "js");
 
 	private $findAllExts             = 0; //by default all extensions
 
@@ -205,13 +353,12 @@ class TextSearch {
 	private $errorText               = '';
 
 	private $totalFound              = 0; //total matches
-   
-	private $avoidByDefault		     = array();
+
+	private $avoidByDefault          = array();
 
 	private static $searchKeyTotals  = array();
 
-	private static $folderTotals	 = array();
-
+	private static $folderTotals     = array();
 
 	public function __construct() {
 		$this->ignoreFolderArray = $this->defIgnoreFolderArray;
@@ -324,21 +471,11 @@ class TextSearch {
 	 * @return none
 	 */
 	public function showLog() {
-		if(__FROM_COMMAND_LINE__) {
-			if($this->totalFound) {
-				$this->dBug("------ ".$this->totalFound." matches for: ".$this->logString);
-			}
-			if($this->errorText!='') {
-				$this->dBug("------Error-----".$this->errorText);
-			}
+		if($this->totalFound) {
+			$this->dBug("------ ".$this->totalFound." matches for: ".$this->logString);
 		}
-		else {
-			if($this->totalFound) {
-				$this->dBug(nl2br("------ ".$this->totalFound." matches for: ".$this->logString));
-			}
-			if($this->errorText!='') {
-				$this->dBug(nl2br("------Error-----".$this->errorText));
-			}
+		if($this->errorText!='') {
+			$this->dBug("------Error-----".$this->errorText);
 		}
 	}
 
@@ -413,6 +550,7 @@ class TextSearch {
 		return $completeTotal;
 	}
 
+
 	/**
 	 * array of all the files we are searching
 	 * @var array
@@ -424,7 +562,7 @@ class TextSearch {
 	 * @param String $path (e.g. "." or "/var/www/mysite.co.nz")
 	 * @param Boolean $innerLoop - is the method calling itself???
 	 *
-	 *  
+	 *
 	 */
 	private function getFileArray($path, $innerLoop = false){
 		$key = str_replace(array("/"), "__", $path);
@@ -578,16 +716,8 @@ class TextSearch {
 	 * @return none
 	 */
 	private function dBug($dump){
-		if(__FROM_COMMAND_LINE__) {
-			print_r(($dump));
-		}
-		else {
-			echo "<pre>";
-			print_r($dump);
-			echo "</pre>";
-		}
+		print_r(($dump));
 	}
-
 
 
 }
