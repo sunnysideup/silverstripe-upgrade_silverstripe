@@ -70,10 +70,10 @@ class UpgradeSilverstripe {
 	private $output = "";
 
 	private $numberOfStraightReplacements = 0;
-		public function getNumberOfStraightReplacements($b) {return intval($this->numberOfStraightReplacements);}
+		public function getNumberOfStraightReplacements() {return intval($this->numberOfStraightReplacements);}
 
 	private $numberOfAllReplacements = 0;
-		public function getNumberOfAllReplacements($b) {return intval($this->numberOfAllReplacements);}
+		public function getNumberOfAllReplacements() {return intval($this->numberOfAllReplacements);}
 
 	private $checkReplacementIssues = false;
 		public function setCheckReplacementIssues($b) {$this->checkReplacementIssues = $b;}
