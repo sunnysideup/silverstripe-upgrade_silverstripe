@@ -31,35 +31,35 @@ if(isset($_GET["stickpoints"])) {
 	$argv[3] = $_GET["stickpoints"];
 }
 
+if(isset($argv[1])) {
+	$pathLocation = $argv[1];
+}
+
 
 if(isset($argv[0])) {
 	define("__FROM_COMMAND_LINE__", true);
+	$obj = new UpgradeSilverstripe();
+
+	//***************************************************
+	// START --- ADJUST AS NEEDED
+	//***************************************************
+	$obj->run(
+		$pathLocation,
+		$logFileLocation = "./ss_upgrade_log.txt",
+		$to = "3.1",
+		$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
+		$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false,
+		//Adds blog and userforms as additional folders to ignore.
+		$ignoreFolderArray = array("blog", "userforms")
+	);
+	//***************************************************
+	// END --- ADJUST AS NEEDED
+	//***************************************************
+
 }
 else {
 	define("__FROM_COMMAND_LINE__", false);
 }
-if(isset($argv[1])) {
-	$pathLocation = $argv[1];
-}
-$obj = new UpgradeSilverstripe();
-
-
-//***************************************************
-// START --- ADJUST AS NEEDED
-//***************************************************
-$obj->run(
-	$pathLocation,
-	$logFileLocation = "./ss_upgrade_log.txt",
-	$to = "3.1",
-	$doBasicReplacement = isset($argv[2]) && $argv[2] == "yes" ? true : false,
-	$markStickingPoints = isset($argv[3]) && $argv[3] == "yes"? true : false,
-	//Adds blog and userforms as additional folders to ignore.
-	$ignoreFolderArray = array("blog", "userforms")
-);
-//***************************************************
-// END --- ADJUST AS NEEDED
-//***************************************************
-
 
 class UpgradeSilverstripe {
 
@@ -67,8 +67,16 @@ class UpgradeSilverstripe {
 
 	private $endMarker = "###";
 
+	private $output = "";
+
+	private $numberOfStraightReplacements = 0;
+		public function getNumberOfStraightReplacements($b) {return intval($this->numberOfStraightReplacements);}
+
+	private $numberOfAllReplacements = 0;
+		public function getNumberOfAllReplacements($b) {return intval($this->numberOfAllReplacements);}
+
 	private $checkReplacementIssues = false;
-		function setCheckReplacementIssues($b) {$this->checkReplacementIssues = $b;}
+		public function setCheckReplacementIssues($b) {$this->checkReplacementIssues = $b;}
 
 
 	/**
@@ -90,17 +98,14 @@ class UpgradeSilverstripe {
 		$ignoreFolderArray = array()
 	) {
 		if(!file_exists($pathLocation)) {
-			echo ("\n\n");
+			$this->addToOutput("\n\n");
 			user_error("ERROR: could not find specified path: ".$pathLocation);
-			echo ("\n\n");
-			die("");
-		}
-		if( ! __FROM_COMMAND_LINE__) {
-			echo "<pre>";
+			$this->addToOutput("\n\n");
+			$this->addToOutput("---END ---\n");
 		}
 		if($this->checkReplacementIssues) {
 			$this->checkReplacementIssues();
-			die("---END ---\n</pre>");
+			$this->addToOutput("---END ---\n");
 		}
 		//basic checks
 		if(!$doBasicReplacement && $markStickingPoints) {
@@ -110,13 +115,6 @@ class UpgradeSilverstripe {
 			user_error("the ignoreFolderArray param should be an array");
 		}
 
-		$textSearchMachine = new TextSearch();
-
-		//set basics
-		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
-		$textSearchMachine->setBasePath($pathLocation);
-		$textSearchMachine->showFilesToSearch();
-
 		//get replacements
 		$replacementData = new ReplacementData();
 
@@ -124,33 +122,46 @@ class UpgradeSilverstripe {
 		$previousTos = $replacementData->getTos();
 		$previousMigrationsDone = true;
 		$migrationChecksDone = false;
+		$this->numberOfStraightReplacements = 0;
+		$this->numberOfAllReplacements = 0;
 		foreach($previousTos as $previousTo) {
+			$this->addToOutput("\n------------------------------------\nStart Checking for upgrade to Silverstripe: $previousTo \n------------------------------------");
 			if($to == $previousTo) {
 				$migrationChecksDone = true;
 				if(!$previousMigrationsDone) {
-					die("\nError: Your code is not ready to migrate to $to (see above)</pre>");
+					die("\nError: Your code is not ready to migrate to $to (see above)");
 				}
 			}
-			$numberOfStraightReplacements = $this->numberOfStraightReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
-			if($numberOfStraightReplacements == 0) {
-				echo "\nCheck: basic $previousTo migration is done (we could not find any straight replacements)";
-				$numberOfAllReplacements = $this->numberOfStraightReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
-				if($numberOfStraightReplacements == 0) {
-					echo "\nCheck: migration to $previousTo completed succesfully.";
-				}
-				else {
-					echo "\nCheck: there are still a few items in migrating to $previousTo (non straight-replacements).";
-					$previousMigrationsDone = false;
-				}
+			$this->numberOfStraightReplacements += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
+			if($this->numberOfStraightReplacements == 0) {
+				$this->addToOutput("\n[OK] migration to $previousTo for basic replacements completed.");
 			}
 			else {
-				echo "\nCheck: you still need to migrate to $previousTo.";
+				$this->addToOutput( "\n[TO DO] migration to $previousTo for basic replacements NOT completed yet.");
 				$previousMigrationsDone = false;
 			}
+			$this->numberOfAllReplacements += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			if($this->numberOfAllReplacements == 0) {
+				$this->addToOutput("\n[OK] migration to $previousTo for complicated items completed.");
+			}
+			else {
+				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet.");
+				$previousMigrationsDone = false;
+			}
+			$this->addToOutput("\n------------------------------------\nEnd $previousTo \n------------------------------------\n");
+			$this->addToOutput( "\n\n");
 			if($migrationChecksDone) {
 				break;
 			}
-			echo "\n\n";
+		}
+		$textSearchMachine = new TextSearch();
+
+		//set basics
+		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
+		$textSearchMachine->setBasePath($pathLocation);
+		if(__FROM_COMMAND_LINE__) {
+			$this->addToOutput("\n------------------------------------\nStart List of Files: \n------------------------------------\n");
+			$textSearchMachine->showFilesToSearch();
 		}
 
 		$array = $replacementData->getReplacementArrays($to);
@@ -195,24 +206,24 @@ class UpgradeSilverstripe {
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
 				}
-
-				$textSearchMachine->showLog();//showing log
-				$textSearchMachine->clearCache();
+				//$textSearchMachine->showLog();//showing log
+				$textSearchMachine->clearSearchCache();
 			}
 		}
-		$textSearchMachine->getSearchTotalsFormatted();
-		echo "</pre>";
+		$textSearchMachine->formatSearchTotalsFormatted();
+		$this->addToOutput($textSearchMachine->getOutput());
+		return $this->printItNow();
 	}
 
 	/**
 	 *
 	 * @var Int
 	 */
-	private function numberOfStraightReplacements(
+	private function numberOfReplacements(
 		$pathLocation = ".",
 		$to = "3.0",
 		$ignoreFolderArray = array(),
-		$fullSearch = false
+		$simpleOnly = true
 	) {
 		//basic checks
 		$textSearchMachine = new TextSearch();
@@ -228,21 +239,23 @@ class UpgradeSilverstripe {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0];
-				if(isset($replaceArray[2]) && !$fullSearch) {// Has comment
+				if(isset($replaceArray[2]) && $simpleOnly) {// Has comment
 					continue;
 				}
-				else
+				elseif(!isset($replaceArray[2]) && !$simpleOnly) {
+					continue;
+				}
 				if(!$find) {
 					user_error("no replace is specified, replace is: $replace");
 				}
 				$textSearchMachine->setSearchKey($find);
 				$textSearchMachine->setFutureReplacementKey("TEST ONLY");
 				$textSearchMachine->startSearching();//starting search
-				$textSearchMachine->showLog();//showing log
-				$textSearchMachine->clearCache();
+				$textSearchMachine->clearSearchCache();
 			}
 		}
-		return $textSearchMachine->totalSearches();
+		$number = $textSearchMachine->totalSearches();
+		return $number;
 	}
 
 	/**
@@ -272,17 +285,17 @@ class UpgradeSilverstripe {
 						if($keyOuter != $keyInner) {
 							$findStringOuterReplaced = str_replace($findStringInner, "...", $findStringOuter);
 							if($findStringOuter == $findStringInner || $findStringOuterReplaced != $findStringOuter) {
-								echo "
+								$this->addToOutput( "
 ERROR in $language: \t\t we are trying to find the same thing twice (A and B)
 ---- A: ($keyOuter): \t\t $findStringOuter
----- B: ($keyInner): \t\t $findStringInner";
+---- B: ($keyInner): \t\t $findStringInner");
 							}
 						}
 					}
 				}
 			}
 		}
-		echo "\n";
+		$this->addToOutput( "\n");
 
 		//2. check that a replacement is not mentioned before the it is being replaced
 		foreach($arrLanguages as $language) {
@@ -298,18 +311,34 @@ ERROR in $language: \t\t we are trying to find the same thing twice (A and B)
 						if($keyOuter != $keyInner) {
 							$findStringOuterReplaced = str_replace($findStringInner, "...", $findStringOuter);
 							if($findStringOuter == $findStringInner || $findStringOuterReplaced != $findStringOuter) {
-								echo "
+								$this->addToOutput( "
 ERROR in $language: \t\t there is a replacement (A) that was earlier tried to be found (B).
 ---- A: ($keyOuter): \t\t $findStringOuter
----- B: ($keyInner): \t\t $findStringInner";
+---- B: ($keyInner): \t\t $findStringInner");
 							}
 						}
 					}
 				}
 			}
 		}
-		echo "\n";
+		$this->addToOutput( "\n" );
 	}
+
+	private function addToOutput($text){
+		$this->output .= $text;
+	}
+
+	private function printItNow(){
+		$text = $this->output;
+		$this->output = "";
+		if(__FROM_COMMAND_LINE__) {
+			echo $text."\n\n\n";
+		}
+		else {
+			return "<pre>".$text."</pre>";
+		}
+	}
+
 }
 
 /**
@@ -352,6 +381,8 @@ class TextSearch {
 
 	private $errorText               = '';
 
+	private $output                  = '';
+
 	private $totalFound              = 0; //total matches
 
 	private $avoidByDefault          = array();
@@ -370,7 +401,7 @@ class TextSearch {
 		//flatten it!
 		$flatArray = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
 		foreach($flatArray as $file) {
-			$this->dBug($file."\n\n");
+			$this->addToOutput($file."\n\n");
 		}
 	}
 
@@ -472,10 +503,10 @@ class TextSearch {
 	 */
 	public function showLog() {
 		if($this->totalFound) {
-			$this->dBug("------ ".$this->totalFound." matches for: ".$this->logString);
+			$this->addToOutput("------ ".$this->totalFound." matches for: ".$this->logString);
 		}
 		if($this->errorText!='') {
-			$this->dBug("------Error-----".$this->errorText);
+			$this->addToOutput("------Error-----".$this->errorText);
 		}
 	}
 
@@ -497,11 +528,23 @@ class TextSearch {
 	}
 
 	/**
+	 * returns full output
+	 * and clears it.
+	 * @return string
+	 */
+	public function getOutput(){
+		$text = $this->output;
+		$this->output = "";
+		return $text;
+	}
+
+	/**
 	 *
 	 * clears cache data
 	 *
 	 */
-	public function clearCache() {
+	public function clearSearchCache() {
+		return ;
 		$this->logString = '';
 		$this->errorText = '';
 		$this->totalFound = 0;
@@ -511,34 +554,35 @@ class TextSearch {
 		return self::$searchKeyTotals;
 	}
 
-	public function getSearchTotalsFormatted() {
+	public function formatSearchTotalsFormatted() {
 
 		$folderSimpleTotals = array();
 		$realBase = realpath($this->basePath);
-
-		printf("------------------------------------\nSummary: by search key\n------------------------------------\n");
+		$this->addToOutput("------------------------------------\nSummary: by search key\n------------------------------------\n");
 		arsort(self::$searchKeyTotals);
 		foreach($this->getSearchTotals() as $searchKey => $total) {
-			printf("%d:\t %s\n", $total, $searchKey);
+			$this->addToOutput(sprintf("%d:\t %s\n", $total, $searchKey));
 		}
-		printf("------------------------------------\nTotal replacements: %d\n------------------------------------\n\n", $this->totalSearches());
+		$this->addToOutput( sprintf("------------------------------------\nTotal replacements: %d\n------------------------------------\n\n", $this->totalSearches()));
 
-		printf("------------------------------------\nSummary: by directory\n------------------------------------\n");
-		arsort(self::$folderTotals);
-		foreach(self::$folderTotals as $folder => $total) {
-			$path = str_replace($realBase, "", realpath($folder));
-			$pathArr = explode("/", $path);
-			$folderName = $pathArr[1]."/";
-			if(!isset($folderSimpleTotals[$folderName])) {
-				$folderSimpleTotals[$folderName] = 0;
+		if(__FROM_COMMAND_LINE__) {
+			$this->addToOutput("------------------------------------\nSummary: by directory\n------------------------------------\n");
+			arsort(self::$folderTotals);
+			foreach(self::$folderTotals as $folder => $total) {
+				$path = str_replace($realBase, "", realpath($folder));
+				$pathArr = explode("/", $path);
+				$folderName = $pathArr[1]."/";
+				if(!isset($folderSimpleTotals[$folderName])) {
+					$folderSimpleTotals[$folderName] = 0;
+				}
+				$folderSimpleTotals[$folderName] += $total;
+				$this->addToOutput(sprintf("%d:\t %s\n", $total, $folder));
 			}
-			$folderSimpleTotals[$folderName] += $total;
-			printf("%d:\t %s\n", $total, $folder);
-		}
-		printf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $realBase);
-		arsort($folderSimpleTotals);
-		foreach($folderSimpleTotals as $folder => $total) {
-			printf("%d:\t %s\n", $total, $folder);
+			$this->addToOutput(sprintf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $realBase));
+			arsort($folderSimpleTotals);
+			foreach($folderSimpleTotals as $folder => $total) {
+				$this->addToOutput(sprintf("%d:\t %s\n", $total, $folder));
+			}
 		}
 	}
 
@@ -710,14 +754,8 @@ class TextSearch {
 		$this->logString .= "------ ------ $matchStr In $file ... '$replacementKey'\n";
 	}
 
-	/**
-	 * Dumps data
-	 * @param String data to be dumped
-	 * @return none
-	 */
-	private function dBug($dump){
-		print_r(($dump));
+	private function addToOutput($text) {
+		$this->output .= $text;
 	}
-
 
 }
