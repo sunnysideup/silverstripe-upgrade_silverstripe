@@ -10,6 +10,7 @@ require_once('ReplacementData.php');
 		**Test output on browser
 */
 
+define("__FROM_COMMAND_LINE__", PHP_SAPI === 'cli');
 
 class UpgradeSilverstripe {
 
