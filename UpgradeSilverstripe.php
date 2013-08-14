@@ -536,7 +536,7 @@ class TextSearch {
 				$strippedFolder = str_replace($this->basePath, "", $folder);
 				$this->addToOutput(sprintf("%d:\t %s\n", $total, $strippedFolder));
 			}
-			$strippedRealBase = str_replace($this->basePath, "", $realBase);
+			$strippedRealBase = "/";
 			$this->addToOutput(sprintf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $strippedRealBase));
 			arsort($folderSimpleTotals);
 			foreach($folderSimpleTotals as $folder => $total) {
