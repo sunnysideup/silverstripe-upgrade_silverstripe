@@ -330,7 +330,7 @@ class TextSearch {
 
 	private $basePath                  = '.';
 
-	private $defaultIgnoreFolderArray  = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
+	private $defaultIgnoreFolderArray  = array("cms", "assets", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
 	private $ignoreFolderArray         = array();
 
