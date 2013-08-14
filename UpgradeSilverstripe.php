@@ -7,22 +7,15 @@ require_once('ReplacementData.php');
 		Add colouring:
 		http://www.if-not-true-then-false.com/2010/php-class-for-coloring-php-command-line-cli-scripts-output-php-output-colorizing-using-bash-shell-colors/
 
-		Add separate sections for automatic replacements and manual replacements in summary.
-
-		Count number of replacements per folder
-
 		**Test output on browser
-
-		** make function that converts to html output to command line output (or create html and open)
-
 */
 
 
 class UpgradeSilverstripe {
 
-	private $marker = " ### UPGRADE_REQUIRED  ";
+	private $marker = "\n ###  @@@@ UPGRADE_REQUIRED \n";
 
-	private $endMarker = "###";
+	private $endMarker = "\n @@@@ ###\n";
 
 	private $output = "";
 
@@ -71,12 +64,23 @@ class UpgradeSilverstripe {
 		if(!is_array($ignoreFolderArray)) {
 			user_error("the ignoreFolderArray param should be an array");
 		}
+		$style = "BASIC";
+		if($markStickingPoints) {
+			$style = "COMPLICATED";
+		}
+		if($doBasicReplacement) {
+			$this->addToOutput("\n#################################### \nREAL $style REPLACEMENTS \n####################################\n ");
+		}
+		else {
+			$this->addToOutput("\n#################################### \nTEST $style REPLACEMENTS ONLY \n#################################### \n ");
+			$logFileLocation = null;
+		}
+
 
 		//get replacements
-		$replacementData = new ReplacementData();
+		$replacementDataObject = new ReplacementData();
 
-
-		$previousTos = $replacementData->getTos();
+		$previousTos = $replacementDataObject->getTos();
 		$previousMigrationsDone = true;
 		$migrationChecksDone = false;
 		$this->numberOfStraightReplacements = 0;
@@ -89,20 +93,22 @@ class UpgradeSilverstripe {
 					die("\nError: Your code is not ready to migrate to $to (see above)");
 				}
 			}
-			$this->numberOfStraightReplacements += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
+			$numberToAdd = $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
+			$this->numberOfStraightReplacements += $numberToAdd;
 			if($this->numberOfStraightReplacements == 0) {
 				$this->addToOutput("\n[OK] migration to $previousTo for basic replacements completed.");
 			}
 			else {
-				$this->addToOutput( "\n[TO DO] migration to $previousTo for basic replacements NOT completed yet.");
+				$this->addToOutput( "\n[TO DO] migration to $previousTo for basic replacements NOT completed yet ($numberToAdd items to do).");
 				$previousMigrationsDone = false;
 			}
-			$this->numberOfAllReplacements += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			$numberToAdd += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			$this->numberOfAllReplacements += $numberToAdd;
 			if($this->numberOfAllReplacements == 0) {
 				$this->addToOutput("\n[OK] migration to $previousTo for complicated items completed.");
 			}
 			else {
-				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet.");
+				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet ($numberToAdd items to do).");
 				$previousMigrationsDone = false;
 			}
 			$this->addToOutput("\n------------------------------------\nEnd $previousTo \n------------------------------------\n");
@@ -116,13 +122,9 @@ class UpgradeSilverstripe {
 		//set basics
 		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 		$textSearchMachine->setBasePath($pathLocation);
-		if(__FROM_COMMAND_LINE__) {
-			$this->addToOutput("\n------------------------------------\nStart List of Files: \n------------------------------------\n");
-			$textSearchMachine->showFilesToSearch();
-		}
-
-		$array = $replacementData->getReplacementArrays($to);
+		$array = $replacementDataObject->getReplacementArrays($to);
 		foreach($array as $extension => $extensionArray) {
+			$this->addToOutput("\n\n\n\n++++++++++++++++++++++++++++++++++++ \nCHECKING $extension FILES \n++++++++++++++++++++++++++++++++++++ \n");
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0];
@@ -155,7 +157,7 @@ class UpgradeSilverstripe {
 					$textSearchMachine->setReplacementKey($fullReplacement);
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
-					$textSearchMachine->writeLogToFile($logFileLocation);
+					//$textSearchMachine->writeLogToFile($logFileLocation);
 				}
 				else {
 					$textSearchMachine->setSearchKey($find);
@@ -164,11 +166,18 @@ class UpgradeSilverstripe {
 					//output - only write to log for real replacements!
 				}
 				//$textSearchMachine->showLog();//showing log
-				$textSearchMachine->clearSearchCache();
+			}
+			$replacements = $textSearchMachine->showFormattedSearchTotals(0, $logFileLocation);
+			if($replacements) {
+				$this->addToOutput($textSearchMachine->getOutput());
+			}
+			else {
+				//flush output anyway!
+				$textSearchMachine->getOutput();
+				$this->addToOutput("\n No replacements for  $extension \n------------------------------------\n");
 			}
 		}
-		$textSearchMachine->formatSearchTotalsFormatted();
-		$this->addToOutput($textSearchMachine->getOutput());
+
 		return $this->printItNow();
 	}
 
@@ -202,16 +211,16 @@ class UpgradeSilverstripe {
 				elseif(!isset($replaceArray[2]) && !$simpleOnly) {
 					continue;
 				}
-				if(!$find) {
-					user_error("no replace is specified, replace is: $replace");
-				}
 				$textSearchMachine->setSearchKey($find);
 				$textSearchMachine->setFutureReplacementKey("TEST ONLY");
 				$textSearchMachine->startSearching();//starting search
-				$textSearchMachine->clearSearchCache();
 			}
+			//IMPORTANT!
+			$number = $textSearchMachine->showFormattedSearchTotals(true);
 		}
-		$number = $textSearchMachine->totalSearches();
+		$number = $textSearchMachine->getTotalTotalSearches();
+		//flush output anyway!
+		$textSearchMachine->getOutput();
 		return $number;
 	}
 
@@ -314,53 +323,50 @@ ERROR in $language: \t\t there is a replacement (A) that was earlier tried to be
 
 class TextSearch {
 
-	private $basePath                = '.';
+	private $basePath                  = '.';
 
-	private $defIgnoreFolderArray    = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
+	private $defaultIgnoreFolderArray  = array("cms", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
-	private $ignoreFolderArray       = array();
+	private $ignoreFolderArray         = array();
 
-	private $extensions              = array("php", "ss", "yml", "yaml", "json", "js");
+	private $extensions                = array("php", "ss", "yml", "yaml", "json", "js");
 
-	private $findAllExts             = 0; //by default all extensions
+	private $findAllExts               = 0;
 
-	private $searchKey               = '';
+	private $searchKey                 = '';
 
-	private $replacementKey          = '';
+	private $replacementKey            = '';
 
-	private $futureReplacementKey    = '';
+	private $futureReplacementKey      = '';
 
-	private $isReplacingEnabled      = 0;
+	private $isReplacingEnabled        = 0;
 
-	private $caseSensitive           = 0; //by default case sensitivity is OFF
+	private $caseSensitive             = 0;
 
-	private $logString               = '';
+	private $logString                 = ''; //details of one search
 
-	private $errorText               = '';
+	private $errorText                 = ''; //details of one search
 
-	private $output                  = '';
+	private $totalFound                = 0; //total matches in one search
 
-	private $totalFound              = 0; //total matches
+	private $output                    = ''; //buffer of output, until it is retrieved
 
-	private $avoidByDefault          = array();
+	private static $search_key_totals  = array();
 
-	private static $searchKeyTotals  = array();
+	private static $folder_totals      = array();
 
-	private static $folderTotals     = array();
+	private static $total_total        = 0;
 
 	public function __construct() {
-		$this->ignoreFolderArray = $this->defIgnoreFolderArray;
+		$this->ignoreFolderArray = $this->defaultIgnoreFolderArray;
 	}
 
 
-	public function showFilesToSearch(){
-		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
-		//flatten it!
-		$flatArray = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
-		foreach($flatArray as $file) {
-			$this->addToOutput($file."\n\n");
-		}
-	}
+
+	//================================================
+	// Setters Before Run
+	//================================================
+
 
 	/**
 	 *   Sets folders to ignore
@@ -369,6 +375,7 @@ class TextSearch {
 	 */
 	public function setIgnoreFolderArray($ignoreFolderArray = array()) {
 		$this->ignoreFolderArray = $ignoreFolderArray;
+		$this->resetFileCache();
 	}
 
 	/**
@@ -378,7 +385,8 @@ class TextSearch {
 	 */
 	public function addIgnoreFolderArray($ignoreFolderArray = array()) {
 		$this->ignoreFolderArray = $ignoreFolderArray;
-		$this->ignoreFolderArray = array_unique(array_merge($this->ignoreFolderArray, $this->defIgnoreFolderArray));
+		$this->ignoreFolderArray = array_unique(array_merge($this->ignoreFolderArray, $this->defaultIgnoreFolderArray));
+		$this->resetFileCache();
 	}
 
 	/**
@@ -387,6 +395,7 @@ class TextSearch {
 	 */
 	public function unsetIgnoreFolderArray($nameOfFolder) {
 		unset($this->ignoreFolderArray[$nameOfFolder]);
+		$this->resetFileCache();
 	}
 
 
@@ -397,6 +406,7 @@ class TextSearch {
 	 */
 	public function setBasePath($pathLocation) {
 		$this->basePath = $pathLocation;
+		$this->resetFileCache();
 	}
 
 	/**
@@ -405,10 +415,17 @@ class TextSearch {
 	 */
 	public function setExtensions($extensions = array()) {
 		$this->extensions = $extensions;
-		if(sizeof($this->extensions)){
+		if(count($this->extensions)){
 			 $this->findAllExts = 0; //not all extensions
 		}
+		$this->resetFileCache();
 	}
+
+
+	//================================================
+	// Setters Before Every Search
+	//================================================
+
 
 	/**
 	 * Sets search key and case sensitivity
@@ -416,8 +433,8 @@ class TextSearch {
 	 * @param Boolean $caseSensitivity
 	 */
 	public function setSearchKey($searchKey, $caseSensitive = 0) {
-		$this->searchKey = $searchKey;
-		$this->caseSensitive = ($caseSensitive ? 1 : 0);
+		$this->searchKey =      $searchKey;
+		$this->caseSensitive =  $caseSensitive;
 	}
 
 	/**
@@ -439,93 +456,71 @@ class TextSearch {
 		$this->isReplacingEnabled   = 0;
 	}
 
-	/**
-	 * Wrapper function around function findDirFiles()
-	 * @param $path to search
-	 * @return none
-	 */
-	public function startSearching(){
-		$array = $this->getFileArray($this->basePath, false);
-		$multiDimensionalArray = $this->getFileArray($this->basePath,false);
-		//flatten it!
-		$flatArray = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
-		foreach($flatArray as $location) {
-			$this->searchFileData("$location");
-		}
-	}
 
-	/**
-	 * Shows Log
-	 * @return none
-	 */
-	public function showLog() {
-		if($this->totalFound) {
-			$this->addToOutput("------ ".$this->totalFound." matches for: ".$this->logString);
-		}
-		if($this->errorText!='') {
-			$this->addToOutput("------Error-----".$this->errorText);
-		}
-	}
+	//================================================
+	// Get FINAL output
+	//================================================
 
-	/**
-	 * Writes log to file
-	 * @param String log filename
-	 */
-	public function writeLogToFile($file) {
-		$fp = fopen($file, "a") OR user_error("Can not open file <b>$file</b>");
-		fwrite($fp, "\n\n================================================");
-		fwrite($fp, $this->logString);
-		fwrite($fp, "\n------ Total ".$this->totalFound." Matches Found `".$this->searchKey."` -----\n");
-		if($this->errorText){
-			fwrite($fp, "\n------Error-----------Error-----------Error-----------Error-----\n");
-			fwrite($fp, $this->errorText);
-			fwrite($fp, "\n------Error-----------Error-----------Error-----------Error-----\n");
-		}
-		fclose($fp);
-	}
 
 	/**
 	 * returns full output
 	 * and clears it.
 	 * @return string
 	 */
-	public function getOutput(){
-		$text = $this->output;
+	public function getOutput($logFileLocation = null){
+		$output = $this->output;
 		$this->output = "";
-		return $text;
+		if($logFileLocation) {
+			$handle = fopen($file, "a");
+			fwrite($handle, $output);
+			fclose($handle);
+		}
+		return $output;
 	}
+
 
 	/**
-	 *
-	 * clears cache data
-	 *
+	 * returns the TOTAL TOTAL number of
+	 * found replacements
 	 */
-	public function clearSearchCache() {
-		return ;
-		$this->logString = '';
-		$this->errorText = '';
-		$this->totalFound = 0;
+	public function getTotalTotalSearches() {
+		return self::$total_total;
 	}
 
-	public function getSearchTotals() {
-		return self::$searchKeyTotals;
-	}
 
-	public function formatSearchTotalsFormatted() {
 
-		$folderSimpleTotals = array();
-		$realBase = realpath($this->basePath);
-		$this->addToOutput("------------------------------------\nSummary: by search key\n------------------------------------\n");
-		arsort(self::$searchKeyTotals);
-		foreach($this->getSearchTotals() as $searchKey => $total) {
-			$this->addToOutput(sprintf("%d:\t %s\n", $total, $searchKey));
+	//================================================
+	// Write to log while doing the searches
+	//================================================
+
+	/**
+	 * should be run at the end of an extension.
+	 */
+	public function showFormattedSearchTotals($returnTotalFoundOnly = false) {
+		$totalSearches = 0;
+		foreach(self::$search_key_totals as $searchKey => $total) {
+			$totalSearches += $total;
 		}
-		$this->addToOutput( sprintf("------------------------------------\nTotal replacements: %d\n------------------------------------\n\n", $this->totalSearches()));
-
-		if(__FROM_COMMAND_LINE__) {
-			$this->addToOutput("------------------------------------\nSummary: by directory\n------------------------------------\n");
-			arsort(self::$folderTotals);
-			foreach(self::$folderTotals as $folder => $total) {
+		if($returnTotalFoundOnly) {
+			//do nothing
+		}
+		else {
+			$flatArray = $this->getFlatFileArray();
+			$this->addToOutput("\n------------------------------------\nFiles Searched\n------------------------------------\n");
+			foreach($flatArray as $file) {
+				$strippedFile = str_replace($this->basePath, "", $file);
+				$this->addToOutput($strippedFile."\n");
+			}
+			$folderSimpleTotals = array();
+			$realBase = realpath($this->basePath);
+			$this->addToOutput("\n------------------------------------\nSummary: by search key\n------------------------------------\n");
+			arsort(self::$search_key_totals);
+			foreach(self::$search_key_totals as $searchKey => $total) {
+				$this->addToOutput(sprintf("%d:\t %s\n", $total, $searchKey));
+			}
+			$this->addToOutput("\n------------------------------------\nSummary: by directory\n------------------------------------\n");
+			arsort(self::$folder_totals);
+			foreach(self::$folder_totals as $folder => $total) {
 				$path = str_replace($realBase, "", realpath($folder));
 				$pathArr = explode("/", $path);
 				$folderName = $pathArr[1]."/";
@@ -533,30 +528,68 @@ class TextSearch {
 					$folderSimpleTotals[$folderName] = 0;
 				}
 				$folderSimpleTotals[$folderName] += $total;
-				$this->addToOutput(sprintf("%d:\t %s\n", $total, $folder));
+				$strippedFolder = str_replace($this->basePath, "", $folder);
+				$this->addToOutput(sprintf("%d:\t %s\n", $total, $strippedFolder));
 			}
 			$this->addToOutput(sprintf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $realBase));
 			arsort($folderSimpleTotals);
 			foreach($folderSimpleTotals as $folder => $total) {
-				$this->addToOutput(sprintf("%d:\t %s\n", $total, $folder));
+				$strippedFolder = str_replace($this->basePath, "", $folder);
+				$this->addToOutput(sprintf("%d:\t %s\n", $total, $strippedFolder));
 			}
+			$this->addToOutput( sprintf("\n------------------------------------\nTotal replacements: %d\n------------------------------------\n", $totalSearches));
 		}
+		//add to total total
+		self::$total_total += $totalSearches;
+		//return total
+		return $totalSearches;
 	}
 
-	public function totalSearches() {
-		$completeTotal = 0;
-		foreach($this->getSearchTotals() as $searchKey => $total) {
-			$completeTotal += $total;
+
+	//================================================
+	// Doers
+	//================================================
+
+
+	/**
+	 * Searches all the files and creates the logs
+	 * @param $path to search
+	 * @return none
+	 */
+	public function startSearching(){
+		$flatArray = $this->getFlatFileArray();
+		foreach($flatArray as $location) {
+			$this->searchFileData("$location");
 		}
-		return $completeTotal;
+		if($this->totalFound) {
+			$this->addToOutput("------ ".$this->totalFound." matches for: ".$this->logString);
+		}
+		if($this->errorText!= '' ) {
+			$this->addToOutput("------Error-----".$this->errorText);
+		}
+		$this->logString = "";
+		$this->errorText = "";
+		$this->totalFound = 0;
 	}
 
+	private function resetFileCache(){
+		self::$file_array = null;
+		self::$file_array = array();
+		self::$flat_file_array = null;
+		self::$flat_file_array = array();
+		//cleanup other data
+		self::$search_key_totals = null;
+		self::$search_key_totals = array();
+		self::$folder_totals = null;
+		self::$folder_totals = array();
+	}
 
 	/**
 	 * array of all the files we are searching
 	 * @var array
 	 */
 	private static $file_array = array();
+
 
 	/**
 	 * loads all the applicable files
@@ -600,6 +633,22 @@ class TextSearch {
 			closedir($dir);
 		}
 		return self::$file_array;
+	}
+
+	/**
+	 * Flattened array of files.
+	 * @var Array
+	 */
+	private static $flat_file_array = array();
+
+	private function getFlatFileArray(){
+		if(!count(self::$flat_file_array)) {
+			$array = $this->getFileArray($this->basePath, false);
+			$multiDimensionalArray = $this->getFileArray($this->basePath,false);
+			//flatten it!
+			self::$flat_file_array = new RecursiveIteratorIterator(new RecursiveArrayIterator($multiDimensionalArray));
+		}
+		return self::$flat_file_array;
 	}
 
 	/**
@@ -667,16 +716,15 @@ class TextSearch {
 					$this->appendToLog($file, "********** ERROR: FUTURE Replacement Text is not defined");
 				}
 			}
-			if(!isset(self::$searchKeyTotals[$this->searchKey])) {
-				self::$searchKeyTotals[$this->searchKey] = 0;
+			if(!isset(self::$search_key_totals[$this->searchKey])) {
+				self::$search_key_totals[$this->searchKey] = 0;
 			}
-			self::$searchKeyTotals[$this->searchKey] += $found;
+			self::$search_key_totals[$this->searchKey] += $found;
 
-			if(!isset(self::$folderTotals[dirname($file)])) {
-						self::$folderTotals[dirname($file)] = 0;
-					}
-					self::$folderTotals[dirname($file)] += $found;
-
+			if(!isset(self::$folder_totals[dirname($file)])) {
+				self::$folder_totals[dirname($file)] = 0;
+			}
+			self::$folder_totals[dirname($file)] += $found;
 		}
 		else{
 			//$this->appendToLog($file, "No matching Found", $this->replacementKey);
@@ -706,11 +754,15 @@ class TextSearch {
  */
  private function appendToLog($file, $matchStr, $replacementKey = null){
 		if($this->logString == ''){
-			 $this->logString = "'".$this->searchKey."'\n";
+			$this->logString = "'".$this->searchKey."'\n";
 		}
 		$this->logString .= "------ ------ $matchStr In $file ... '$replacementKey'\n";
 	}
 
+	/**
+	 *
+	 * @param String $text
+	 */
 	private function addToOutput($text) {
 		$this->output .= $text;
 	}
