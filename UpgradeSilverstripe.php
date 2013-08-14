@@ -761,7 +761,8 @@ class TextSearch {
 		if($this->logString == ''){
 			$this->logString = "'".$this->searchKey."'\n";
 		}
-		$this->logString .= "\t$matchStr In $file ... '$replacementKey'\n";
+		$file = basename($file);
+		$this->logString .= "   $matchStr IN $file\n";
 	}
 
 	/**
