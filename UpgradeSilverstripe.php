@@ -69,10 +69,10 @@ class UpgradeSilverstripe {
 			$style = "COMPLICATED";
 		}
 		if($doBasicReplacement) {
-			$this->addToOutput("\n#################################### \nREAL $style REPLACEMENTS \n####################################\n ");
+			$this->addToOutput("\n#################################### \n    REAL $style REPLACEMENTS \n####################################\n ");
 		}
 		else {
-			$this->addToOutput("\n#################################### \nTEST $style REPLACEMENTS ONLY \n#################################### \n ");
+			$this->addToOutput("\n#################################### \n    TEST ALL REPLACEMENTS ONLY \n#################################### \n ");
 			$logFileLocation = null;
 		}
 
@@ -124,7 +124,7 @@ class UpgradeSilverstripe {
 		$textSearchMachine->setBasePath($pathLocation);
 		$array = $replacementDataObject->getReplacementArrays($to);
 		foreach($array as $extension => $extensionArray) {
-			$this->addToOutput("\n\n\n\n++++++++++++++++++++++++++++++++++++ \nCHECKING $extension FILES \n++++++++++++++++++++++++++++++++++++ \n");
+			$this->addToOutput("\n\n\n\n++++++++++++++++++++++++++++++++++++ \n    CHECKING $extension FILES \n++++++++++++++++++++++++++++++++++++ \n\n\n\n");
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0];
@@ -562,10 +562,10 @@ class TextSearch {
 			$this->searchFileData("$location");
 		}
 		if($this->totalFound) {
-			$this->addToOutput("------ ".$this->totalFound." matches for: ".$this->logString);
+			$this->addToOutput("\t ".$this->totalFound." matches for: ".$this->logString);
 		}
 		if($this->errorText!= '' ) {
-			$this->addToOutput("------Error-----".$this->errorText);
+			$this->addToOutput("\t Error-----".$this->errorText);
 		}
 		$this->logString = "";
 		$this->errorText = "";
@@ -756,7 +756,7 @@ class TextSearch {
 		if($this->logString == ''){
 			$this->logString = "'".$this->searchKey."'\n";
 		}
-		$this->logString .= "------ ------ $matchStr In $file ... '$replacementKey'\n";
+		$this->logString .= "\t\t $matchStr In $file ... '$replacementKey'\n";
 	}
 
 	/**
