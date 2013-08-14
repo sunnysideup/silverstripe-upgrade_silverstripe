@@ -153,6 +153,9 @@ class ReplacementData {
 			array('Form::disable_all_security_tokens',
 			      'SecurityToken::disable'),
 
+			array('Root.Content.Main',
+			      'Root.Main'),
+
 			array('Root.Content.',
 			      'Root.'),
 
@@ -170,9 +173,6 @@ class ReplacementData {
 
 			array('Convert::json2array(',
 			      'json_decode('),
-
-			array('Root.Content.Main',
-			      'Root.Main'),
 
 			array('Root.Content.Metadata',
 			      'Root.Main'),
