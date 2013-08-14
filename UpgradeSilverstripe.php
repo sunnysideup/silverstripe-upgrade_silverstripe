@@ -14,9 +14,9 @@ define("__FROM_COMMAND_LINE__", PHP_SAPI === 'cli');
 
 class UpgradeSilverstripe {
 
-	private $marker = "\n ###  @@@@ UPGRADE_REQUIRED \n";
+	private $marker = "### @@@@ UPGRADE REQUIRED @@@@ ###";
 
-	private $endMarker = "\n @@@@ ###\n";
+	private $endMarker = "### @@@@ ########### @@@@ ###";
 
 	private $output = "";
 
@@ -139,7 +139,7 @@ class UpgradeSilverstripe {
 				$isStraightReplace = true;
 				if(isset($replaceArray[2])) {// Has comment
 					$isStraightReplace = false;
-					$fullReplacement = $this->marker."\n/* Replaced ".$replaceArray[0]."\nComment: ".$replaceArray[2]." \n".$this->endMarker."*/".$replaceArray[1];
+					$fullReplacement = "/*\n".$this->marker."\nFIND: ".$replaceArray[0]."\nNOTE: ".$replaceArray[2]." \n".$this->endMarker."\n*/".$replaceArray[1];
 				}
 				else { // Straight replace
 					$fullReplacement = $replaceArray[1];
