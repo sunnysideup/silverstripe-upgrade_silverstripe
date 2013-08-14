@@ -25,7 +25,7 @@ if(isset($argv[1])) {
 
 
 define("__FROM_COMMAND_LINE__", PHP_SAPI === 'cli');
-if("__FROM_COMMAND_LINE__") {
+if(__FROM_COMMAND_LINE__) {
 	$obj = new UpgradeSilverstripe();
 
 	//***************************************************

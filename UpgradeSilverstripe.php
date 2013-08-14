@@ -86,7 +86,8 @@ class UpgradeSilverstripe {
 		$this->numberOfStraightReplacements = 0;
 		$this->numberOfAllReplacements = 0;
 		foreach($previousTos as $previousTo) {
-			$this->addToOutput("\n------------------------------------\nStart Checking for upgrade to Silverstripe: $previousTo \n------------------------------------");
+			$totalForOneVersion = 0;
+			$this->addToOutput("\n------------------------------------\nUpgrade to Silverstripe: $previousTo \n------------------------------------");
 			if($to == $previousTo) {
 				$migrationChecksDone = true;
 				if(!$previousMigrationsDone) {
@@ -94,6 +95,7 @@ class UpgradeSilverstripe {
 				}
 			}
 			$numberToAdd = $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, true);
+			$totalForOneVersion += $numberToAdd;
 			$this->numberOfStraightReplacements += $numberToAdd;
 			if($this->numberOfStraightReplacements == 0) {
 				$this->addToOutput("\n[OK] migration to $previousTo for basic replacements completed.");
@@ -102,7 +104,8 @@ class UpgradeSilverstripe {
 				$this->addToOutput( "\n[TO DO] migration to $previousTo for basic replacements NOT completed yet ($numberToAdd items to do).");
 				$previousMigrationsDone = false;
 			}
-			$numberToAdd += $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			$numberToAdd = $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
+			$totalForOneVersion += $numberToAdd;
 			$this->numberOfAllReplacements += $numberToAdd;
 			if($this->numberOfAllReplacements == 0) {
 				$this->addToOutput("\n[OK] migration to $previousTo for complicated items completed.");
@@ -111,7 +114,8 @@ class UpgradeSilverstripe {
 				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet ($numberToAdd items to do).");
 				$previousMigrationsDone = false;
 			}
-			$this->addToOutput("\n------------------------------------\nEnd $previousTo \n------------------------------------\n");
+			$this->addToOutput("\n------------------------------------\n$totalForOneVersion items to do for $previousTo \n------------------------------------\n");
+			$totalForOneVersion = 0;
 			$this->addToOutput( "\n\n");
 			if($migrationChecksDone) {
 				break;
@@ -192,6 +196,7 @@ class UpgradeSilverstripe {
 		$simpleOnly = true
 	) {
 		//basic checks
+		$total = 0;
 		$textSearchMachine = new TextSearch();
 
 		//get replacements
@@ -216,12 +221,11 @@ class UpgradeSilverstripe {
 				$textSearchMachine->startSearching();//starting search
 			}
 			//IMPORTANT!
-			$number = $textSearchMachine->showFormattedSearchTotals(true);
+			$total += $textSearchMachine->showFormattedSearchTotals(true);
 		}
-		$number = $textSearchMachine->getTotalTotalSearches();
 		//flush output anyway!
 		$textSearchMachine->getOutput();
-		return $number;
+		return $total;
 	}
 
 	/**
@@ -562,7 +566,7 @@ class TextSearch {
 			$this->searchFileData("$location");
 		}
 		if($this->totalFound) {
-			$this->addToOutput("\t ".$this->totalFound." matches for: ".$this->logString);
+			$this->addToOutput("".$this->totalFound." matches for: ".$this->logString);
 		}
 		if($this->errorText!= '' ) {
 			$this->addToOutput("\t Error-----".$this->errorText);
@@ -756,7 +760,7 @@ class TextSearch {
 		if($this->logString == ''){
 			$this->logString = "'".$this->searchKey."'\n";
 		}
-		$this->logString .= "\t\t $matchStr In $file ... '$replacementKey'\n";
+		$this->logString .= "\t$matchStr In $file ... '$replacementKey'\n";
 	}
 
 	/**
