@@ -66,6 +66,9 @@ class ReplacementData {
 		);
 		$array["3.0"]["php"] = array(
 
+			array('Folder::findOrMake',
+			      'Folder::find_or_make'),
+
 			array('Director::currentPage(',
 			      'Director::get_current_page('),
 

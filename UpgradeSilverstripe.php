@@ -704,7 +704,7 @@ class TextSearch {
 			if($this->isReplacingEnabled) {
 				if($this->replacementKey){
 					$outputStr = preg_replace($pattern, $this->replacementKey, $subject);
-					$foundStr = "Replaced in $found places";
+					$foundStr = "-- Replaced in $found places";
 					$this->writeToFile($file, $outputStr);
 					$this->appendToLog($file, $foundStr, $this->replacementKey);
 				}
