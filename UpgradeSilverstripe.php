@@ -127,6 +127,9 @@ class UpgradeSilverstripe {
 		//set basics
 		$textSearchMachine->addIgnoreFolderArray($ignoreFolderArray); //setting extensions to search files within
 		$textSearchMachine->setBasePath($pathLocation);
+		if($logFileLocation) {
+			$textSearchMachine->setLogFileLocation($logFileLocation);
+		}
 		$array = $replacementDataObject->getReplacementArrays($to);
 		foreach($array as $extension => $extensionArray) {
 			$this->addToOutput("\n\n\n\n++++++++++++++++++++++++++++++++++++ \n    CHECKING $extension FILES \n++++++++++++++++++++++++++++++++++++ \n\n\n\n");
@@ -172,7 +175,7 @@ class UpgradeSilverstripe {
 				}
 				//$textSearchMachine->showLog();//showing log
 			}
-			$replacements = $textSearchMachine->showFormattedSearchTotals(0, $logFileLocation);
+			$replacements = $textSearchMachine->showFormattedSearchTotals(false);
 			if($replacements) {
 				$this->addToOutput($textSearchMachine->getOutput());
 			}
@@ -330,6 +333,8 @@ class TextSearch {
 
 	private $basePath                  = '.';
 
+	private $logFileLocation           = '';
+
 	private $defaultIgnoreFolderArray  = array("cms", "assets", "sapphire", "framework", "upgrade_silverstripe", ".svn", ".git");
 
 	private $ignoreFolderArray         = array();
@@ -415,6 +420,16 @@ class TextSearch {
 	}
 
 	/**
+	 * Sets location for the log file
+	 * logs are only written for real replacements
+	 *   @param String
+	 *   @return none
+	 */
+	public function setLogFileLocation($logFileLocation) {
+		$this->logFileLocation = $logFileLocation;
+	}
+
+	/**
 	 *   Sets extensions to look
 	 *   @param Array extensions
 	 */
@@ -472,14 +487,9 @@ class TextSearch {
 	 * and clears it.
 	 * @return string
 	 */
-	public function getOutput($logFileLocation = null){
+	public function getOutput(){
 		$output = $this->output;
 		$this->output = "";
-		if($logFileLocation) {
-			$handle = fopen($file, "a");
-			fwrite($handle, $output);
-			fclose($handle);
-		}
 		return $output;
 	}
 
@@ -770,8 +780,13 @@ class TextSearch {
 	 *
 	 * @param String $text
 	 */
-	private function addToOutput($text) {
-		$this->output .= $text;
+	private function addToOutput($output) {
+		if($this->logFileLocation && $this->isReplacingEnabled) {
+			$handle = fopen($this->logFileLocation, "a");
+			fwrite($handle, $output);
+			fclose($handle);
+		}
+		$this->output .= $output;
 	}
 
 }
