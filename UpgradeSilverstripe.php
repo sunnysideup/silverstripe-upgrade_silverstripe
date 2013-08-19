@@ -113,7 +113,6 @@ class UpgradeSilverstripe {
 			}
 			else {
 				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet ($numberToAdd items to do).");
-				$previousMigrationsDone = false;
 			}
 			$this->addToOutput("\n------------------------------------\n$totalForOneVersion items to do for $previousTo \n------------------------------------\n");
 			$totalForOneVersion = 0;
