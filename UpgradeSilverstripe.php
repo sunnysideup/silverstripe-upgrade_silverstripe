@@ -149,14 +149,13 @@ class UpgradeSilverstripe {
 				$comment = isset($replaceArray[2]) ? $replaceArray[2] : "";
 				$codeReplacement = $replaceArray[1];
 				if(!$find) {
-					user_error("no replace is specified, replace is: $replace");
+					user_error("no find is specified, replace is: $replace");
 				}
 				if(!$fullReplacement) {
 					user_error("no replace is specified, find is: $find");
 				}
 				if($doBasicReplacement) {
-					if(!$markStickingPoints) {
-						if(strpos($this->marker, $fullReplacement) !== false) {
+					if(!$markStickingPoints && !$isStraightReplace) {
 							continue;
 						}
 					}
