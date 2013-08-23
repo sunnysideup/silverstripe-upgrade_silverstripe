@@ -156,8 +156,7 @@ class UpgradeSilverstripe {
 				}
 				if($doBasicReplacement) {
 					if(!$markStickingPoints && !$isStraightReplace) {
-							continue;
-						}
+						continue;
 					}
 					$textSearchMachine->setSearchKey($find);
 					$textSearchMachine->setReplacementKey($fullReplacement);
