@@ -19,6 +19,9 @@ if(!__FROM_COMMAND_LINE__) {
 	}
 }
 
+if(isset($_POST["pathAlternative"]) && !empty($_POST["pathAlternative"])) {
+	$_POST["path"] = $_POST["pathAlternative"];
+}
 
 
 if(!isset($_POST["path"]) && !__FROM_COMMAND_LINE__) {
@@ -35,6 +38,9 @@ if(!isset($_POST["path"]) && !__FROM_COMMAND_LINE__) {
 			<select name="path" size="10">
 				'.$optionList.'
 			</select>
+			<label for="pathAlternative">or:</label>
+			<input type="text" name="pathAlternative" />
+
 		</div>
 		<div class="gap">
 			<label for="to">to:</label>
@@ -129,7 +135,6 @@ if(__FROM_COMMAND_LINE__ || isset($_POST["path"])) {
 	);
 	if(!__FROM_COMMAND_LINE__) {
 		echo $outcome;
-		echo '<hr /><a href="index.php">try again</a>?';
 	}
 }
 

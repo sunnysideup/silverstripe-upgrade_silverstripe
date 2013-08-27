@@ -159,14 +159,14 @@ class UpgradeSilverstripe {
 					if(!$markStickingPoints && !$isStraightReplace) {
 						continue;
 					}
-					$textSearchMachine->setSearchKey($find);
+					$textSearchMachine->setSearchKey($find, 0, $isStraightReplace ? "BASIC" : "COMPLEX");
 					$textSearchMachine->setReplacementKey($fullReplacement);
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
 					//$textSearchMachine->writeLogToFile($logFileLocation);
 				}
 				else {
-					$textSearchMachine->setSearchKey($find);
+					$textSearchMachine->setSearchKey($find, 0, $isStraightReplace ? "BASIC" : "COMPLEX");
 					$textSearchMachine->setFutureReplacementKey($codeReplacement);
 					$textSearchMachine->startSearching();//starting search
 					//output - only write to log for real replacements!
@@ -212,13 +212,14 @@ class UpgradeSilverstripe {
 			$textSearchMachine->setExtensions(array($extension)); //setting extensions to search files within
 			foreach($extensionArray as $replaceArray) {
 				$find = $replaceArray[0];
-				if(isset($replaceArray[2]) && $simpleOnly) {// Has comment
+				$isStraightReplace = isset($replaceArray[2]) ? true : false;
+				if($isStraightReplace && $simpleOnly) {// Has comment
 					continue;
 				}
-				elseif(!isset($replaceArray[2]) && !$simpleOnly) {
+				elseif(!$isStraightReplace && !$simpleOnly) {
 					continue;
 				}
-				$textSearchMachine->setSearchKey($find);
+				$textSearchMachine->setSearchKey($find, 0, $isStraightReplace ? "BASIC" : "COMPLEX");
 				$textSearchMachine->setFutureReplacementKey("TEST ONLY");
 				$textSearchMachine->startSearching();//starting search
 			}
@@ -349,6 +350,8 @@ class TextSearch {
 
 	private $isReplacingEnabled        = 0;
 
+	private $replacementType           = "";
+
 	private $caseSensitive             = 0;
 
 	private $logString                 = ''; //details of one search
@@ -450,9 +453,10 @@ class TextSearch {
 	 * @param String $searchKey,
 	 * @param Boolean $caseSensitivity
 	 */
-	public function setSearchKey($searchKey, $caseSensitive = 0) {
-		$this->searchKey =      $searchKey;
-		$this->caseSensitive =  $caseSensitive;
+	public function setSearchKey($searchKey, $caseSensitive = 0, $replacementType) {
+		$this->searchKey        = $searchKey;
+		$this->caseSensitive    = $caseSensitive;
+		$this->replacementType  = $replacementType;
 	}
 
 	/**
@@ -576,7 +580,7 @@ class TextSearch {
 			$this->searchFileData("$location");
 		}
 		if($this->totalFound) {
-			$this->addToOutput("".$this->totalFound." matches for: ".$this->logString);
+			$this->addToOutput("".$this->totalFound." matches (".$this->replacementType.") for: ".$this->logString);
 		}
 		if($this->errorText!= '' ) {
 			$this->addToOutput("\t Error-----".$this->errorText);
