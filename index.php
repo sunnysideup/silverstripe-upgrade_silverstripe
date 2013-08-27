@@ -3,53 +3,65 @@
 require_once('UpgradeSilverstripe.php');
 
 if(!__FROM_COMMAND_LINE__) {
-	die("web interface has been disabled by default, please remove this line to enable it");
+	$whitelist = array('127.0.0.1');
+	if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+		die("web interface has been disabled by default, please remove this line to enable it");
+	}
+	//path to directory to scan
+	$directory = "../*";
+	//get all text files with a .txt extension.
+	$files = glob($directory, GLOB_ONLYDIR);
+	//print each file name
+	$optionList = "";
+	foreach($files as $file){
+		$fileName = str_replace('../', '', $file);
+		$optionList .= '<option value="'.$file.'">'.$fileName.'</option>';
+	}
 }
+
 
 
 if(!isset($_POST["path"]) && !__FROM_COMMAND_LINE__) {
 
 	echo '
-	<form method="post" action="index.php">
-		<div>
-			<label for="path">path: (e.g. /var/www/mysite.com or ..)</label>
-			<input name="path" />
+	<style>
+		.gap {margin-bottom: 20px;}
+		select, input, textarea, label {display: block;  width: 95%}
+		form input[type=\'radio\'] {display: inline;  width: auto; margin-left: 30px;}
+	</style>
+	<form method="post" action="index.php" target="iframer" style="width: 25%; float: left;">
+		<div class="gap">
+			<label for="path">path:</label>
+			<select name="path" size="10">
+				'.$optionList.'
+			</select>
 		</div>
-		<div>
+		<div class="gap">
 			<label for="to">to:</label>
-			<select name="to" >
-				<option name="">-- please select --</option>
-				<option name="3.0">3.0</option>
-				<option name="3.1">3.1</option>
-			</select>
+			<input type="radio" name="to" value="3.0">3.0
+			<input type="radio" name="to" value="3.1">3.1
 		</div>
-		<div>
+		<div class="gap">
 			<label for="reallyreplace">make basic changes:</label>
-			<select name="reallyreplace" >
-				<option name="no">no</option>
-				<option name="yes">yes</option>
-			</select>
+			<input type="radio" name="reallyreplace" value="no" checked="checked" />no
+			<input type="radio" name="reallyreplace" value="yes">yes
 		</div>
-		<div>
-			<label for="stickpoints">also make complex changess:</label>
-			<select name="stickpoints">
-				<option name="no">no</option>
-				<option name="yes">yes</option>
-			</select>
+		<div class="gap">
+			<label for="stickpoints">also make complex changes:</label>
+			<input type="radio" name="stickpoints" value="no" checked="checked" />no
+			<input type="radio" name="stickpoints" value="yes">yes
 		</div>
-		<div>
+		<div class="gap">
 			<label for="logfilelocation">log file location</label>
 			<input name="logfilelocation" value="./ss_upgrade_log.txt" />
 		</div>
-		<div>
+		<div class="gap">
 			<label for="ignorefolderarray">folders to ignore (comma separated - e.g. myfolderA,myFolderB)</label>
-			<input name="ignorefolderarray" value="" />
+			<textarea name="ignorefolderarray" value="">cms,framework</textarea>
 		</div>
 		<input type="submit" name="DO IT NOW" />
 	</form>
-
-
-	';
+	<iframe name="iframer" src="" width="70%" height="99%" style="float: right;"></iframe>';
 
 }
 
@@ -117,7 +129,7 @@ if(__FROM_COMMAND_LINE__ || isset($_POST["path"])) {
 	);
 	if(!__FROM_COMMAND_LINE__) {
 		echo $outcome;
+		echo '<hr /><a href="index.php">try again</a>?';
 	}
-
 }
 

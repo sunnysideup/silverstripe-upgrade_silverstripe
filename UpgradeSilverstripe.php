@@ -92,6 +92,7 @@ class UpgradeSilverstripe {
 			if($to == $previousTo) {
 				$migrationChecksDone = true;
 				if(!$previousMigrationsDone) {
+					echo $this->printItNow();
 					die("\nError: Your code is not ready to migrate to $to (see above)");
 				}
 			}
@@ -99,20 +100,20 @@ class UpgradeSilverstripe {
 			$totalForOneVersion += $numberToAdd;
 			$this->numberOfStraightReplacements += $numberToAdd;
 			if($this->numberOfStraightReplacements == 0) {
-				$this->addToOutput("\n[OK] migration to $previousTo for basic replacements completed.");
+				$this->addToOutput("\n[BASIC: DONE] migration to $previousTo for basic replacements completed.");
 			}
 			else {
-				$this->addToOutput( "\n[TO DO] migration to $previousTo for basic replacements NOT completed yet ($numberToAdd items to do).");
+				$this->addToOutput( "\n[BASIC: TO DO] migration to $previousTo for basic replacements NOT completed yet ($numberToAdd items to do).");
 				$previousMigrationsDone = false;
 			}
 			$numberToAdd = $this->numberOfReplacements($pathLocation, $previousTo,$ignoreFolderArray, false);
 			$totalForOneVersion += $numberToAdd;
 			$this->numberOfAllReplacements += $numberToAdd;
 			if($this->numberOfAllReplacements == 0) {
-				$this->addToOutput("\n[OK] migration to $previousTo for complicated items completed.");
+				$this->addToOutput("\n[COMPLEX: DONE] migration to $previousTo for complicated items completed.");
 			}
 			else {
-				$this->addToOutput( "\n[TO DO] migration to $previousTo for complicated items NOT completed yet ($numberToAdd items to do).");
+				$this->addToOutput( "\n[COMPLEX: UNSURE] migration to $previousTo for complicated items NOT completed yet ($numberToAdd items to do).");
 			}
 			$this->addToOutput("\n------------------------------------\n$totalForOneVersion items to do for $previousTo \n------------------------------------\n");
 			$totalForOneVersion = 0;
