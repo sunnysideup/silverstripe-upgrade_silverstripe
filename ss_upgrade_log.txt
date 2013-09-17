@@ -1,0 +1,1179 @@
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/GalleryPageContent.ss
+/templates/Includes/GalleryPageContent_PrettyPhoto.ss
+/templates/Layout/GalleryPage.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+2 matches for: 'Folder::findOrMake'
+   -- Replaced in 2 places IN GalleryPage.php
+1 matches for: 'new TextareaField'
+   -- Replaced in 1 places IN GalleryPage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/GalleryFile.php
+/code/GalleryPage.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+2:	 Folder::findOrMake
+1:	 new TextareaField
+
+------------------------------------
+Summary: by directory
+------------------------------------
+3:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+3:	 code/
+
+------------------------------------
+Total replacements: 3
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/GalleryPageContent.ss
+/templates/Includes/GalleryPageContent_PrettyPhoto.ss
+/templates/Layout/GalleryPage.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+1 matches for: 'public static $'
+   -- Replaced in 1 places IN GalleryPage.php
+1 matches for: 'protected static $'
+   -- Replaced in 1 places IN GalleryFile.php
+1 matches for: '->sort('
+   -- Replaced in 1 places IN GalleryPage.php
+1 matches for: '->filter('
+   -- Replaced in 1 places IN GalleryPage.php
+1 matches for: '->where('
+   -- Replaced in 1 places IN GalleryPage.php
+1 matches for: '->limit('
+   -- Replaced in 1 places IN GalleryPage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/GalleryFile.php
+/code/GalleryPage.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+1:	 ->where(
+1:	 ->limit(
+1:	 ->filter(
+1:	 ->sort(
+1:	 protected static $
+1:	 public static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+6:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+6:	 code/
+
+------------------------------------
+Total replacements: 6
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/HideMailto.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+3 matches for: 'protected static $'
+   -- Replaced in 3 places IN HideMailto.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/HideMailto.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+3:	 protected static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+3:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+3:	 code/
+
+------------------------------------
+Total replacements: 3
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/template/UsedToCreateCache4.ss
+/template/UsedToCreateCache1.ss
+/template/UsedToCreateCache2.ss
+/template/UsedToCreateCache3.ss
+/template/UsedToCreateCache0.ss
+/template/Includes/CachedField3.ss
+/template/Includes/CachedField4.ss
+/template/Includes/CachedField0.ss
+/template/Includes/CachedField1.ss
+/template/Includes/CachedField2.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+1 matches for: 'public static $'
+   -- Replaced in 1 places IN MenuCache.php
+7 matches for: 'protected static $'
+   -- Replaced in 3 places IN MenuCacheStatic.php
+   -- Replaced in 4 places IN MenuCache.php
+1 matches for: '->exclude('
+   -- Replaced in 1 places IN MenuCacheStatic.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/MenuCacheStatic.php
+/code/MenuCache.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+7:	 protected static $
+1:	 ->exclude(
+1:	 public static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+9:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+9:	 code/
+
+------------------------------------
+Total replacements: 9
+------------------------------------
+1 matches for: '<% control '
+   -- Replaced in 1 places IN MetaTagCMSControlFilesBody.ss
+1 matches for: '<% end_control '
+   -- Replaced in 1 places IN MetaTagCMSControlFilesBody.ss
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/MetaTagCMSControlPagesBody.ss
+/templates/Includes/MetaTagCMSControlFooter.ss
+/templates/Includes/MetaTagCMSControlFilesBody.ss
+/templates/Includes/MetaTagCMSControlPagination.ss
+/templates/Includes/MetaTagCMSControlHeader.ss
+/templates/MetaTagCMSControlFiles.ss
+/templates/MetaTagCMSControlFilesAjax.ss
+/templates/MetaTagCMSControlPagesAjax.ss
+/templates/MetaTagCMSControlPages.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+1:	 <% end_control 
+1:	 <% control 
+
+------------------------------------
+Summary: by directory
+------------------------------------
+2:	 /templates/Includes
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+2:	 templates/
+
+------------------------------------
+Total replacements: 2
+------------------------------------
+5 matches for: 'Folder::findOrMake'
+   -- Replaced in 3 places IN MetaTagCMSControlFileUse.php
+   -- Replaced in 2 places IN MetaTagCMSFixFileLocations.php
+1 matches for: 'Member::currentMember('
+   -- Replaced in 1 places IN MetaTagCMSControlFiles.php
+2 matches for: 'new DataObjectSet'
+   -- Replaced in 1 places IN MetaTagCMSControlFiles.php
+   -- Replaced in 1 places IN MetaTagCMSControlFileUse.php
+2 matches for: 'Director::redirect('
+   -- Replaced in 1 places IN MetaTagCMSControlPages.php
+   -- Replaced in 1 places IN MetaTagCMSControlFiles.php
+19 matches for: 'DataObject::get('
+   -- Replaced in 4 places IN MetaTagCMSControlFiles.php
+   -- Replaced in 6 places IN MetaTagCMSControlFileUse.php
+   -- Replaced in 5 places IN MetaTagCMSFixFileLocations.php
+   -- Replaced in 4 places IN MetaTagFileExtension.php
+1 matches for: 'DataObject::get_one('
+   -- Replaced in 1 places IN MetaTagCMSControlFiles.php
+6 matches for: 'DataObject::get_by_id('
+   -- Replaced in 4 places IN MetaTagCMSControlFiles.php
+   -- Replaced in 1 places IN MetaTagCMSFixFileLocations.php
+   -- Replaced in 1 places IN MetaTagFileExtension.php
+1 matches for: 'sapphire'
+   -- Replaced in 1 places IN MetaTagCMSControlFiles.php
+1 matches for: '->BaseHref('
+   -- Replaced in 1 places IN MetaTagsContentControllerEXT.php
+1 matches for: 'new TextareaField'
+   -- Replaced in 1 places IN MetaTagsSiteConfigDE.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/cms/MetaTagCMSControlPages.php
+/code/cms/MetaTagCMSControlFiles.php
+/code/model/MetaTagCMSControlFileUse.php
+/code/model/MetaTagsLinks.php
+/code/tasks/MetaTagCMSFixFileLocations.php
+/code/extension/MetaTagsContentControllerEXT.php
+/code/extension/MetaTagFileExtension.php
+/code/extension/MetaTagsSiteConfigDE.php
+/code/extension/MetaTagsSTE.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+19:	 DataObject::get(
+6:	 DataObject::get_by_id(
+5:	 Folder::findOrMake
+2:	 Director::redirect(
+2:	 new DataObjectSet
+1:	 new TextareaField
+1:	 ->BaseHref(
+1:	 DataObject::get_one(
+1:	 Member::currentMember(
+1:	 sapphire
+
+------------------------------------
+Summary: by directory
+------------------------------------
+14:	 /code/cms
+10:	 /code/model
+8:	 /code/tasks
+7:	 /code/extension
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+39:	 code/
+
+------------------------------------
+Total replacements: 39
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/CheckAllCountriesAndAllPrices.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+4 matches for: 'MetaTitle'
+   -- Replaced in 2 places IN Page.php
+   -- Replaced in 2 places IN ProductPage.php
+8 matches for: '->sort('
+   -- Replaced in 1 places IN LatestImagesGalleryPage.php
+   -- Replaced in 1 places IN CustomerGalleryPage.php
+   -- Replaced in 4 places IN Page.php
+   -- Replaced in 1 places IN CheckAllCountriesAndAllPrices.php
+   -- Replaced in 1 places IN Distributor.php
+42 matches for: '->filter('
+   -- Replaced in 1 places IN LatestImagesGalleryPage.php
+   -- Replaced in 2 places IN StockistCountryPage.php
+   -- Replaced in 2 places IN StockistSearchPage.php
+   -- Replaced in 1 places IN CustomerGalleryPage.php
+   -- Replaced in 4 places IN Page.php
+   -- Replaced in 3 places IN PhotoUploadPage.php
+   -- Replaced in 3 places IN MediaEntryPage.php
+   -- Replaced in 1 places IN HomePage.php
+   -- Replaced in 2 places IN StockistPage.php
+   -- Replaced in 1 places IN DistributorFAQPage.php
+   -- Replaced in 2 places IN ProductHolderPage.php
+   -- Replaced in 4 places IN CheckAllCountriesAndAllPrices.php
+   -- Replaced in 5 places IN Distributor.php
+   -- Replaced in 1 places IN EcommerceCountryDOD.php
+   -- Replaced in 2 places IN ProductPage.php
+   -- Replaced in 1 places IN CountryPriceUpdate_ObjectDOD.php
+   -- Replaced in 1 places IN CountryPrice_OrderDOD.php
+   -- Replaced in 1 places IN VariationsCountryPriceUpdateController.php
+   -- Replaced in 1 places IN CountryPrice.php
+   -- Replaced in 1 places IN CountryPrice_ObjectDOD.php
+   -- Replaced in 1 places IN MemberCMDOD.php
+   -- Replaced in 1 places IN SiteConfigExtras.php
+   -- Replaced in 1 places IN ProductImage.php
+1 matches for: '->exclude('
+   -- Replaced in 1 places IN ProductImage.php
+13 matches for: '->where('
+   -- Replaced in 1 places IN LatestImagesGalleryPage.php
+   -- Replaced in 1 places IN CustomerGalleryPage.php
+   -- Replaced in 4 places IN Page.php
+   -- Replaced in 1 places IN MediaArticlePage.php
+   -- Replaced in 1 places IN StockistPage.php
+   -- Replaced in 1 places IN DistributorFAQPage.php
+   -- Replaced in 2 places IN CheckAllCountriesAndAllPrices.php
+   -- Replaced in 1 places IN Distributor.php
+   -- Replaced in 1 places IN CountryPrice_ObjectDOD.php
+3 matches for: '->limit('
+   -- Replaced in 1 places IN LatestImagesGalleryPage.php
+   -- Replaced in 1 places IN CustomerGalleryPage.php
+   -- Replaced in 1 places IN VariationsCountryPriceUpdateController.php
+1 matches for: '->innerJoin('
+   -- Replaced in 1 places IN ProductPage.php
+3 matches for: 'new DateField'
+   -- Replaced in 1 places IN CustomerGalleryPage.php
+   -- Replaced in 2 places IN MediaArticlePage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/LatestImagesGalleryPage.php
+/code/StockistCountryPage.php
+/code/StockistSearchPage.php
+/code/CustomerGalleryPage.php
+/code/Page.php
+/code/PhotoUploadPage.php
+/code/MediaArticlePage.php
+/code/MediaEntryPage.php
+/code/TextPage.php
+/code/HomePage.php
+/code/StockistPage.php
+/code/ecommerce/tax/Zip2Tax.php
+/code/ecommerce/tax/MyGSTTaxModifier.php
+/code/ecommerce/OrderStepFeedback.php
+/code/ecommerce/OrderFormEXT.php
+/code/ecommerce/DistributorFAQPage.php
+/code/ecommerce/ProductVariationDOD.php
+/code/ecommerce/ProductHolderPage.php
+/code/ecommerce/CheckAllCountriesAndAllPrices.php
+/code/ecommerce/ProductRowPage.php
+/code/ecommerce/ProductAttributeValueDOD.php
+/code/ecommerce/Distributor.php
+/code/ecommerce/ProductAttributeTypeDOD.php
+/code/ecommerce/EcommerceCountryDOD.php
+/code/ecommerce/ProductPage.php
+/code/ecommerce/OrderFormAddressEXT.php
+/code/ecommerce/multicurrency/CountryPriceUpdate_ObjectDOD.php
+/code/ecommerce/multicurrency/CountryPrice_OrderDOD.php
+/code/ecommerce/multicurrency/VariationsCountryPriceUpdateController.php
+/code/ecommerce/multicurrency/CountryPrice.php
+/code/ecommerce/multicurrency/CountryPrice_ObjectDOD.php
+/code/ecommerce/payment/EwayPayment.php
+/code/cms/PageCommentEmailNotification.php
+/code/DataObjects/Advertisements.php
+/code/DataObjects/HomePageAdvertisement.php
+/code/newsletter/NewsletterArchiveHolder.php
+/code/newsletter/NewsletterArchive.php
+/code/newsletter/MemberCMDOD.php
+/code/config/SiteConfigExtras.php
+/code/File/CustomerImage.php
+/code/File/ProductImage.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+42:	 ->filter(
+13:	 ->where(
+8:	 ->sort(
+4:	 MetaTitle
+3:	 ->limit(
+3:	 new DateField
+1:	 ->exclude(
+1:	 ->innerJoin(
+
+------------------------------------
+Summary: by directory
+------------------------------------
+40:	 /code
+24:	 /code/ecommerce
+7:	 /code/ecommerce/multicurrency
+2:	 /code/File
+1:	 /code/config
+1:	 /code/newsletter
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+75:	 code/
+
+------------------------------------
+Total replacements: 75
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+4 matches for: 'public static $'
+   -- Replaced in 4 places IN pdfcrowd.php
+5 matches for: 'protected static $'
+   -- Replaced in 5 places IN PDFCrowdConverter.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/thirdparty/pdfcrowd.php
+/code/PDFCrowdConverter.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+5:	 protected static $
+4:	 public static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+5:	 /code
+4:	 /thirdparty
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+5:	 code/
+4:	 thirdparty/
+
+------------------------------------
+Total replacements: 9
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+3 matches for: 'protected static $'
+   -- Replaced in 3 places IN PrettyPhoto.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/PrettyPhoto.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+3:	 protected static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+3:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+3:	 code/
+
+------------------------------------
+Total replacements: 3
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/ShareThis.ss
+/templates/Includes/SocialNetworkingLinks.ss
+/templates/Includes/ShareAllExpandedList.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+3 matches for: 'public static $'
+   -- Replaced in 3 places IN SocialNetworkingModelAdmin.php
+14 matches for: 'protected static $'
+   -- Replaced in 3 places IN FacebookConnect.php
+   -- Replaced in 8 places IN ShareThisOptions.php
+   -- Replaced in 1 places IN FacebookFeed.php
+   -- Replaced in 2 places IN ShareThisSTE.php
+1 matches for: '->sort('
+   -- Replaced in 1 places IN ShareThisSTE.php
+6 matches for: '->filter('
+   -- Replaced in 1 places IN FacebookFeed.php
+   -- Replaced in 4 places IN ShareThisDataObject.php
+   -- Replaced in 1 places IN ShareThisSTE.php
+1 matches for: '->exclude('
+   -- Replaced in 1 places IN ShareThisDataObject.php
+1 matches for: '->limit('
+   -- Replaced in 1 places IN FacebookFeed.php
+11 matches for: '->find('
+   -- Replaced in 10 places IN simple_html_dom.php
+   -- Replaced in 1 places IN FacebookFeed.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/cms/SocialNetworkingModelAdmin.php
+/code/api/MyTwitter.php
+/code/api/FacebookConnect.php
+/code/api/simple_html_dom.php
+/code/api/FacebookFeed.php
+/code/api/PostToFacebook.php
+/code/api/junk/junk.php
+/code/model/ShareThisOptions.php
+/code/model/FacebookFeed.php
+/code/model/SocialMediaSessionConnection.php
+/code/model/ShareThisDataObject.php
+/code/model/SocialNetworkingLinksDataObject.php
+/code/model/FacebookSessionConnection.php
+/code/extension/SocialNetworksSTE.php
+/code/extension/ShareThisSiteConfigDE.php
+/code/extension/ShareThisSTE.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+14:	 protected static $
+11:	 ->find(
+6:	 ->filter(
+3:	 public static $
+1:	 ->sort(
+1:	 ->exclude(
+1:	 ->limit(
+
+------------------------------------
+Summary: by directory
+------------------------------------
+16:	 /code/api
+14:	 /code/model
+4:	 /code/extension
+3:	 /code/cms
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+37:	 code/
+
+------------------------------------
+Total replacements: 37
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+7 matches for: 'public static $'
+   -- Replaced in 2 places IN SimplestSpamSiteConfigExtension.php
+   -- Replaced in 5 places IN SimplestSpamFieldQuestion.php
+6 matches for: 'protected static $'
+   -- Replaced in 4 places IN InvisibleSpamField.php
+   -- Replaced in 2 places IN SimplestSpamField.php
+1 matches for: 'new TableField'
+   -- Replaced in 1 places IN SimplestSpamSiteConfigExtension.php
+1 matches for: '->limit('
+   -- Replaced in 1 places IN SimplestSpamField.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/cms/SimplestSpamSiteConfigExtension.php
+/code/model/SimplestSpamFieldQuestion.php
+/code/form/InvisibleSpamField.php
+/code/form/SimplestSpamField.php
+/code/form/InvisibleSpamProtector.php
+/code/form/SimplestSpamProtector.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+7:	 public static $
+6:	 protected static $
+1:	 ->limit(
+1:	 new TableField
+
+------------------------------------
+Summary: by directory
+------------------------------------
+7:	 /code/form
+5:	 /code/model
+3:	 /code/cms
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+15:	 code/
+
+------------------------------------
+Total replacements: 15
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/SiteMapList.ss
+/templates/Layout/SiteMapPage.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+2 matches for: 'protected static $'
+   -- Replaced in 2 places IN SitemapPageDecorator.php
+2 matches for: '->where('
+   -- Replaced in 1 places IN SiteMapPage.php
+   -- Replaced in 1 places IN SitemapPageDecorator.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/SiteMapPage.php
+/code/decorators/SitemapPageDecorator.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+2:	 ->where(
+2:	 protected static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+3:	 /code/decorators
+1:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+4:	 code/
+
+------------------------------------
+Total replacements: 4
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/StaffProfileOneShort.ss
+/templates/Includes/StaffProfileOne.ss
+/templates/Layout/StaffProfilesPage.ss
+/templates/Layout/StaffProfilesOnePerson.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+13 matches for: 'public static $'
+   -- Replaced in 9 places IN StaffProfile.php
+   -- Replaced in 4 places IN StaffProfilesPage.php
+1 matches for: 'protected static $'
+   -- Replaced in 1 places IN StaffProfilesPage.php
+1 matches for: '->filter('
+   -- Replaced in 1 places IN StaffProfilesPage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/model/StaffProfile.php
+/code/StaffProfilesOnePerson.php
+/code/StaffProfilesPage.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+13:	 public static $
+1:	 ->filter(
+1:	 protected static $
+
+------------------------------------
+Summary: by directory
+------------------------------------
+9:	 /code/model
+6:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+15:	 code/
+
+------------------------------------
+Total replacements: 15
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/TemplateOverviewPageDevelopmentFooter.ss
+/templates/Includes/TemplateOverviewSiteConfiguration.ss
+/templates/Includes/TemplateOverviewPageCMSDetail.ss
+/templates/Includes/TemplateOverviewList.ss
+/templates/Includes/TemplateOverviewPageMoreDetail.ss
+/templates/Layout/TemplateOverviewPage.ss
+/templates/CMSHelp.ss
+/templates/ErrorNotifierController.ss
+/templates/TemplateOverviewPageShowMoreList.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+2 matches for: 'Folder::findOrMake'
+   -- Replaced in 1 places IN ErrorNotifierController.php
+   -- Replaced in 1 places IN TemplateOverviewDescription.php
+1 matches for: 'extends ModelAdmin'
+   -- Replaced in 1 places IN TemplateOverviewDescriptionModelAdmin.php
+4 matches for: 'new TextareaField'
+   -- Replaced in 2 places IN ErrorNotifierController.php
+   -- Replaced in 2 places IN TemplateOverviewBug.php
+1 matches for: 'new FileField'
+   -- Replaced in 1 places IN ErrorNotifierController.php
+2 matches for: '->map('
+   -- Replaced in 1 places IN TemplateOverviewTestItem.php
+   -- Replaced in 1 places IN TemplateOverviewBug.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/control/ErrorNotifierController.php
+/code/control/CMSHelp.php
+/code/TemplateOverviewPage.php
+/code/TemplateOverviewTestPage.php
+/code/cms/TemplateOverviewDescriptionModelAdmin.php
+/code/extensions/TemplateOverviewPageExtension.php
+/code/extensions/TemplateOverviewPageDecorator.php
+/code/tasks/CheckAllTemplates.php
+/code/dataobjects/TemplateOverviewDescription.php
+/code/dataobjects/TemplateOverviewTestItem.php
+/code/dataobjects/TemplateOverviewTestItemEntry.php
+/code/dataobjects/TemplateOverviewBug.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+4:	 new TextareaField
+2:	 ->map(
+2:	 Folder::findOrMake
+1:	 extends ModelAdmin
+1:	 new FileField
+
+------------------------------------
+Summary: by directory
+------------------------------------
+5:	 /code/dataobjects
+4:	 /code/control
+1:	 /code/cms
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+10:	 code/
+
+------------------------------------
+Total replacements: 10
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/TypographySample.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+3 matches for: 'protected static $'
+   -- Replaced in 3 places IN TypographyTestPage.php
+1 matches for: 'MetaTitle'
+   -- Replaced in 1 places IN TypographyTestPage.php
+2 matches for: 'new DateField'
+   -- Replaced in 2 places IN TypographyTestPage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/TypographyTestPage.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+3:	 protected static $
+2:	 new DateField
+1:	 MetaTitle
+
+------------------------------------
+Summary: by directory
+------------------------------------
+6:	 /code
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+6:	 code/
+
+------------------------------------
+Total replacements: 6
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/VimeoObject.ss
+/templates/Includes/VimeoMenu.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+9 matches for: 'public static $'
+   -- Replaced in 3 places IN VimeoDataObjectAdmin.php
+   -- Replaced in 6 places IN VimeoDataObject.php
+19 matches for: 'protected static $'
+   -- Replaced in 16 places IN VimeoDataObject.php
+   -- Replaced in 3 places IN VimeoDOD.php
+2 matches for: '->filter('
+   -- Replaced in 1 places IN VimeoDataObject.php
+   -- Replaced in 1 places IN VimeoDOD.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/cms/VimeoDataObjectAdmin.php
+/code/model/VimeoDataObject.php
+/code/model/VimeoDOD.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+19:	 protected static $
+9:	 public static $
+2:	 ->filter(
+
+------------------------------------
+Summary: by directory
+------------------------------------
+27:	 /code/model
+3:	 /code/cms
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+30:	 code/
+
+------------------------------------
+Total replacements: 30
+------------------------------------
+
+------------------------------------
+Files Searched
+------------------------------------
+/templates/Includes/TemplateOverviewPageDevelopmentFooter.ss
+/templates/Includes/TemplateOverviewSiteConfiguration.ss
+/templates/Includes/TemplateOverviewPageCMSDetail.ss
+/templates/Includes/TemplateOverviewList.ss
+/templates/Includes/TemplateOverviewPageMoreDetail.ss
+/templates/Layout/TemplateOverviewPage.ss
+/templates/CMSHelp.ss
+/templates/ErrorNotifierController.ss
+/templates/TemplateOverviewPageShowMoreList.ss
+
+------------------------------------
+Summary: by search key
+------------------------------------
+
+------------------------------------
+Summary: by directory
+------------------------------------
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+
+------------------------------------
+Total replacements: 0
+------------------------------------
+25 matches for: 'public static $'
+   -- Replaced in 3 places IN TemplateOverviewDescriptionModelAdmin.php
+   -- Replaced in 3 places IN TemplateOverviewDescription.php
+   -- Replaced in 8 places IN TemplateOverviewTestItem.php
+   -- Replaced in 5 places IN TemplateOverviewTestItemEntry.php
+   -- Replaced in 6 places IN TemplateOverviewBug.php
+10 matches for: 'protected static $'
+   -- Replaced in 1 places IN ErrorNotifierController.php
+   -- Replaced in 2 places IN CMSHelp.php
+   -- Replaced in 4 places IN TemplateOverviewPage.php
+   -- Replaced in 2 places IN TemplateOverviewDescription.php
+   -- Replaced in 1 places IN TemplateOverviewBug.php
+1 matches for: 'MetaTitle'
+   -- Replaced in 1 places IN TemplateOverviewPage.php
+3 matches for: '->sort('
+   -- Replaced in 2 places IN TemplateOverviewPage.php
+   -- Replaced in 1 places IN TemplateOverviewPageExtension.php
+17 matches for: '->filter('
+   -- Replaced in 8 places IN TemplateOverviewPage.php
+   -- Replaced in 1 places IN TemplateOverviewTestPage.php
+   -- Replaced in 2 places IN TemplateOverviewPageExtension.php
+   -- Replaced in 1 places IN TemplateOverviewPageDecorator.php
+   -- Replaced in 2 places IN CheckAllTemplates.php
+   -- Replaced in 3 places IN TemplateOverviewDescription.php
+	 Error-----********** ERROR: Can not replace text. File ../templateoverview/code/tasks/CheckAllTemplates.php is not writable. 
+Please make it writable
+2 matches for: '->exclude('
+   -- Replaced in 1 places IN CheckAllTemplates.php
+   -- Replaced in 1 places IN TemplateOverviewDescription.php
+	 Error-----********** ERROR: Can not replace text. File ../templateoverview/code/tasks/CheckAllTemplates.php is not writable. 
+Please make it writable
+1 matches for: '->where('
+   -- Replaced in 1 places IN TemplateOverviewPageExtension.php
+3 matches for: '->limit('
+   -- Replaced in 3 places IN TemplateOverviewPage.php
+
+------------------------------------
+Files Searched
+------------------------------------
+/_config.php
+/code/control/ErrorNotifierController.php
+/code/control/CMSHelp.php
+/code/TemplateOverviewPage.php
+/code/TemplateOverviewTestPage.php
+/code/cms/TemplateOverviewDescriptionModelAdmin.php
+/code/extensions/TemplateOverviewPageExtension.php
+/code/extensions/TemplateOverviewPageDecorator.php
+/code/tasks/CheckAllTemplates.php
+/code/dataobjects/TemplateOverviewDescription.php
+/code/dataobjects/TemplateOverviewTestItem.php
+/code/dataobjects/TemplateOverviewTestItemEntry.php
+/code/dataobjects/TemplateOverviewBug.php
+
+------------------------------------
+Summary: by search key
+------------------------------------
+25:	 public static $
+17:	 ->filter(
+10:	 protected static $
+3:	 ->limit(
+3:	 ->sort(
+2:	 ->exclude(
+1:	 MetaTitle
+1:	 ->where(
+
+------------------------------------
+Summary: by directory
+------------------------------------
+29:	 /code/dataobjects
+19:	 /code
+5:	 /code/extensions
+3:	 /code/tasks
+3:	 /code/control
+3:	 /code/cms
+
+------------------------------------
+Summary: by root directory (/)
+------------------------------------
+62:	 code/
+
+------------------------------------
+Total replacements: 62
+------------------------------------
