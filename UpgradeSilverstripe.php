@@ -540,13 +540,15 @@ class TextSearch {
 			foreach(self::$folder_totals as $folder => $total) {
 				$path = str_replace($realBase, "", realpath($folder));
 				$pathArr = explode("/", $path);
-				$folderName = $pathArr[1]."/";
-				if(!isset($folderSimpleTotals[$folderName])) {
-					$folderSimpleTotals[$folderName] = 0;
+				if(isset($pathArr[1])) {
+					$folderName = $pathArr[1]."/";
+					if(!isset($folderSimpleTotals[$folderName])) {
+						$folderSimpleTotals[$folderName] = 0;
+					}
+					$folderSimpleTotals[$folderName] += $total;
+					$strippedFolder = str_replace($this->basePath, "", $folder);
+					$this->addToOutput(sprintf("%d:\t %s\n", $total, $strippedFolder));
 				}
-				$folderSimpleTotals[$folderName] += $total;
-				$strippedFolder = str_replace($this->basePath, "", $folder);
-				$this->addToOutput(sprintf("%d:\t %s\n", $total, $strippedFolder));
 			}
 			$strippedRealBase = "/";
 			$this->addToOutput(sprintf("\n------------------------------------\nSummary: by root directory (%s)\n------------------------------------\n", $strippedRealBase));
