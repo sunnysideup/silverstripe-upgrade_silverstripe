@@ -55,14 +55,14 @@ class ReplacementData {
 		$array["3.0"]["js"] = array();
 		$array["3.0"]["ss"] = array(
 
-			array('sapphire\/',
-			      'framework\/'),
+			array('sapphire',
+			      'framework'),
 
-			array('<% control ',
-			      '<% with/loop'),
+			array('<% control',
+			      '<% UPGRADE: with/loop'),
 
 			array('<% end_control ',
-			      '<% end_with/loop'),
+			      '<% UPGRADE: end_with/loop '),
 		);
 		$array["3.0"]["php"] = array(
 
