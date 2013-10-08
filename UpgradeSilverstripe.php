@@ -42,7 +42,7 @@ class UpgradeSilverstripe {
 	 */
 	public function run(
 		$pathLocation = ".",
-		$logFileLocation = "./ss_upgrade_log.txt",
+		$logFileLocation = "",
 		$to = "3.0",
 		$doBasicReplacement = false,
 		$markStickingPoints = false,
@@ -129,6 +129,9 @@ class UpgradeSilverstripe {
 		$textSearchMachine->setBasePath($pathLocation);
 		if($logFileLocation) {
 			$textSearchMachine->setLogFileLocation($logFileLocation);
+		}
+		else {
+			$textSearchMachine->setLogFileLocation($pathLocation."/ss_upgrade_log.txt");
 		}
 		$array = $replacementDataObject->getReplacementArrays($to);
 		foreach($array as $extension => $extensionArray) {
@@ -787,8 +790,13 @@ class TextSearch {
 	private function addToOutput($output) {
 		if($this->logFileLocation && $this->isReplacingEnabled) {
 			$handle = fopen($this->logFileLocation, "a");
-			fwrite($handle, $output);
-			fclose($handle);
+			if($handle) {
+				fwrite($handle, $output);
+				fclose($handle);
+			}
+			else {
+				die("\n\nLOG ERROR: Can not write to ".realpath(dirname($this->logFileLocation))." (".$this->logFileLocation.") .");
+			}
 		}
 		$this->output .= $output;
 	}

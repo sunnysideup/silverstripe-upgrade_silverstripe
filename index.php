@@ -58,8 +58,8 @@ if(!isset($_POST["path"]) && !__FROM_COMMAND_LINE__) {
 			<input type="radio" name="stickpoints" value="yes">yes
 		</div>
 		<div class="gap">
-			<label for="logfilelocation">log file location (defaults to upgrade_path/ss_upgrade_log)</label>
-			<input name="logfilelocation" value="./ss_upgrade_log" />
+			<label for="logfilelocation">log file location</label>
+			<input name="logfilelocation" value="" />
 		</div>
 		<div class="gap">
 			<label for="ignorefolderarray">folders to ignore (comma separated - e.g. myfolderA,myFolderB)</label>
@@ -102,8 +102,8 @@ $argv[4] = (isset($argv[4]) && $argv[4] == "yes") ? true : false;
 if(isset($_POST["logfilelocation"])) {
 	$argv[5] = $_POST["logfilelocation"];
 }
-if(empty($argv[5])) {
-	$argv[5] = $argv[1]."ss_upgrade_log";
+if(empty($argv[5]) && __FROM_COMMAND_LINE__) {
+	$argv[5] = "ss_upgrade_log.txt";
 }
 
 
