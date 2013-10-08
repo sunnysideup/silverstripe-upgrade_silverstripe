@@ -752,6 +752,15 @@ class ReplacementData {
 			array('protected static $',
 			      'private static $'),
 
+			array('private static $',
+			      'private stat@@ic $'),
+
+			array('static $',
+			      'private static $'),
+
+			array('private stat@@ic $',
+			      'private static $'),
+
 			array('->setContainerFieldSet(',
 			      '->setContainerFieldList('),
 
