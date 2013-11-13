@@ -221,6 +221,11 @@ class ReplacementData {
 
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
+			array('LeftAndMain::ForceReload',
+			      'LeftAndMain::ForceReload',
+			      'ForceReload method no longer exists... $this->redirectBack?'),
+
+
 			array('->FieldSet(',
 			      '->FieldList(',
 			      'For CompositeField only.'),
