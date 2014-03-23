@@ -59,10 +59,10 @@ class ReplacementData {
 			      'framework\/'),
 
 			array('<% control ',
-			      '<% with/loop'),
+			      '<% with/loop '),
 
 			array('<% end_control ',
-			      '<% end_with/loop'),
+			      '<% end_with/loop '),
 		);
 		$array["3.0"]["php"] = array(
 
