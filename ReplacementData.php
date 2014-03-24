@@ -306,7 +306,7 @@ class ReplacementData {
 			      'FRAMEWORK_DIR',
 			      ' - changed from sapphire/ to framework/ - using constant preferred.  '),
 
-			array('::set_static(',
+			array('Object::set_static(',
 			      'Config::inst()->update(',
 			      ' `Object::set_static(\'MyClass\', \'myvar\')` becomes `Config::inst()->update(\'MyClass\', \'myvar\', \'myval\')` instead.  '),
 
