@@ -276,7 +276,7 @@ class ReplacementData {
 
 			array('new ImageField(',
 			      'new UploadField(',
-			      ' Check Syntax'),
+			      ' Check Syntax - see http://doc.silverstripe.org/framework/en/trunk/reference/uploadfield'),
 
 			array('DataObjectDecorator',
 			      'DataExtension',
