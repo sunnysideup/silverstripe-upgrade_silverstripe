@@ -260,19 +260,19 @@ class ReplacementData {
 
 			array('new HasManyComplexTableField',
 			      'new GridField(',
-			      ' check syntax  '),
+			      ' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
 			array('new ManyManyComplexTableField',
 			      'new GridField(',
-			      ' check syntax '),
+			      ' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
 			array('new ComplexTableField',
 			      'new GridField(',
-			      ' check syntax '),
+			      ' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
 			array('new TableListField',
 			      'new GridField(',
-			      ' check syntax  '),
+			      ' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
 			array('new ImageField(',
 			      'new UploadField(',
@@ -716,8 +716,11 @@ class ReplacementData {
 			      'LeftAndMain::set_loading_image(',
 			      'Removed (no explanation)'),
 
+			array('->isAdmin()',
+			      '->inGroup("ADMIN")'),
+
 			array('->isAdmin(',
-			      '->isAdmin(',
+			      '->inGroup(',
 			      'Use ->inGroup("ADMIN") instead'),
 
 			//MUST TO LAST
