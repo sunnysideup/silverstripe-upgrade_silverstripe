@@ -27,9 +27,7 @@ line. To use it via your web browser:
 From the command line use the `index.php` file with positional
 arguments:
 
-```ssh
     $ php index.php /var/www/mywebsite.com/ 3.0 no no
-```
 
 This will run an analysis and give you a summary of changes that will be
 made.
@@ -37,9 +35,7 @@ made.
 Next, to make the replacements in file (including replacements that'll
 have to be manually fixed):
 
-```ssh
     $ php index.php /var/www/mywebsite.com/ 3.0 yes yes
-```
 
 (The `$` character above denotes command line, don't add it to your
 command!)
