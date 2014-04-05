@@ -230,6 +230,10 @@ class ReplacementData {
 			      '->FieldList(',
 			      'For CompositeField only.'),
 
+			array('Requirements::themedCSS(',
+			      'Requirements::themedCSS(',
+			      'Include module name as so: themedCSS("MyCssFile", "mymodulename", "print") '),
+
 			array('Director::redirect(',
 			      '$this->redirect(',
 			      'this should be a controller class, otherwise use Controller::curr()->redirect'),
@@ -1476,6 +1480,10 @@ class ReplacementData {
 			array('SSViewer::getOption(',
 			      'SSViewer::getOption(',
 			      'Use the "SSViewer.rewrite_hash_links" or "SSViewer.<optionName>" config setting instead'),
+
+			array('singleton(',
+			      'singleton(',
+			      'Consider using ClassName::create()'),
 
 		);
 		ksort($array);
