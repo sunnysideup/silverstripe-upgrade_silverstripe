@@ -12,9 +12,5 @@
 			"email" : "modules@sunnysideup.co.nz",
 			"role" : "lead developer"
 		}
-	],
-	"require":{
-		"silverstripe/framework": "~3.1",
-		"silverstripe/cms": "~3.1"
-	}
+	]
 }
