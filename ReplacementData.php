@@ -58,6 +58,21 @@ class ReplacementData {
 			array('sapphire\/',
 			      'framework\/'),
 
+			array('<% control Menu(1)',
+			      '<% loop Menu(1)'),
+
+			array('<% control Menu(2)',
+			      '<% loop Menu(2)'),
+
+			array('<% control Menu(3)',
+			      '<% loop Menu(3)'),
+
+			array('<% control Parent',
+			      '<% with Parent'),
+
+			array('<% control Children',
+			      '<% loop Children'),
+
 			array('<% control ',
 			      '<% with/loop '),
 
