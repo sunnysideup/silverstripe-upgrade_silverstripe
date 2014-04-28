@@ -70,6 +70,9 @@ class ReplacementData {
 			array('<% control Parent',
 			      '<% with Parent'),
 
+			array('<% control SiteConfig',
+			      '<% with SiteConfig'),
+
 			array('<% control Children',
 			      '<% loop Children'),
 
@@ -749,7 +752,12 @@ class ReplacementData {
 
 			array('->toDropDownMap(',
 			      '->toDropDownMap(',
-			      'Use ->map()->toArray() instead')
+			      'Use ->map()->toArray() instead'),
+
+			array('new DataObjectManager',
+			      'new GridField',
+			      'replace DataObjectManager with a gridfield')
+
 
 		);
 
