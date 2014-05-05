@@ -76,17 +76,26 @@ class ReplacementData {
 			array('<% control Children',
 						'<% loop Children'),
 
+			array('<% control Images',
+						'<% loop Images'),
+
 			array('<% control Image',
 						'<% with Image'),
 
 			array('<% control Photos',
 						'<% loop Photos'),
 
+			array('<% control Photo',
+						'<% with Photo'),
+
 			array('<% control Pages',
 						'<% loop Pages'),
 
 			array('<% control Page',
 						'<% with Page'),
+
+			array('<% control Results',
+						'<% loop Results'),
 
 			array('<% control ',
 						'<% with/loop '),
