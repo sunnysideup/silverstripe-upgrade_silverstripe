@@ -80,7 +80,7 @@ class ReplacementData {
 						'<% with/loop '),
 
 			array('<% end_control ',
-						'<% end_with/loop '),
+						'<% end_loop/with '),
 		);
 		$array["3.0"]["php"] = array(
 
