@@ -76,11 +76,23 @@ class ReplacementData {
 			array('<% control Children',
 						'<% loop Children'),
 
+			array('<% control Image',
+						'<% with Image'),
+
+			array('<% control Photos',
+						'<% loop Photos'),
+
+			array('<% control Pages',
+						'<% loop Pages'),
+
+			array('<% control Page',
+						'<% with Page'),
+
 			array('<% control ',
 						'<% with/loop '),
 
 			array('<% end_control ',
-						'<% end_loop/with '),
+						'<% end_loop/with ')
 		);
 		$array["3.0"]["php"] = array(
 
