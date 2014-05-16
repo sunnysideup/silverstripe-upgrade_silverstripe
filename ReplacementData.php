@@ -785,11 +785,11 @@ class ReplacementData {
 
 			array('::set_',
 						':\n  ',
-						'consider setting statics through yml files - change MyClass:set_my_var(1) to Config::inst()->update->("MyClass", "my_var", 1); '),
+						'consider setting statics through yml files, see http://doc.silverstripe.com/framework/en/topics/configuration, OR change  MyClass:set_my_var(1) to Config::inst()->update->("MyClass", "my_var", 1); '),
 
 			array('::get_',
 						'::get_',
-						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar");')
+						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar"); - see http://doc.silverstripe.com/framework/en/topics/configuration')
 
 		);
 
