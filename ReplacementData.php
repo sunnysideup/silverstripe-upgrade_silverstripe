@@ -781,8 +781,15 @@ class ReplacementData {
 
 			array('new ImageDataObjectManager',
 						'new GridField',
-						'replace ImageDataObjectManager with a Gridfield: http://doc.silverstripe.org/framework/en/reference/grid-field')
+						'replace ImageDataObjectManager with a Gridfield: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
+			array('::set_',
+						':\n  ',
+						'consider setting statics through yml files - change MyClass:set_my_var(1) to Config::inst()->update->("MyClass", "my_var", 1); '),
+
+			array('::get_',
+						'::get_',
+						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar");')
 
 		);
 
