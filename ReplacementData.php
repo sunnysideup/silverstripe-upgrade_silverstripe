@@ -258,6 +258,15 @@ class ReplacementData {
 			array('$ParsedContent',
 						'$Content'),
 
+			array('return DataObject::get_one(\'HomePage\') == null;',
+						'return HomePage::get()->first() ? false: true;'),
+
+			array('return DataObject::get_one("HomePage") == null;',
+						'return HomePage::get()->first() ? false: true;'),
+
+			array('DataObject::get_one("SiteConfig")',
+						'SiteConfig::current_site_config()'),
+
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
 			array('LeftAndMain::ForceReload',
@@ -792,7 +801,7 @@ class ReplacementData {
 
 			array('::get_',
 						'::get_',
-						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar"); - see http://doc.silverstripe.com/framework/en/topics/configuration')
+						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar"); - see http://doc.silverstripe.com/framework/en/topics/configuration'),
 
 			array('DataObject::get_TEMPORARY_CHANGE_one',
 						'DataObject::get_one'),
@@ -800,6 +809,7 @@ class ReplacementData {
 			array('extends ImageField',
 						'extends UploadField',
 						'Please review class as Upload field is very different from the old ImageField')
+
 		);
 
 
