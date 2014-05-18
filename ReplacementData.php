@@ -267,6 +267,9 @@ class ReplacementData {
 			array('DataObject::get_one("SiteConfig")',
 						'SiteConfig::current_site_config()'),
 
+			array('function updateCMSFields(FieldList &$fields)',
+						'function updateCMSFields(FieldList $fields)'),
+
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
 			array('LeftAndMain::ForceReload',
@@ -315,6 +318,10 @@ class ReplacementData {
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
 			array('new ManyManyComplexTableField',
+						'new GridField(',
+						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('new ManyManyDataObjectManager',
 						'new GridField(',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
