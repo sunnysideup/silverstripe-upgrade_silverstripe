@@ -270,6 +270,12 @@ class ReplacementData {
 			array('function updateCMSFields(FieldList &$fields)',
 						'function updateCMSFields(FieldList $fields)'),
 
+			array('mysql_affected_rows()',
+						'DB::getConn()->affectedRows()'),
+
+			array('mysql_info()',
+						'mysql_info(DB::getConn())'),
+
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
 			array('LeftAndMain::ForceReload',
