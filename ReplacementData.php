@@ -273,10 +273,21 @@ class ReplacementData {
 			array('mysql_affected_rows()',
 						'DB::getConn()->affectedRows()'),
 
+			array('ImageAttachmentField',
+						'UploadField'),
+
 			array('mysql_info()',
 						'mysql_info(DB::getConn())'),
 
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
+
+			array('ImageAttachmentField',
+						'ImageAttachmentField',
+						'Replace ImageAttachmentField with UploadField as SimpleHTMLEditorField is part of DataObjectManager'),
+
+			array('SimpleHTMLEditorField',
+						'SimpleHTMLEditorField',
+						'Replace SimpleHTMLEditorField with HTMLEditorField as SimpleHTMLEditorField is part of DataObjectManager'),
 
 			array('LeftAndMain::ForceReload',
 						'LeftAndMain::ForceReload',
@@ -818,6 +829,10 @@ class ReplacementData {
 
 			array('DataObject::get_TEMPORARY_CHANGE_one',
 						'DataObject::get_one'),
+
+			array('DataObjectManager_Popup',
+						'DataObjectManager_Popup',
+						'This is part of the Data Object Manager Module, you need to replace it (or just delete it).'),
 
 			array('extends ImageField',
 						'extends UploadField',
