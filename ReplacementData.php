@@ -117,8 +117,20 @@ class ReplacementData {
 			array('new DataObjectSet',
 						'new ArrayList'),
 
+			array('@return DataObjectSet',
+						'@return ArrayList'),
+
+			array('@param DataObjectSet',
+						'@param ArrayList'),
+
 			array('new FieldSet',
 						'new FieldList'),
+
+			array('@return FieldSet',
+						'@return FieldList'),
+
+			array('@param FieldSet',
+						'@param FieldList'),
 
 			array('DBField::create(',
 						'DBField::create_field('),
@@ -252,6 +264,12 @@ class ReplacementData {
 			array('new SubstringFilter',
 						'new PartialMatchFilter'),
 
+			array('@return SubstringFilter',
+						'@return PartialMatchFilter'),
+
+			array('@param SubstringFilter',
+						'@param PartialMatchFilter'),
+
 			array('$ParagraphSummary',
 						'$Content'),
 
@@ -331,28 +349,64 @@ class ReplacementData {
 						' check filter = "", sort = "", blank=""  '),
 
 			array('new HasManyComplexTableField',
-						'new GridField(',
+						'new GridField',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('@param HasManyComplexTableField',
+						'@param GridField'),
+
+			array('@return HasManyComplexTableField',
+						'@return GridField'),
 
 			array('new ManyManyComplexTableField',
-						'new GridField(',
+						'new GridField',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('@param ManyManyComplexTableField',
+						'@param GridField'),
+
+			array('@return ManyManyComplexTableField',
+						'@return GridField'),
 
 			array('new ManyManyDataObjectManager',
-						'new GridField(',
+						'new GridField',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('@param ManyManyDataObjectManager',
+						'@param GridField'),
+
+			array('@return ManyManyDataObjectManager',
+						'@return GridField'),
 
 			array('new ComplexTableField',
-						'new GridField(',
+						'new GridField',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
+			array('@param ComplexTableField',
+						'@param GridField'),
+
+			array('@return ComplexTableField',
+						'@return GridField'),
+
 			array('new TableListField',
-						'new GridField(',
+						'new GridField',
 						' check syntax: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('@param TableListField',
+						'@param GridField'),
+
+			array('@return TableListField',
+						'@return GridField'),
 
 			array('new ImageField(',
 						'new UploadField(',
 						' Check Syntax - see http://doc.silverstripe.org/framework/en/trunk/reference/uploadfield'),
+
+			array('@param ImageField',
+						'@param UploadField'),
+
+			array('@return ImageField',
+						'@return UploadField'),
 
 			array('DataObjectDecorator',
 						'DataExtension',
@@ -547,6 +601,12 @@ class ReplacementData {
 			array('new SimpleImageField',
 						'new FileIframeField',
 						' Use UploadField instead. Note: $folderName optional constructor argument must now be set using a setter on the instance of the field.\nAlso recommended to use UploadField with setAllowedExtensions instead.\nSee http://doc.silverstripe.org/framework/en/trunk/reference/uploadfield for more details.'),
+
+			array('@param SimpleImageField',
+						'@param FileIframeField'),
+
+			array('@return SimpleImageField',
+						'@return FileIframeField'),
 
 			array('new FileIframeField',
 						'new FileIframeField',
@@ -812,9 +872,21 @@ class ReplacementData {
 						'new GridField',
 						'replace DataObjectManager with a gridfield: http://doc.silverstripe.org/framework/en/reference/grid-field'),
 
+			array('@param DataObjectManager',
+						'@param GridField'),
+
+			array('@return DataObjectManager',
+						'@return GridField'),
+
 			array('new ImageDataObjectManager',
 						'new GridField',
 						'replace ImageDataObjectManager with a Gridfield: http://doc.silverstripe.org/framework/en/reference/grid-field'),
+
+			array('@param ImageDataObjectManager',
+						'@param GridField'),
+
+			array('@return ImageDataObjectManager',
+						'@return GridField'),
 
 			array('::set_',
 						':\n  ',
@@ -976,6 +1048,12 @@ class ReplacementData {
 			array('new Member_ProfileForm',
 						'new CMSProfileController',
 						'check syntax'),
+
+			array('@param Member_ProfileForm',
+						'@param CMSProfileController'),
+
+			array('@return Member_ProfileForm',
+						'@return CMSProfileController'),
 
 			array('extends Member_ProfileForm',
 						'extends CMSProfileController',
@@ -1218,6 +1296,12 @@ class ReplacementData {
 						'new ReadonlyField',
 						'Use custom javascript with a ReadonlyField.'),
 
+			array('@param ToggleField',
+						'@param ReadonlyField'),
+
+			array('@return ToggleField',
+						'@return ReadonlyField'),
+
 			array('->Aggregate(',
 						'->Aggregate(',
 						'Call aggregate methods on a DataList directly instead.  To replace your deprecated aggregate calls
@@ -1236,6 +1320,12 @@ class ReplacementData {
 						'new ExactMatchFilter',
 						'Use ExactMatchFilter instead.'),
 
+			array('@param ExactMatchMultiFilter',
+						'@param ExactMatchFilter'),
+
+			array('@return ExactMatchMultiFilter',
+						'@return ExactMatchFilter'),
+
 			array('extends ExactMatchMultiFilter',
 						'extends ExactMatchFilter',
 						'Use ExactMatchFilter instead.'),
@@ -1243,6 +1333,12 @@ class ReplacementData {
 			array('new NegationFilter',
 						'new ExactMatchFilter',
 						'Use ExactMatchFilter:not instead. Check syntax'),
+
+			array('@param NegationFilter',
+						'@param ExactMatchFilter'),
+
+			array('@return NegationFilter',
+						'@return ExactMatchFilter'),
 
 			array('extends NegationFilter',
 						'extends ExactMatchFilter',
@@ -1252,9 +1348,21 @@ class ReplacementData {
 						'new StartsWithFilter',
 						'Use StartsWithFilter instead. Check syntax'),
 
+			array('@param StartsWithMultiFilter',
+						'@param StartsWithFilter'),
+
+			array('@return StartsWithMultiFilter',
+						'@return StartsWithFilter'),
+
 			array('extends StartsWithMultiFilter',
 						'extends ExactMatchFilter',
 						'Use StartsWithFilter instead. Check syntax'),
+
+			array('@param StartsWithMultiFilter',
+						'@param ExactMatchFilter'),
+
+			array('@return StartsWithMultiFilter',
+						'@return ExactMatchFilter'),
 
 			array('Permission::add_to_hidden_permissions(',
 						'Permission::add_to_hidden_permissions(',
