@@ -299,6 +299,10 @@ class ReplacementData {
 
 			# This is dangerous because custom code might call the old statics from a non page/page-controller
 
+			array('SortableDataObject',
+						'SortableDataObject',
+						'Replace SortableDataObject by adding sortable gridfield or something along those lines. SortableDataObject is part of DataObjectManager, which is not suitable for SS 3+.'),
+
 			array('ImageAttachmentField',
 						'ImageAttachmentField',
 						'Replace ImageAttachmentField with UploadField as SimpleHTMLEditorField is part of DataObjectManager'),
@@ -893,13 +897,13 @@ class ReplacementData {
 						'consider setting statics through yml files, see http://doc.silverstripe.com/framework/en/topics/configuration, OR change  MyClass:set_my_var(1) to Config::inst()->update->("MyClass", "my_var", 1); '),
 
 			array('DataObject::get_',
-						'DataObject::get_TEMPORARY_CHANGE_one'),
+						'DataObject::TEMPORARY_CHANGE_get_one'),
 
 			array('::get_',
 						'::get_',
 						'consider getting statics using Config system... e.g. Config::inst()->get("MyClass", "MyVar"); - see http://doc.silverstripe.com/framework/en/topics/configuration'),
 
-			array('DataObject::get_TEMPORARY_CHANGE_one',
+			array('DataObject::TEMPORARY_CHANGE_get_one',
 						'DataObject::get_one'),
 
 			array('DataObjectManager_Popup',
