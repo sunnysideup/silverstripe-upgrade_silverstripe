@@ -101,7 +101,11 @@ class ReplacementData {
 						'<% with/loop '),
 
 			array('<% end_control ',
-						'<% end_loop/with ')
+						'<% end_loop/with '),
+
+			array('<% include SearchForm %>',
+						'<% include SearchFormFromTemplateNotMethod %>',
+						'If you have a template called SearchForm then you will need to rename it as it conflicts with the SearchForm method / template from Framework. Alternatively, you can replace it with [DollarSign]SearchForm (dont forget to add to _config.php: FulltextSearchable::enable();) to use the built-in search...')
 		);
 		$array["3.0"]["php"] = array(
 
