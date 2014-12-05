@@ -50,6 +50,19 @@ class ReplacementData {
 
 	private function getData($to) {
 		$array = array();
+		/*
+		 * this does not seem to work!
+		$array["2.0"]["yaml"] = array();
+		$array["2.0"]["yml"] = array();
+		$array["2.0"]["js"] = array();
+		$array["2.0"]["ss"] = array();
+		$array["2.0"]["php"] = array(
+			array('method_exists(',
+						'method_exists(',
+						'It is highly recommended to change method_exists to HasMethod'
+			)
+		);
+		*/
 		$array["3.0"]["yaml"] = array();
 		$array["3.0"]["yml"] = array();
 		$array["3.0"]["js"] = array();
@@ -102,6 +115,10 @@ class ReplacementData {
 
 			array('<% end_control ',
 						'<% end_loop/with '),
+
+			array('themedCSS',
+						'themedCSS',
+						'themedCSS now includes a third parameter - and should be formatted like this: themedCSS(myCSS, myModule, myMedia (e.g. PRINT))',
 
 			array('<% include SearchForm %>',
 						'<% include SearchFormFromTemplateNotMethod %>',
@@ -866,6 +883,10 @@ class ReplacementData {
 			array('->isAdmin(',
 						'->inGroup(',
 						'Use ->inGroup("ADMIN") instead'),
+
+			array('->getRange(',
+						'->limit(',
+						'NOTE: getRange uses (offset, length) - similar to mysql and limit uses (length, offset) - swapsies!!!'),
 
 			//MUST TO LAST
 			array('->map(',
