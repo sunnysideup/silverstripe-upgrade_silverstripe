@@ -2,10 +2,11 @@ silverstripe-upgrade_silverstripe
 =================================
 
 Some rough-and-ready tools to help you upgrade to the next version of
-[SilverStripe](http://www.silverstripe.org).  This tool does not do
-the upgrading for you, but it helps you (a) get an idea of how much is
-involved and (b) to make sure you are not missing anything.  By using
-this tool you can have a more structured approach to upgrading your
+[SilverStripe](http://www.silverstripe.org).  This tool does not do all
+the upgrading for you (it does do the easy bits), but it helps you
+ (a) get an idea of how much is involved and
+ (b) to make sure you are not missing anything.
+By using this tool you can have a more structured approach to upgrading your
 Silverstripe websites to 3.0 and 3.1 (and beyond).
 
 
@@ -109,6 +110,12 @@ Regex is not supported right now.
 We welcome any improvements ideas for the `ReplacementData.php` file.
 
 
+CODE CLEANUP
+=================================
+
+Consider using:
+ - https://github.com/cmrcx/phptidy
+ - https://github.com/stojg/silverstripe-codesniffer/
 
 
 

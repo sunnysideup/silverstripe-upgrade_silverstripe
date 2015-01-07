@@ -118,7 +118,7 @@ class ReplacementData {
 
 			array('themedCSS',
 						'themedCSS',
-						'themedCSS now includes a third parameter - and should be formatted like this: themedCSS(myCSS, myModule, myMedia (e.g. PRINT))',
+						'themedCSS now includes a third parameter - and should be formatted like this: themedCSS(myCSS, myModule, myMedia (e.g. PRINT))'),
 
 			array('<% include SearchForm %>',
 						'<% include SearchFormFromTemplateNotMethod %>',
@@ -935,9 +935,49 @@ class ReplacementData {
 						'DataObjectManager_Popup',
 						'This is part of the Data Object Manager Module, you need to replace it (or just delete it).'),
 
+			array('LeftAndMain::setApplicationName',
+						'LeftAndMain::setApplicationName',
+						'Use the _config/config.yml file to set the application name: LeftAndMain.application_name'),
+
+			array('LeftAndMain::setLogo',
+						'LeftAndMain::setLogo',
+						'Use the _config/config.yml file to set logo related stuff: LeftAndMain.application_link AND use CSS to change the logo...'),
+
+			array('Requirements::set_write_js_to_body',
+						'',
+						'This is no longer in use.'),
+
 			array('extends ImageField',
 						'extends UploadField',
-						'Please review class as Upload field is very different from the old ImageField')
+						'Please review class as Upload field is very different from the old ImageField'),
+
+			array('->setDefaultFolder',
+						'->setFolderName',
+						'consider changing setDefaultFolder to setFolderName for Uploadfields, FileField and HtmlEditorField'),
+
+			array('FileAttachmentField',
+						'UploadField',
+						'Check parameters for this change from FileAttachmentField to UploadField'),
+
+			array('->setCanUploadNewFile',
+						'',
+						'setCanUploadNewFile does not exist on UploadField, please use equivalent.'),
+
+			array('SimpleTinyMCEField',
+						'HTMLEditorField',
+						'SimpleTinyMCEField is part of DataObject Manager and so it is unlikely to be available in a 3.0+ set up (DataObject Manager was replaced by GridField).'),
+
+			array('->setPageSize',
+						'',
+						'setPageSize is likely to have been used in a Complex Table Field, or similar, in the GridField the page size is specified as the first parameter of the Config Instantiation (e.g. GridFieldConfig_RelationEditor::create(40)).'),
+
+			array('getCMSFields_ForPopup',
+						'getCMSFields',
+						'getCMSFields_ForPopup is no longer in use as the Complex Table Fields were deprecated in 3.0. Often this can be translated to a straight getCMSFields or deleted completely.'),
+
+			array('groupwithparent',
+						'groupwithparent',
+						'DataList / DataObjectSet::groupwithparent does not exist in 3.0+, no replacement is provided... '),
 
 		);
 
