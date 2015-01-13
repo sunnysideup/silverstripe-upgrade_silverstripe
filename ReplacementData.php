@@ -273,6 +273,9 @@ class ReplacementData {
 			array('new LeftAndMainDecorator',
 						'new LeftAndMainExtension'),
 
+			array('extends LeftAndMainDecorator',
+						'extends LeftAndMainExtension'),
+
 			array('ClassInfo::is_subclass_of(',
 						'is_cublass_of('),
 
@@ -501,8 +504,8 @@ class ReplacementData {
 						'->buildSQL(',
 						' - Use ->dataQuery()->query() on DataList if access is needed to SQLQuery (see syntax) '),
 
-			array('new SQLQuery(',
-						'new SQLQuery(',
+			array('SQLQuery(',
+						'SQLQuery(',
 						' Internal properties: ($from, $select, $where, $orderby, $groupby, $having, $limit, $distinct, $delete, $connective) now use getters, setters and adders. e.g. getFrom(), setFrom(), addFrom(), getLimit(), setLimit().\n innerJoin() has been renamed to addInnerJoin(), leftJoin() renamed to addLeftJoin() '),
 
 			array('DataObject::Aggregate(',
@@ -921,7 +924,7 @@ class ReplacementData {
 						':\n  ',
 						'consider setting statics through yml files, see http://doc.silverstripe.com/framework/en/topics/configuration, OR change  MyClass:set_my_var(1) to Config::inst()->update->("MyClass", "my_var", 1); '),
 
-			array('DataObject::get_',
+			array('DataObject::get_one',
 						'DataObject::TEMPORARY_CHANGE_get_one'),
 
 			array('::get_',
@@ -978,6 +981,14 @@ class ReplacementData {
 			array('groupwithparent',
 						'groupwithparent',
 						'DataList / DataObjectSet::groupwithparent does not exist in 3.0+, no replacement is provided... '),
+
+			array('groupwithparent',
+						'groupwithparent',
+						'DataList / DataObjectSet::groupwithparent does not exist in 3.0+, no replacement is provided... '),
+
+			array('->setPageLimits',
+						'->setPageLimits',
+						'The method DataObjectSet::setPageLimits(x, y) / DataList::setPageLimits(x, y) does not exist anymore and so use $list = $list->limit(y, x) instead... Note the reversal of arguments. You can leave out the third argument in limits.'),
 
 		);
 
@@ -1444,6 +1455,10 @@ class ReplacementData {
 			array('->generateHash(',
 						'->randomToken(',
 						'generateHash is deprecated as it only returns a random string.'),
+
+			array('.format(',
+						'.format(',
+						'You may need to ')
 		);
 
 		$array["3.2"]["php"] = array(

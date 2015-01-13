@@ -2,7 +2,9 @@ silverstripe-upgrade_silverstripe
 =================================
 
 Some rough-and-ready tools to help you upgrade to the next version of
-[SilverStripe](http://www.silverstripe.org).  This tool does not do all
+[SilverStripe](http://www.silverstripe.org).
+
+ This tool does not do all
 the upgrading for you (it does do the easy bits), but it helps you
  (a) get an idea of how much is involved and
  (b) to make sure you are not missing anything.
@@ -12,18 +14,22 @@ Silverstripe websites to 3.0 and 3.1 (and beyond).
 
 BASED ON WORK BY:
 [phptek/ss-upgrade.sh](https://gist.github.com/phptek/3902357), AMONG
-OTHERS.
+OTHERS
 
 USAGE
 =================================
 
-The upgrade tool can be used over a web browser and from the command
+The upgrade tool can be used over a web browser or from the command
 line. To use it via your web browser:
 
 1. Copy this folder to the root folder of a project (this is the best
-   place, but it can live anywhere within your web accessible folders).
+   place, in theory it can live anywhere).
 
-2. Open index.php in your web-browser
+2. Change the top bit of upgrade-silverstre.php as you see fit (e.g.
+   path location). You can set the path, to "migrate to" e.g. 3.0 and
+   the folders to ignore
+
+3. Open index.php  in your web-browser
 
 From the command line use the `index.php` file with positional
 arguments:
@@ -55,7 +61,6 @@ VERSION OPTIONS
 
 Right now, you can upgrade from 2.4 to 3.0 and from 3.0 to 3.1
 
-
 REPLACE OPTIONS
 =================================
 
@@ -72,7 +77,8 @@ By default it is set to viewing proposed changes only.
 EXCLUDE / INCLUDE FOLDER OPTIONS
 =================================
 
-Once you have set the bath path, you can also set excluded folders.
+Once you have set the bath path, you
+can also set excluded folders.
 
 By default, any folders with a file called `_manifest_exclude` will be
 excluded (as well as its children).
@@ -86,36 +92,10 @@ Other ones excluded by default are:
 - .svn
 - .git
 
-In setting the exclusion folders, you can set
-(a) the name only (e.g. cms) or
-(b) the full path (e.g. /var/www/mysite.com/cms)
+In setting the exclusion folders, you can set (a) the name or (b) full
+path.
 
 For any folders with just the name set (e.g. `mysite` rather than
 `/var/www/mysite/`), it will only be ignored if it is in the base folder
 (e.g. `/var/www/themes/css/mysite` will not be skipped if the base
-folder is `/var/www/`).
-
-The base folder is set when you run the code.
-
-
-ADDING REPLACEMENTS
-=================================
-
-The file `ReplacementData.php` contains all the phrases that are being replaced.
-
-You can edit this file (or replace it with another file) as you see fit.
-
-Regex is not supported right now.
-
-We welcome any improvements ideas for the `ReplacementData.php` file.
-
-
-CODE CLEANUP
-=================================
-
-Consider using:
- - https://github.com/cmrcx/phptidy
- - https://github.com/stojg/silverstripe-codesniffer/
-
-
-
+folder is `/var/www/`). The base folder is set when you run the code.
