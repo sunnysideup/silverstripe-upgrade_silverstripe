@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - TextSearch</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">TextSearch</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/UpgradeSilverstripe.php.xhtml#line334">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>\</small>TextSearch</h1>
+        <h4>Class : TextSearch</h4>
+        <p/>
+        <ul>
+          <li>Author: :  MA Razzaque Rupom &lt;rupom_315@yahoo.com&gt;, &lt;rupom.bd@gmail.com&gt;</li>
+        </ul>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class TextSearch
+            {<br/><ul class="none"><li>// members</li><li>private string <a href="#members">$basePath</a>;
+                    </li><li>private string <a href="#members">$logFileLocation</a>;
+                    </li><li>private array <a href="#members">$defaultIgnoreFolderArray</a>;
+                    </li><li>private array <a href="#members">$ignoreFolderArray</a>;
+                    </li><li>private array <a href="#members">$extensions</a>;
+                    </li><li>private integer <a href="#members">$findAllExts</a>;
+                    </li><li>private string <a href="#members">$searchKey</a>;
+                    </li><li>private string <a href="#members">$replacementKey</a>;
+                    </li><li>private string <a href="#members">$futureReplacementKey</a>;
+                    </li><li>private integer <a href="#members">$isReplacingEnabled</a>;
+                    </li><li>private string <a href="#members">$replacementType</a>;
+                    </li><li>private integer <a href="#members">$caseSensitive</a>;
+                    </li><li>private string <a href="#members">$logString</a>;
+                    </li><li>private string <a href="#members">$errorText</a>;
+                    </li><li>private integer <a href="#members">$totalFound</a>;
+                    </li><li>private string <a href="#members">$output</a>;
+                    </li><li>private array <a href="#members">$search_key_totals</a>;
+                    </li><li>private array <a href="#members">$folder_totals</a>;
+                    </li><li>private integer <a href="#members">$total_total</a>;
+                    </li><li>private array <a href="#members">$file_array</a>;
+                    </li><li>private <span title="Array">Array</span> <a href="#members">$flat_file_array</a>;
+                    </li></ul><ul class="none"><li>// methods</li><li>public void <a title="TextSearch" href="../classes/TextSearch/__construct.xhtml">__construct</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setIgnoreFolderArray.xhtml">setIgnoreFolderArray</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/addIgnoreFolderArray.xhtml">addIgnoreFolderArray</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/unsetIgnoreFolderArray.xhtml">unsetIgnoreFolderArray</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setBasePath.xhtml">setBasePath</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setLogFileLocation.xhtml">setLogFileLocation</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setExtensions.xhtml">setExtensions</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setSearchKey.xhtml">setSearchKey</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setReplacementKey.xhtml">setReplacementKey</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/setFutureReplacementKey.xhtml">setFutureReplacementKey</a>()
+                    </li><li>public string <a title="TextSearch" href="../classes/TextSearch/getOutput.xhtml">getOutput</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/getTotalTotalSearches.xhtml">getTotalTotalSearches</a>()
+                    </li><li>public void <a title="TextSearch" href="../classes/TextSearch/showFormattedSearchTotals.xhtml">showFormattedSearchTotals</a>()
+                    </li><li>public none <a title="TextSearch" href="../classes/TextSearch/startSearching.xhtml">startSearching</a>()
+                    </li><li>private void <a title="TextSearch" href="../classes/TextSearch/resetFileCache.xhtml">resetFileCache</a>()
+                    </li><li>private void <a title="TextSearch" href="../classes/TextSearch/getFileArray.xhtml">getFileArray</a>()
+                    </li><li>private void <a title="TextSearch" href="../classes/TextSearch/getFlatFileArray.xhtml">getFlatFileArray</a>()
+                    </li><li>private file <a title="TextSearch" href="../classes/TextSearch/findExtension.xhtml">findExtension</a>()
+                    </li><li>private Boolean <a title="TextSearch" href="../classes/TextSearch/matchedExtension.xhtml">matchedExtension</a>()
+                    </li><li>private void <a title="TextSearch" href="../classes/TextSearch/searchFileData.xhtml">searchFileData</a>()
+                    </li><li>private none <a title="TextSearch" href="../classes/TextSearch/writeToFile.xhtml">writeToFile</a>()
+                    </li><li>private none <a title="TextSearch" href="../classes/TextSearch/appendToLog.xhtml">appendToLog</a>()
+                    </li><li>private void <a title="TextSearch" href="../classes/TextSearch/addToOutput.xhtml">addToOutput</a>()
+                    </li></ul>
+
+            }<br/></div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>private</h4>
+          <ul class="members">
+            <li id="basePath">
+              <strong>$basePath</strong>
+            </li>
+            <li id="caseSensitive">
+              <strong>$caseSensitive</strong>
+            </li>
+            <li id="defaultIgnoreFolderArray">
+              <strong>$defaultIgnoreFolderArray</strong>
+            </li>
+            <li id="errorText">
+              <strong>$errorText</strong>
+            </li>
+            <li id="extensions">
+              <strong>$extensions</strong>
+            </li>
+            <li id="file_array"><strong>$file_array</strong>
+                —
+                array<br/><span class="indent">array of all the files we are searching</span></li>
+            <li id="findAllExts">
+              <strong>$findAllExts</strong>
+            </li>
+            <li id="flat_file_array"><strong>$flat_file_array</strong>
+                —
+                <a href="#">Array</a><br/><span class="indent">Flattened array of files.</span></li>
+            <li id="folder_totals">
+              <strong>$folder_totals</strong>
+            </li>
+            <li id="futureReplacementKey">
+              <strong>$futureReplacementKey</strong>
+            </li>
+            <li id="ignoreFolderArray">
+              <strong>$ignoreFolderArray</strong>
+            </li>
+            <li id="isReplacingEnabled">
+              <strong>$isReplacingEnabled</strong>
+            </li>
+            <li id="logFileLocation">
+              <strong>$logFileLocation</strong>
+            </li>
+            <li id="logString">
+              <strong>$logString</strong>
+            </li>
+            <li id="output">
+              <strong>$output</strong>
+            </li>
+            <li id="replacementKey">
+              <strong>$replacementKey</strong>
+            </li>
+            <li id="replacementType">
+              <strong>$replacementType</strong>
+            </li>
+            <li id="searchKey">
+              <strong>$searchKey</strong>
+            </li>
+            <li id="search_key_totals">
+              <strong>$search_key_totals</strong>
+            </li>
+            <li id="totalFound">
+              <strong>$totalFound</strong>
+            </li>
+            <li id="total_total">
+              <strong>$total_total</strong>
+            </li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="addToOutput">
+              <a title="TextSearch" href="../classes/TextSearch/addToOutput.xhtml">addToOutput()</a>
+            </li>
+            <li id="appendToLog"><a title="TextSearch" href="../classes/TextSearch/appendToLog.xhtml">appendToLog()</a>
+                — Appends log data to previous log data</li>
+            <li id="findExtension"><a title="TextSearch" href="../classes/TextSearch/findExtension.xhtml">findExtension()</a>
+                — Finds extension of a file</li>
+            <li id="getFileArray"><a title="TextSearch" href="../classes/TextSearch/getFileArray.xhtml">getFileArray()</a>
+                — loads all the applicable files</li>
+            <li id="getFlatFileArray">
+              <a title="TextSearch" href="../classes/TextSearch/getFlatFileArray.xhtml">getFlatFileArray()</a>
+            </li>
+            <li id="matchedExtension"><a title="TextSearch" href="../classes/TextSearch/matchedExtension.xhtml">matchedExtension()</a>
+                — Checks if a file extension is one of the extensions we are going to search</li>
+            <li id="resetFileCache">
+              <a title="TextSearch" href="../classes/TextSearch/resetFileCache.xhtml">resetFileCache()</a>
+            </li>
+            <li id="searchFileData"><a title="TextSearch" href="../classes/TextSearch/searchFileData.xhtml">searchFileData()</a>
+                — THE KEY METHOD! Searches data, replaces (if enabled) with given key, prepares log</li>
+            <li id="writeToFile"><a title="TextSearch" href="../classes/TextSearch/writeToFile.xhtml">writeToFile()</a>
+                — Writes new data (after the replacement) to file</li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct">
+              <a title="TextSearch" href="../classes/TextSearch/__construct.xhtml">__construct()</a>
+            </li>
+            <li id="addIgnoreFolderArray"><a title="TextSearch" href="../classes/TextSearch/addIgnoreFolderArray.xhtml">addIgnoreFolderArray()</a>
+                — Sets folders to ignore   @param Array ignoreFolderArray   @return none</li>
+            <li id="getOutput"><a title="TextSearch" href="../classes/TextSearch/getOutput.xhtml">getOutput()</a>
+                — returns full output and clears it.</li>
+            <li id="getTotalTotalSearches"><a title="TextSearch" href="../classes/TextSearch/getTotalTotalSearches.xhtml">getTotalTotalSearches()</a>
+                — returns the TOTAL TOTAL number of found replacements</li>
+            <li id="setBasePath"><a title="TextSearch" href="../classes/TextSearch/setBasePath.xhtml">setBasePath()</a>
+                — Sets folders to ignore   @param Array ignoreFolderArray   @return none</li>
+            <li id="setExtensions"><a title="TextSearch" href="../classes/TextSearch/setExtensions.xhtml">setExtensions()</a>
+                — Sets extensions to look   @param Array extensions</li>
+            <li id="setFutureReplacementKey"><a title="TextSearch" href="../classes/TextSearch/setFutureReplacementKey.xhtml">setFutureReplacementKey()</a>
+                — Sets key to replace searchKey with BUT only hypothetical (no replacement takes place!)   @param String $replacementKey</li>
+            <li id="setIgnoreFolderArray"><a title="TextSearch" href="../classes/TextSearch/setIgnoreFolderArray.xhtml">setIgnoreFolderArray()</a>
+                — Sets folders to ignore   @param Array ignoreFolderArray   @return none</li>
+            <li id="setLogFileLocation"><a title="TextSearch" href="../classes/TextSearch/setLogFileLocation.xhtml">setLogFileLocation()</a>
+                — Sets location for the log file logs are only written for real replacements   @param String   @return none</li>
+            <li id="setReplacementKey"><a title="TextSearch" href="../classes/TextSearch/setReplacementKey.xhtml">setReplacementKey()</a>
+                — Sets key to replace searchKey with   @param String $replacementKey</li>
+            <li id="setSearchKey"><a title="TextSearch" href="../classes/TextSearch/setSearchKey.xhtml">setSearchKey()</a>
+                — Sets search key and case sensitivity</li>
+            <li id="showFormattedSearchTotals"><a title="TextSearch" href="../classes/TextSearch/showFormattedSearchTotals.xhtml">showFormattedSearchTotals()</a>
+                — should be run at the end of an extension.</li>
+            <li id="startSearching"><a title="TextSearch" href="../classes/TextSearch/startSearching.xhtml">startSearching()</a>
+                — Searches all the files and creates the logs</li>
+            <li id="unsetIgnoreFolderArray"><a title="TextSearch" href="../classes/TextSearch/unsetIgnoreFolderArray.xhtml">unsetIgnoreFolderArray()</a>
+                — remove a root folder that is avoided by default</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span/>
+    </footer>
+  </body>
+</html>

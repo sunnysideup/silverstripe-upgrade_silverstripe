@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="UpgradeSilverstripe" namespace="" name="UpgradeSilverstripe" abstract="false" final="false" start="15" end="318">
+  <file path="/var/www/_modules/upgrade_silverstripe/trunk/docs/en/phpdox/../../.." file="UpgradeSilverstripe.php" realpath="/var/www/_modules/upgrade_silverstripe/trunk/UpgradeSilverstripe.php" size="25665" time="2015-03-14T10:23:13+13:00" unixtime="1426281793" sha1="493d4659986f66d719a7c08d72d7e9832dc95d01" relative="UpgradeSilverstripe.php"/>
+  <member name="marker" type="string" default="&quot;### @@@@ UPGRADE REQUIRED @@@@ ###&quot;" visibility="private" line="17"/>
+  <member name="endMarker" type="string" default="&quot;### @@@@ ########### @@@@ ###&quot;" visibility="private" line="19"/>
+  <member name="output" type="string" default="&quot;&quot;" visibility="private" line="21"/>
+  <member name="numberOfStraightReplacements" type="integer" default="0" visibility="private" line="23"/>
+  <method name="getNumberOfStraightReplacements" start="24" end="24" abstract="false" final="false" static="false" visibility="public"/>
+  <member name="numberOfAllReplacements" type="integer" default="0" visibility="private" line="26"/>
+  <method name="getNumberOfAllReplacements" start="27" end="27" abstract="false" final="false" static="false" visibility="public"/>
+  <member name="checkReplacementIssues" type="{unknown}" default="false" visibility="private" line="29"/>
+  <method name="setCheckReplacementIssues" start="30" end="30" abstract="false" final="false" static="false" visibility="public">
+    <parameter name="b" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="run" start="43" end="191" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description/>
+      <param description="- enter dot for anything in current directory." type="object" variable="$pathLocation">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <param description="- where should the log file be saved. This file contains all the details about actual changes made." type="object" variable="$logFileLocation">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <param description="- if you set this to, for example 3.0 then the code will be upgraded from 2.4 to 3.0." type="object" variable="$to">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <param description="- If set to false to show proposed changes on screen. If set to true, basic replacements (i.e. straight forward replace A with B scenarios will be made)" type="object" variable="$doBasicReplacement">
+        <type full="Boolean" namespace="" name="Boolean"/>
+      </param>
+      <param description="- If set to false nothing happens, if set to true  any code that need changing manually will be marked in the code itself." type="object" variable="$markStickingPoints">
+        <type full="Boolean" namespace="" name="Boolean"/>
+      </param>
+      <param description="- a list of folders that should not be searched (and replaced) - folders that are automatically ignore are: CMS, SAPPHIRE, FRAMEWORK (all in lowercase)" type="object" variable="$ignoreFolderArray">outputs to screen and/or to file<type full="Array" namespace="" name="Array"/></param>
+    </docblock>
+    <parameter name="pathLocation" byreference="false" type="string" default="&quot;.&quot;"/>
+    <parameter name="logFileLocation" byreference="false" type="string" default="&quot;&quot;"/>
+    <parameter name="to" byreference="false" type="string" default="&quot;3.0&quot;"/>
+    <parameter name="doBasicReplacement" byreference="false" type="{unknown}" default="false"/>
+    <parameter name="markStickingPoints" byreference="false" type="{unknown}" default="false"/>
+    <parameter name="ignoreFolderArray" byreference="false" type="array"/>
+    <inline>
+      <comment value="basic checks" line="61"/>
+      <comment value="get replacements" line="81"/>
+      <comment value="set basics" line="127"/>
+      <comment value="setting extensions to search files within" line="128"/>
+      <comment value="setting extensions to search files within" line="139"/>
+      <comment value="$replace = $replaceArray[1]; unset($replaceArray[1]);" line="142"/>
+      <comment value="$fullReplacement = (isset($replaceArray[2]) ? &quot;/* &quot;.$replaceArray[2].&quot; */\n&quot; : &quot;&quot;).$replaceArray[1];" line="143"/>
+      <comment value="Has comment" line="146"/>
+    </inline>
+  </method>
+  <method name="numberOfReplacements" start="197" end="235" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description/>
+      <var type="object">
+        <type full="Int" namespace="" name="Int"/>
+      </var>
+    </docblock>
+    <parameter name="pathLocation" byreference="false" type="string" default="&quot;.&quot;"/>
+    <parameter name="to" byreference="false" type="string" default="&quot;3.0&quot;"/>
+    <parameter name="ignoreFolderArray" byreference="false" type="array"/>
+    <parameter name="simpleOnly" byreference="false" type="{unknown}" default="true"/>
+    <inline>
+      <comment value="basic checks" line="203"/>
+      <comment value="get replacements" line="207"/>
+      <comment value="set basics" line="211"/>
+      <comment value="setting extensions to search files within" line="212"/>
+      <comment value="setting extensions to search files within" line="215"/>
+      <comment value="Has comment" line="219"/>
+      <comment value="IMPORTANT!" line="229"/>
+      <comment value="flush output anyway!" line="232"/>
+    </inline>
+  </method>
+  <method name="checkReplacementIssues" start="242" end="301" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="1. check that one find is not used twice: find can be found 2x"/>
+    </docblock>
+    <inline>
+      <comment value="1, check that one find may not stop another replacement." line="250"/>
+      <comment value="2. check that a replacement is not mentioned before the it is being replaced" line="276"/>
+    </inline>
+  </method>
+  <method name="addToOutput" start="303" end="305" abstract="false" final="false" static="false" visibility="private">
+    <parameter name="text" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="printItNow" start="307" end="316" abstract="false" final="false" static="false" visibility="private"/>
+</class>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class xmlns="http://xml.phpdox.net/src" full="TextSearch" namespace="" name="TextSearch" abstract="false" final="false" start="334" end="804">
+  <file path="/var/www/_modules/upgrade_silverstripe/trunk/docs/en/phpdox/../../.." file="UpgradeSilverstripe.php" realpath="/var/www/_modules/upgrade_silverstripe/trunk/UpgradeSilverstripe.php" size="25665" time="2015-03-14T10:23:13+13:00" unixtime="1426281793" sha1="493d4659986f66d719a7c08d72d7e9832dc95d01" relative="UpgradeSilverstripe.php"/>
+  <docblock>
+    <description compact="Class : TextSearch"/>
+    <author value=":  MA Razzaque Rupom &lt;rupom_315@yahoo.com&gt;, &lt;rupom.bd@gmail.com&gt;">Moderator, phpResource Group(http://groups.yahoo.com/group/phpresource/)
+            URL: http://rupom.wordpress.com
+
+HEAVILY MODIFIED BY SUNNY SIDE UP</author>
+    <version value=":  1.0">Date     :  06/25/2006
+Purpose  :  Searching and replacing text within files of specified path</version>
+  </docblock>
+  <member name="basePath" type="string" default="'.'" visibility="private" line="336"/>
+  <member name="logFileLocation" type="string" default="''" visibility="private" line="338"/>
+  <member name="defaultIgnoreFolderArray" type="array" visibility="private" line="340"/>
+  <member name="ignoreFolderArray" type="array" visibility="private" line="342"/>
+  <member name="extensions" type="array" visibility="private" line="344"/>
+  <member name="findAllExts" type="integer" default="0" visibility="private" line="346"/>
+  <member name="searchKey" type="string" default="''" visibility="private" line="348"/>
+  <member name="replacementKey" type="string" default="''" visibility="private" line="350"/>
+  <member name="futureReplacementKey" type="string" default="''" visibility="private" line="352"/>
+  <member name="isReplacingEnabled" type="integer" default="0" visibility="private" line="354"/>
+  <member name="replacementType" type="string" default="&quot;&quot;" visibility="private" line="356"/>
+  <member name="caseSensitive" type="integer" default="0" visibility="private" line="358"/>
+  <member name="logString" type="string" default="''" visibility="private" line="360"/>
+  <member name="errorText" type="string" default="''" visibility="private" line="362"/>
+  <member name="totalFound" type="integer" default="0" visibility="private" line="364"/>
+  <member name="output" type="string" default="''" visibility="private" line="366"/>
+  <member name="search_key_totals" type="array" visibility="private" line="368"/>
+  <member name="folder_totals" type="array" visibility="private" line="370"/>
+  <member name="total_total" type="integer" default="0" visibility="private" line="372"/>
+  <constructor name="__construct" start="374" end="376" abstract="false" final="false" static="false" visibility="public"/>
+  <method name="setIgnoreFolderArray" start="390" end="393" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets folders to ignore   @param Array ignoreFolderArray   @return none"/>
+    </docblock>
+    <parameter name="ignoreFolderArray" byreference="false" type="array"/>
+  </method>
+  <method name="addIgnoreFolderArray" start="400" end="404" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets folders to ignore   @param Array ignoreFolderArray   @return none"/>
+    </docblock>
+    <parameter name="ignoreFolderArray" byreference="false" type="array"/>
+  </method>
+  <method name="unsetIgnoreFolderArray" start="410" end="413" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="remove a root folder that is avoided by default"/>
+      <param type="object" variable="$nameOfFolder">
+        <type full="String" namespace="" name="String"/>
+      </param>
+    </docblock>
+    <parameter name="nameOfFolder" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="setBasePath" start="421" end="424" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets folders to ignore   @param Array ignoreFolderArray   @return none"/>
+    </docblock>
+    <parameter name="pathLocation" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="setLogFileLocation" start="432" end="434" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets location for the log file logs are only written for real replacements   @param String   @return none"/>
+    </docblock>
+    <parameter name="logFileLocation" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="setExtensions" start="440" end="446" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets extensions to look   @param Array extensions"/>
+    </docblock>
+    <parameter name="extensions" byreference="false" type="array"/>
+  </method>
+  <method name="setSearchKey" start="459" end="463" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets search key and case sensitivity"/>
+      <param type="object" variable="$searchKey">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <param type="object" variable="$caseSensitivity">
+        <type full="Boolean" namespace="" name="Boolean"/>
+      </param>
+    </docblock>
+    <parameter name="searchKey" byreference="false" type="{unknown}"/>
+    <parameter name="caseSensitive" byreference="false" type="integer" default="0"/>
+    <parameter name="replacementType" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="setReplacementKey" start="469" end="472" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets key to replace searchKey with   @param String $replacementKey"/>
+    </docblock>
+    <parameter name="replacementKey" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="setFutureReplacementKey" start="479" end="482" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Sets key to replace searchKey with BUT only hypothetical (no replacement takes place!)   @param String $replacementKey"/>
+    </docblock>
+    <parameter name="replacementKey" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="getOutput" start="495" end="499" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="returns full output and clears it."/>
+      <return type="string"/>
+    </docblock>
+  </method>
+  <method name="getTotalTotalSearches" start="506" end="508" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="returns the TOTAL TOTAL number of found replacements"/>
+    </docblock>
+  </method>
+  <method name="showFormattedSearchTotals" start="519" end="569" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="should be run at the end of an extension."/>
+    </docblock>
+    <parameter name="returnTotalFoundOnly" byreference="false" type="{unknown}" default="false"/>
+    <inline>
+      <comment value="add to total total" line="565"/>
+      <comment value="return total" line="567"/>
+    </inline>
+  </method>
+  <method name="startSearching" start="582" end="596" abstract="false" final="false" static="false" visibility="public">
+    <docblock>
+      <description compact="Searches all the files and creates the logs"/>
+      <param description="search" variable="$path" type="object">
+        <type full="to" namespace="" name="to"/>
+      </param>
+      <return type="object">
+        <type full="none" namespace="" name="none"/>
+      </return>
+    </docblock>
+  </method>
+  <method name="resetFileCache" start="598" end="608" abstract="false" final="false" static="false" visibility="private">
+    <inline>
+      <comment value="cleanup other data" line="603"/>
+    </inline>
+  </method>
+  <member name="file_array" type="array" visibility="private" line="614">
+    <docblock>
+      <description compact="array of all the files we are searching"/>
+      <var type="array"/>
+    </docblock>
+  </member>
+  <method name="getFileArray" start="624" end="659" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="loads all the applicable files"/>
+      <param description="(e.g. &quot;.&quot; or &quot;/var/www/mysite.co.nz&quot;)" type="object" variable="$path">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <param description="- is the method calling itself???" type="object" variable="$innerLoop">
+        <type full="Boolean" namespace="" name="Boolean"/>
+      </param>
+    </docblock>
+    <parameter name="path" byreference="false" type="{unknown}"/>
+    <parameter name="innerLoop" byreference="false" type="{unknown}" default="false"/>
+    <inline>
+      <comment value="ignore hidden files and folders" line="632"/>
+      <comment value="ignore folders with _manifest_exclude in them!" line="636"/>
+      <comment value="End of while" line="655"/>
+    </inline>
+  </method>
+  <member name="flat_file_array" type="array" visibility="private" line="665">
+    <docblock>
+      <description compact="Flattened array of files."/>
+      <var type="object">
+        <type full="Array" namespace="" name="Array"/>
+      </var>
+    </docblock>
+  </member>
+  <method name="getFlatFileArray" start="667" end="675" abstract="false" final="false" static="false" visibility="private">
+    <inline>
+      <comment value="flatten it!" line="671"/>
+    </inline>
+  </method>
+  <method name="findExtension" start="682" end="685" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="Finds extension of a file"/>
+      <param type="object">
+        <type full="filename" namespace="" name="filename"/>
+      </param>
+      <return description="extension" type="object">
+        <type full="file" namespace="" name="file"/>
+      </return>
+    </docblock>
+    <parameter name="file" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="matchedExtension" start="692" end="700" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="Checks if a file extension is one of the extensions we are going to search"/>
+      <param type="object" variable="$filename">
+        <type full="String" namespace="" name="String"/>
+      </param>
+      <return type="object">
+        <type full="Boolean" namespace="" name="Boolean"/>
+      </return>
+    </docblock>
+    <parameter name="file" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="searchFileData" start="707" end="755" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="THE KEY METHOD! Searches data, replaces (if enabled) with given key, prepares log"/>
+      <param description="- e.g. /var/www/mysite.co.nz/mysite/code/Page.php" type="object" variable="$file">
+        <type full="String" namespace="" name="String"/>
+      </param>
+    </docblock>
+    <parameter name="file" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="writeToFile" start="762" end="771" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="Writes new data (after the replacement) to file"/>
+      <param variable="$file" type="object">
+        <type full="$data" namespace="" name="$data"/>
+      </param>
+      <return type="object">
+        <type full="none" namespace="" name="none"/>
+      </return>
+    </docblock>
+    <parameter name="file" byreference="false" type="{unknown}"/>
+    <parameter name="data" byreference="false" type="{unknown}"/>
+  </method>
+  <method name="appendToLog" start="778" end="784" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description compact="Appends log data to previous log data"/>
+      <param description="match string, replacement key if any" type="object">
+        <type full="filename" namespace="" name="filename"/>
+      </param>
+      <return type="object">
+        <type full="none" namespace="" name="none"/>
+      </return>
+    </docblock>
+    <parameter name="file" byreference="false" type="{unknown}"/>
+    <parameter name="matchStr" byreference="false" type="{unknown}"/>
+    <parameter name="replacementKey" byreference="false" type="{unknown}" default="null"/>
+  </method>
+  <method name="addToOutput" start="790" end="802" abstract="false" final="false" static="false" visibility="private">
+    <docblock>
+      <description/>
+      <param type="object" variable="$text">
+        <type full="String" namespace="" name="String"/>
+      </param>
+    </docblock>
+    <parameter name="output" byreference="false" type="{unknown}"/>
+  </method>
+</class>
