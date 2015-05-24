@@ -988,7 +988,15 @@ class ReplacementData {
 
 			array('->setPageLimits',
 						'->setPageLimits',
-						'The method DataObjectSet::setPageLimits(x, y) / DataList::setPageLimits(x, y) does not exist anymore and so use $list = $list->limit(y, x) instead... Note the reversal of arguments. You can leave out the third argument in limits.'),
+						'The method DataObjectSet::setPageLimits(x, y) / DataList::setPageLimits(x, y) does not exist anymore and so use ... $list = PaginatedList::create($list, $this->request); $list->setPageLength(12);... instead.'),
+
+			array('"Published"',
+						'"Published"',
+						'"Published" may refer to Status="Published".  This is not longer part of the SiteTree datatabase fields and should be removed. '),
+
+			array('\'Published\'',
+						'\'Published\'',
+						'\'Published\' may refer to SiteTree(_Live).Status=\'Published\'.  Status is not longer part of the SiteTree datatabase fields and should be removed. ')
 
 		);
 
