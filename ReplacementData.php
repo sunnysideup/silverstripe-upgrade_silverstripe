@@ -1,4 +1,8 @@
 <?php
+/**
+ * 
+ * @see: https://gist.github.com/sunnysideup/6eb1727b1ce4a3a9a93e for an example of how
+ * data is added
 
 class ReplacementData {
 
