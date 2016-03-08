@@ -3,7 +3,7 @@
 require_once('UpgradeSilverstripe.php');
 
 if(!__FROM_COMMAND_LINE__) {
-	$whitelist = array('127.0.0.1');
+	$whitelist = array('127.0.0.1', '::1');
 	if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
 		die("web interface has been disabled by default, please remove this line to enable it");
 	}
