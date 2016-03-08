@@ -1791,8 +1791,434 @@ class ReplacementData {
 			array('singleton(',
 						'singleton(',
 						'Consider using ClassName::create()'),
+			/*******************Start AN 's part*********************/
+			array('DataList::getRange()',
+				'Datalist::limit()'
+			),
+			
+			array('SQLMap($query, $keyField, $titleField)', 
+				'map($keyfield, $titlefield)', 
+				'call map() on DataList or use SS_Map'
+			),
+			//SQLQuery methods select(), limit(), orderby(), groupby(), having(), from(), leftjoin(), innerjoin(), where() and whereAny() removed. Use set*() and add*() methods instead.
+			array('select()',
+				'setSelect() or addSelect()',
+				'SQLQuery method select() removed'
+			),
+			array('limit()',
+				'setLimit() or addLimit',
+				'SQLQuery method limit() removed'
+			),
+			array('orderby()',
+				'setOrderBy() or addOrderBy()',
+				'SQLQuery method orderby() removed'
+			),
+			array('groupby()',
+				'setGroupBy() or addGroupBy()',
+				'SQLQuery method groupby() removed'
+			),
+			array('having()',
+				'setHaving() or addHaving()',
+				'SQLQuery method having() removed'
+			),
+			array('from()',
+				'setFrom() or addFrom()',
+				'SQLQuery method from() removed'
+			),
+			array('leftjoin()',
+				'setLeftJoin() or addLeftJoin()',
+				'SQLQuery method leftjoin() removed'
+			),
+			array('innerjoin()',
+				'setInnerJoin() or addInnerJoin()',
+				'SQLQuery method innerjoin() removed'
+			),
+			array('where()',
+				'setWhere() or addWhere()',
+				'SQLQuery method where() removed'
+			),
+			array('whereAny()',
+				'setWhereAny() or addWhereAny()',
+				'SQLQuery method whereAny() removed'
+			),
+			array('FormField::validate',
+				'FormField::validate',
+				'FormField::validate now requires an instance of Validator'
+			),
+			array('affectedRows', 
+				'affected_rows'
+			),
+			array('checkAndRepairTable', 
+				'check_and_repair_table'
+			),
+			array('createDatabase', 
+				'create_database'
+			),
+			array('createField', 
+				'create_field'
+			),
+			array('createTable', 
+				'create_table'
+			),
+			array('dontRequireField', 
+				'dont_require_field'
+			),
+			array('dontRequireTable', 
+				'dont_require_table'
+			),
+			array('fieldList', 
+				'field_list'
+			),
+			array('getConn', 
+				'get_conn'
+			),
+			array('getGeneratedID', 
+				'get_generated_id'
+			),
+			array('isActive',
+				'is_active'
+			),
+			array('requireField', 
+				'require_field'
+			),
+			array('requireIndex', 
+				'require_index'
+			),
+			array('requireTable', 
+				'require_table'
+			),
+			array('setConn', 
+				'set_conn'
+			),
+			array('tableList', 
+				'table_list'
+			),
+			//SS_Database methods refactored to DBSchemaManager
+			array('SS_Database::createTable', 
+				'DBSchemaManager::createTable'
+			),
+			array('SS_Database::alterTable', 
+				'DBSchemaManager::alterTable'
+			),
+			array('SS_Database::renameTable', 
+				'DBSchemaManager::renameTable'
+			),
+			array('SS_Database::createField', 
+				'DBSchemaManager::createField'
+			),
+			array('SS_Database::renameField', 
+				'DBSchemaManager::renameField'
+			),
+			array('SS_Database::fieldList', 
+				'DBSchemaManager::fieldList'
+			),
+			array('SS_Database::tableList', 
+				'DBSchemaManager::tableList'
+			),
+			array('SS_Database::hasTable', 
+				'DBSchemaManager::hasTable'
+			),
+			array('SS_Database::enumValuesForField', 
+				'DBSchemaManager::enumValuesForField'
+			),
+			array('SS_Database::beginSchemaUpdate', 
+				'DBSchemaManager::schemaUpdate',
+				'Use schemaUpdate with a callback'
+			),
+
+			array('SS_Database::endSchemaUpdate', 
+				'DBSchemaManager::schemaUpdate',
+				'Use schemaUpdate with a callback'
+			),
+			array('SS_Database::cancelSchemaUpdate', 
+				'DBSchemaManager::cancelSchemaUpdate'
+			),
+			array('SS_Database::isSchemaUpdating', 
+				'DBSchemaManager:isSchemaUpdating'
+			),
+			array('SS_Database::doesSchemaNeedUpdating', 
+				'DBSchemaManager::doesSchemaNeedUpdating'
+			),
+			array('SS_Database::transCreateTable', 
+				'DBSchemaManager::transCreateTable'
+			),
+			array('SS_Database::transAlterTable', 
+				'DBSchemaManager::transAlterTable'
+			),
+			array('SS_Database::transCreateField', 
+				'DBSchemaManager::transCreateField'
+			),
+			array('SS_Database::transCreateIndex', 
+				'DBSchemaManager::transCreateIndex'
+			),
+			array('SS_Database::transAlterField', 
+				'DBSchemaManager::transAlterField'
+			),
+			array('SS_Database::transAlterIndex', 
+				'DBSchemaManager::transAlterIndex'
+			),
+
+			array('SS_Database::requireTable', 
+				'DBSchemaManager::requireTable'
+			),
+			array('SS_Database::dontRequireTable', 
+				'DBSchemaManager::dontRequireTable'
+			),
+			array('SS_Database::requireIndex', 
+				'DBSchemaManager::requireIndex'
+			),
+			array('SS_Database::hasField', 
+				'DBSchemaManager::hasField'
+			),
+			array('SS_Database::requireField', 
+				'DBSchemaManager::requireField'
+			),
+			array('SS_Database::dontRequireField', 
+				'DBSchemaManager::dontRequireField'
+			),
+			//SS_Database methods refactored to DBQueryBuilder
+			array('SS_Database::sqlQueryToString', 
+				'DBQueryBuilder::sqlQueryToString'
+			),
+			//SS_Database methods deprecated
+			array('SS_Database::getConnect', 
+				'PDOConnector::connect()'
+			), 
+			array('SS_Database::prepStringForDB',
+				'PDOConnector::quoteString'
+			),
+			array('SS_Database::dropDatabase', 
+				'PDOConnector::dropSelectedDatabase'
+			),
+			array('SS_Database::createDatabase', 
+				'PDOConnector::selectDatabase',
+				'Use selectDatabase with the second parameter set to true instead'
+			),
+			array('SS_Database::allDatabaseNames',
+				'PDOConnector::databaseList'
+			),
+			array('SS_Database::currentDatabase()',
+				'PDOConnector::getSelectedDatabase()'
+			),
+			array('SS_Database::addslashes',
+				'PDOConnector::escapeString'
+			),
+
+			array('Image::SetRatioSize(integer $width, integer $height )', 
+				'Image::Fit(integer $width, integer $height )'
+			),
+			array('Image::CroppedImage(integer $width, integer $height )', 
+				'Image::Fill(integer $width, integer $height )'
+			),
+			array('Image::PaddedImage(integer $width, integer $height, mixed $backgroundColor = \'FFFFFF\' )', 
+				'Image::Pad(integer $width, integer $height, mixed $backgroundColor = \'FFFFFF\' )'
+			),
+			array('Image::SetSize( integer $width, integer $height )', 
+				'Image::Pad( integer $width, integer $height, mixed $backgroundColor = \'FFFFFF\' )'
+			),
+			array('Image::SetWidth(integer $width)', 
+				'Image::ScaleWidth(integer $width)'
+			),
+			array('Image::SetHeight(integer $height)', 
+				'Image::ScaleHeight(integer $height)'
+			),
+
+			array('',
+				'define(\'SS_DATABASE_CLASS\', \'MySQLPDODatabase\');',
+				'Enable PDO. If using _ss_environment.php'
+			),
+			array('',
+				'global $databaseConfig;
+				$databaseConfig = array(
+				    "type" => "MySQLPDODatabase"
+				    // other config settings
+				);',
+				'Enable PDO. If using mysite/_config.php'
+			),
+			array('',
+				'UploadField::create(\'MyField\')->setDisplayFolderName(\'Uploads\');',
+				'UploadField "Select from files" shows files in all folders by default. View 
+				https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#uploadfield-select-from-files-shows-files-in-all-folders-by-default'
+			),
+
+			array('',
+				'Config::inst()->update(\'File\', \'allowed_extensions\', array(\'swf\', \'html\',\'htm\',\'xhtml\',\'xml\'));',
+				'File.allowed_extensions restrictions.Certain file types such as swf, html, htm, xhtml and xml have been removed from the list of allowable file uploads. 
+				If the application requires the ability to upload these, need to append these to the File.allowed_extensions config as necessary. In __config.php. '
+			),
+
+			array('Config::inst()->update(\'i18n\', \'date_format\', $format);',
+				'Config::inst()->update(\'i18n\', \'date_format\', $format);',
+				'Removed format detection in i18n::$date_format and i18n::$time_format.  The default date format has been changed to "yyyy-MM-dd". If you have existing users
+				with Member.DateFormat set to a format including "MMM" or "MMMM", consider deleting those formats to fall back to the global (and more stable) default'
+			),
+
+			array('Cookie::set($name, $value, $expiry = 90, $path = null, $domain = null, $secure = false, $httpOnly = false);',
+				'Cookie::set($name, $value, $expiry = 90, $path = null, $domain = null, $secure = false, $httpOnly = false);',
+				'Cookies set via Cookie::set() are now HTTP only by default '
+			),
+
+			array('','','The auto-routing of controller class names to URL endpoints has been removed (rule: \'$Controller//$Action/$ID/$OtherID\': \'*\'). 
+				Access any custom controllers exclusively through self-defined routes. 
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#api-removed-url-routing-by-controller-name'
+			),
+
+			array('new Form(',
+  				'new Form(',
+  				'Please make sure that CSS has been updated for this form as IDs will change, see: 
+  				https://github.com/silverstripe/silverstripe-framework/blob/3/docs/en/04_Changelogs/3.2.0.md#api-default-form-and-formfield-id-attributes-rewritten'
+  			),
+
+  			array('extends Form(',
+  				'extends Form(',
+  				'Please make sure that CSS has been updated for this form as IDs will change, see: 
+  				https://github.com/silverstripe/silverstripe-framework/blob/3/docs/en/04_Changelogs/3.2.0.md#api-default-form-and-formfield-id-attributes-rewritten'
+  			),
+
+  			array('Form::create',
+  				'Form::create',
+  				'Please make sure that CSS has been updated for this form as IDs will change, see: 
+  				https://github.com/silverstripe/silverstripe-framework/blob/3/docs/en/04_Changelogs/3.2.0.md#api-default-form-and-formfield-id-attributes-rewritten'
+  			),
+
+			array('->setDelete(true)',
+				'SQLDelete::create()',
+				'SQLQuery has been changed. Deletion is now handled by the new SQLDelete class. See https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#update-code-that-uses-sqlquery'
+			),
+
+			array('$query->getWhere(); // Will be flattened (unsafe 3.1 compatible format)',
+
+				'$expression = $query->toAppropriateExpression(); // Either SQLSelect or SQLDelete
+				 $expression->getWhere(); // Will be parameterised (preferred 3.2 compatible format)',
+
+				'When working with SQLQuery passed into user code, it is advisable to strictly cast it into either a SQLSelect or SQLDelete. This can be done by using 
+				the new SQLQuery::toAppropriateExpression() method, which will convert to the correct type based on whether the SQLQuery is set to delete or not.
+				See https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#update-code-that-uses-sqlquery'
+			),
+
+			array('DB::query("UPDATE \"SiteTree\" SET \"Title\" LIKE \'%" . Convert::raw2sql($myTitle) . "%\' WHERE \"ID\" = 1");',
+
+				'DB::prepared_query(
+				    \'UPDATE "SiteTree" SET "Title" LIKE ? WHERE "ID" = ?\',
+				    array("%{$myTitle}%", 1)
+				);',
+
+				'All database queries performed through DataList, DataQuery and SQLQuery will continue to work, as will those through DataObject::get() (which returns a filterable DataList). 
+				However, any conditional expression that includes values escaped with Convert::raw2sql() should use the new standard syntax.
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#update-code-that-interacts-with-sql-strings-to-use-parameters'
+			),
+
+			array('$items = DataObject::get_one(\'MyObject\', \'"Details" = \'\'.Convert::raw2sql($details).\'\'\');',
+				'$items = DataObject::get_one(\'MyObject\', array(\'"MyObject"."Details"\' => $details));',
+				'Querying the database through DataList, DataQuery, SQLQuery, and DataObject. See 
+				https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#2-querying-the-database-through-datalist-dataquery-sqlquery-and-dataobject'
+			),
+
+			array('$things = MyObject::get()->where(\'"Name" = \'\'.Convert::raw2sql($name).\'\'\');',
+				'$things = MyObject::get()->where(array(\'"MyObject"."Name" = ?\' => $name));',
+				'Querying the database through DataList, DataQuery, SQLQuery, and DataObject. See 
+				https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#2-querying-the-database-through-datalist-dataquery-sqlquery-and-dataobject'
+			),
+
+			array('$argument = \'whatever\';
+				$query = SQLQuery::create()
+    			->setFrom(\'"SiteTree"\')
+    			->setWhere(array("\"SiteTree\".\"Title\" LIKE \'" . Convert::raw2sql($argument) . "\'"));
+				$sql = $query->sql();
+				$sql = preg_replace(\'/LIKE \'(.+)\'/', 'LIKE \'%${1}%\'\', $sql);
+				DB::query($sql);',
+
+				'$argument = \'whatever\';
+				$query = SQLQuery::create()
+				    ->setFrom(\'"SiteTree"\')
+				    ->setWhere(array(\'"SiteTree"."Title" LIKE ?\' => $argument));
+				$sql = $query->sql($parameters);
+				foreach($parameters as $key => $value) {
+				    $parameters[$key] = "%{$value}%";
+				}
+				DB::prepared_query($sql, $parameters);',
+				'Generate query using ? rather than raw2sql. Inspect elements of a query using foreach loop, then pass new query to database connector using DB::prepare_query($sql, $paramters)
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#3-interaction-with-datalist-sql-dataquery-sql-sqlquery-sql-or-sqlquery-getjoins-methods'
+			),
+
+			array('$query = new SQLQuery(/*...*/);',
+
+				'$query = new SQLSelect(/*...*/);',
+
+				'Interaction with SQLSelect::getWhere() method. Although both implement the getWhere() method, the results returned by SQLSelect::getWhere() will be parameterised while 
+				SQLQuery::getWhere() will be a flattened array of strings. SQLSelect::getWhere() returns a list of conditions, each of which is an associative array 
+				mapping the condition string to a list of parameters provided. View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#4-interaction-with-sqlselect-getwhere-method'
+			),
+
+			array('if(preg_match(\'/\"Count\" = (?<count>\d+)/\', $condition, $matches)) {
+			        $condition = \'"Count" = \'.($matches[\'count\'] + 1);
+			    }
+			    $new[] = $condition;',
+
+				'foreach($condition as $predicate => $parameters) {
+		        if(\'"Count" = ?\' ===  $predicate) {
+		            $parameters[0] = $parameters[0] + 1;
+		        }
+		        $new[] = array($predicate => $parameters);
+		    	}',
+
+				'SQLQuery::getWhere() will be a flattened array of strings. SQLSelect::getWhere() returns a list of conditions, each of which is an associative array 
+				mapping the condition string to a list of parameters provided. $condition will be a single length array. 
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#4-interaction-with-sqlselect-getwhere-method
+			'),
+
+			array('$conn = DB::getConn();
+				$conn->beginSchemaUpdate();
+				...
+				$conn->endSchemaUpdate();',
+
+				'$schema = DB::get_schema();
+				$schema->schemaUpdate(function() use($dataClasses){
+				...
+				});',
+				'Updating database schema is now done by updateSchema with a callback, rather than relying on user code to call beginSchemaUpdate and endSchemaUpdate 
+				around the call. View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#5-update-code-that-interacts-with-the-db-schema' 
+			),
+				
+
+			/*******************End An 's part***********************/
 
 		);
+		
+				/********Start An 's part********/
+		
+		$array["3.2"]["html"] = array(
+			//API: Default Form and FormField ID attributes rewritten.
+			array('<form id="MyForm[Form]"
+					<div id="MyForm[Form][ID]">',
+
+				  '<form id="MyForm_Form">
+				    <div id="MyForm_Form_ID">',
+
+				    'API: Default Form and FormField ID attributes rewritten. Please make sure that CSS has been updated for this form as IDs will change.
+				    View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#api-default-form-and-formfield-id-attributes-rewritten'
+			),
+
+			array('<div id="Email">',
+				'<div id="MyForm_Email">',
+				'API: Default Form and FormField ID attributes rewritten. Form Field ID values will now be namespaced with the parent form ID.
+				Please make sure that CSS has been updated for this form field as IDs will change.
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#api-default-form-and-formfield-id-attributes-rewritten'
+			),
+			array('<div id="Email">
+					    <input id="Email" />',
+
+				'<div id="MyForm_Email_Holder"
+					    <input id="MyForm_Email" />',
+
+				'API: Default Form and FormField ID attributes rewritten. FormField wrapper containers suffixed with _Holder. Previously both the container div and 
+				FormField tag shared the same ID in certain cases. Now, the wrapper div in the default FormField template will be suffixed with _Holder. 
+				Please make sure that CSS has been updated for this form field as IDs will change.
+				View https://docs.silverstripe.org/en/3.2/changelogs/3.2.0/#api-default-form-and-formfield-id-attributes-rewritten'
+			),
+		);
+		/****************End An's part ***********************/
+		
 		ksort($array);
 		if(isset($array[$to])) {
 			return $array[$to];
