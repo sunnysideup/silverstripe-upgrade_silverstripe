@@ -3,8 +3,10 @@
     "type": "silverstripe-module",
     "description": "some rough-and-ready tools to help you upgrade to the next version of Silverstripe",
     "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
         "upgrade",
-        "silverstripe",
         "upgrading"
     ],
     "license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
@@ -14,5 +16,9 @@
             "email": "modules@sunnysideup.co.nz",
             "role": "lead developer"
         }
-    ]
+    ],
+    "require": {
+        "silverstripe/framework": "~3.1",
+        "silverstripe/cms": "~3.1"
+    }
 }
