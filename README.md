@@ -1,101 +1,72 @@
-silverstripe-upgrade_silverstripe
-=================================
+# Silverstripe upgrade silverstripe module
+[![Build Status](https://travis-ci.org/sunnysideup/silverstripe-upgrade_silverstripe.svg?branch=master)](https://travis-ci.org/sunnysideup/silverstripe-upgrade_silverstripe)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-upgrade_silverstripe/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sunnysideup/silverstripe-upgrade_silverstripe/?branch=master)
+[![codecov.io](https://codecov.io/github/sunnysideup/silverstripe-upgrade_silverstripe/coverage.svg?branch=master)](https://codecov.io/github/sunnysideup/silverstripe-upgrade_silverstripe?branch=master)
+![helpfulrobot](https://helpfulrobot.io/sunnysideup/upgrade_silverstripe/badge)
 
-Some rough-and-ready tools to help you upgrade to the next version of
-[SilverStripe](http://www.silverstripe.org).
-
- This tool does not do all
-the upgrading for you (it does do the easy bits), but it helps you
- (a) get an idea of how much is involved and
- (b) to make sure you are not missing anything.
-By using this tool you can have a more structured approach to upgrading your
-Silverstripe websites to 3.0 and 3.1 (and beyond).
+[![Latest Stable Version](https://poser.pugx.org/sunnysideup/upgrade_silverstripe/version)](https://packagist.org/packages/sunnysideup/upgrade_silverstripe)
+[![License](https://poser.pugx.org/sunnysideup/upgrade_silverstripe/license)](https://packagist.org/packages/sunnysideup/upgrade_silverstripe)
+[![Monthly Downloads](https://poser.pugx.org/sunnysideup/upgrade_silverstripe/d/monthly)](https://packagist.org/packages/sunnysideup/upgrade_silverstripe)
 
 
-BASED ON WORK BY:
-[phptek/ss-upgrade.sh](https://gist.github.com/phptek/3902357), AMONG
-OTHERS
-
-USAGE
-=================================
-
-The upgrade tool can be used over a web browser or from the command
-line. To use it via your web browser:
-
-1. Copy this folder to the root folder of a project (this is the best
-   place, in theory it can live anywhere).
-
-2. Change the top bit of upgrade-silverstre.php as you see fit (e.g.
-   path location). You can set the path, to "migrate to" e.g. 3.0 and
-   the folders to ignore
-
-3. Open index.php  in your web-browser
-
-From the command line use the `index.php` file with positional
-arguments:
-
-    $ php index.php /var/www/mywebsite.com/ 3.0 no no
-
-This will run an analysis and give you a summary of changes that will be
-made.
-
-Next, to make the replacements in file (including replacements that'll
-have to be manually fixed):
-
-    $ php index.php /var/www/mywebsite.com/ 3.0 yes yes
-
-(The `$` character above denotes command line, don't add it to your
-command!)
-
-The command line arguments are as follows (by positional order):
-
-1. Path to codebase
-2. Targeted upgrade version
-3. Make Basic Changes (straight find and replace)
-4. Make Advanced Changes (mark areas that need human intervention)
-5. Path to log file
-6. List of folders to ignore (comma separated)
-
-VERSION OPTIONS
-=================================
-
-Right now, you can upgrade from 2.4 to 3.0 and from 3.0 to 3.1
-
-REPLACE OPTIONS
-=================================
-
-There are basically three replacements modes:
-
-* view proposed changes only
-* make basic replacements (e.g. Root.Content becomes Root. )
-* make basic replacements and mark areas that need to be changed
-  manually
-
-By default it is set to viewing proposed changes only.
+## Documentation
 
 
-EXCLUDE / INCLUDE FOLDER OPTIONS
-=================================
 
-Once you have set the bath path, you
-can also set excluded folders.
+ * [Developer Docs](docs/en/INDEX.md)
+ * [User Guide](docs/en/userguide.md)
+ * [API](http://ssmods.com/apis/upgrade_silverstripe/docs/en/api/)
 
-By default, any folders with a file called `_manifest_exclude` will be
-excluded (as well as its children).
+## Requirements
 
-Other ones excluded by default are:
 
-- assets
-- sapphire
-- framework
-- cms
-- .svn
-- .git
 
-In setting the exclusion folders, you can set (a) the name or (b) full
-path.
+see [composer.json](composer.json) for details
 
-For any folders with just the name set (e.g. `mysite` rather than
-`/var/www/mysite/`), it will only be ignored if it is in the base folder
-(e.g. `/var/www/themes/css/mysite` will not be skipped if the base
-folder is `/var/www/`). The base folder is set when you run the code.
+### Suggested Modules
+
+
+
+see [composer.json](composer.json) for details
+
+
+## Installation
+
+
+```
+composer require sunnysideup/upgrade_silverstripe
+```
+
+### Configuration
+
+
+
+In the `_config` folder you will find the `upgrade_silverstripe.yml.example`
+file that shows options for the configuration of this module.
+
+We recommend that you:
+
+  1. copy these `upgrade_silverstripe.yml.example` files into your
+`mysite/_config` folder
+  2. remove the .example extension
+  3. delete the lines you not care about, and
+  4. adjust the configurations that you would like to use.
+
+
+## Contributing
+
+
+
+We welcome any contributions. See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+## Paid assistance
+
+
+
+You can pay us to create an improved / adapted version of this module for your own projects.  Please contact us if you like to find out more: [www.sunnysideup.co.nz](http://www.sunnysideup.co.nz)
+
+## Author
+
+
+
+Sunny Side Up Ltd.
