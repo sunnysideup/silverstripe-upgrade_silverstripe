@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<source xmlns="http://xml.phpdox.net/src">
-  <dir name="/var/www/_modules/upgrade_silverstripe/trunk">
-    <file name="UpgradeSilverstripe.php" size="25665" time="2015-03-14T10:23:13+13:00" unixtime="1426281793" sha1="493d4659986f66d719a7c08d72d7e9832dc95d01" xml="tokens/UpgradeSilverstripe.php.xml"/>
-    <file name="ReplacementData.php" size="61323" time="2015-03-14T10:23:13+13:00" unixtime="1426281793" sha1="6c21993f823ea7fed5a312341e1b2a35c8d3699a" xml="tokens/ReplacementData.php.xml"/>
-    <file name="index.php" size="3718" time="2015-03-14T10:23:13+13:00" unixtime="1426281793" sha1="836d5b0386e304140a05ded64976cc75bd780bf4" xml="tokens/index.php.xml"/>
-  </dir>
-</source>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<index xmlns="http://xml.phpdox.net/src" basedir="/var/www/_modules/upgrade_silverstripe/trunk">
-  <namespace name="">
-    <class name="UpgradeSilverstripe" src="UpgradeSilverstripe.php" xml="classes/UpgradeSilverstripe.xml"/>
-    <class name="TextSearch" src="UpgradeSilverstripe.php" description="Class : TextSearch" xml="classes/TextSearch.xml"/>
-    <class name="ReplacementData" src="ReplacementData.php" xml="classes/ReplacementData.xml"/>
-  </namespace>
-</index>
