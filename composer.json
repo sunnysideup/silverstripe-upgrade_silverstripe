@@ -9,7 +9,7 @@
         "upgrade",
         "upgrading"
     ],
-    "license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Nicolaas Francken",
