@@ -1,13 +1,15 @@
 <?php
-class UpgradeSilverstripeTest extends SapphireTest {
 
-	protected $usesDatabase = false;
+class UpgradeSilverstripeTest extends SapphireTest
+{
+    protected $usesDatabase = false;
 
-	protected $requiredExtensions = array();
+    protected $requiredExtensions = array();
 
-	public function testMyMethod() {
-		$this->assertEquals(1, 1);
-	}
-
+    public function TestDevBuild()
+    {
+        $exitStatus = shell_exec('php framework/cli-script.php dev/build flush=all  > dev/null; echo $?');
+        $exitStatus = intval(trim($exitStatus));
+        $this->assertEquals(0, $exitStatus);
+    }
 }
-
